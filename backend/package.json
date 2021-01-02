@@ -1,0 +1,20 @@
+{
+  "name": "instaclone",
+  "version": "0.0.1",
+  "description": "Instaclone server",
+  "main": "index.js",
+  "author": "Pablo Camardelli",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ./index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.19.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.11.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
