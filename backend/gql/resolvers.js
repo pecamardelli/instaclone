@@ -1,4 +1,4 @@
-const { registerUser } = require("../controllers/user");
+const { registerUser, loginUser } = require("../controllers/user");
 
 const resolvers = {
     Query: {
@@ -10,7 +10,8 @@ const resolvers = {
     },
     Mutation: {
         // User
-        registerUser: async (_, { input }) => registerUser(input)
+        registerUser: (_, { input }) => registerUser(input),
+        loginUser: (_, { input }) => loginUser(input),
     }
 };
 

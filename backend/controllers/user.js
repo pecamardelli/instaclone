@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 async function registerUser(input) {
     const userData = input;
@@ -29,6 +30,24 @@ async function registerUser(input) {
     }
 }
 
+async function loginUser(input) {
+    if (!input.password || !input.email) throw new Error("Missing login data.");
+
+    const user = await User.findOne({ email: input.email.toLowerCase() });
+    if (!user) throw new Error("Invalid login");
+
+    const passwd = await bcryptjs.compare(input.password, user.password);
+    if (!passwd) throw new Error("Invalid login");
+    
+    const { id, name, username, email } = user;
+    const payload = { id, name, username, email };
+    
+    return {
+        token: jwt.sign(payload, process.env.JWT_PRIVATE_KEY, { expiresIn: "24h" })
+    };
+}
+
 module.exports = {
     registerUser,
+    loginUser,
 };
