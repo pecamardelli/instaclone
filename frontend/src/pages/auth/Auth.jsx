@@ -3,6 +3,7 @@ import { Container, Image } from "semantic-ui-react";
 import RegisterForm from "./../../components/Auth/RegisterForm";
 import logo from "../../assets/images/logo.png";
 import "./Auth.scss";
+import LoginForm from "../../components/Auth/LoginForm";
 
 export default function Auth() {
   const [showLogin, setShowLogin] = useState();
@@ -13,7 +14,7 @@ export default function Auth() {
 
       <div className='container-form'>
         {showLogin ? (
-          <p>Login form</p>
+          <LoginForm />
         ) : (
           <RegisterForm setShowLogin={setShowLogin} />
         )}
