@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "./utils/token";
 import AuthContext from "./context/AuthContext";
-import Home from "./pages/auth/home/Home";
+import Navigation from "./routes/Navigation";
 
 function App() {
   const [auth, setAuth] = useState();
@@ -38,7 +38,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <AuthContext.Provider value={authData}>
-        {!auth ? <Auth /> : <Home />}
+        {!auth ? <Auth /> : <Navigation />}
         <ToastContainer closeOnClick draggable />
       </AuthContext.Provider>
     </ApolloProvider>
