@@ -21,4 +21,10 @@ code {
     background-color: $action;
     color: $font-light;
   }
+
+  .submit-error {
+    text-align: center;
+    color: $danger;
+    margin: 20px 0 0 0;
+  }
 }
