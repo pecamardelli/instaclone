@@ -5,11 +5,13 @@ import { useMutation } from "@apollo/client";
 import { LOGIN } from "../../../gql/user";
 import * as Yup from "yup";
 import "./LoginForm.scss";
-import { setToken } from "../../../utils/token";
+import { decodeToken, setToken } from "../../../utils/token";
+import useAuth from "../../../hooks/useAuth";
 
 export default function LoginForm() {
   const [error, setError] = useState("");
   const [login] = useMutation(LOGIN);
+  const { setUserData } = useAuth();
 
   const formik = useFormik({
     initialValues: getInitialValues(), // Defined below the component's code
@@ -23,8 +25,8 @@ export default function LoginForm() {
           },
         });
         const { token } = data.loginUser;
-        console.log(token);
         setToken(token);
+        setUserData(decodeToken(token));
       } catch (error) {
         console.log(error);
         setError(error.message);

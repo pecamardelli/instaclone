@@ -1,25 +1,46 @@
 import { ApolloProvider } from "@apollo/client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 import client from "./config/apollo";
 import Auth from "./pages/auth/Auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "./utils/token";
+import AuthContext from "./context/AuthContext";
+import Home from "./pages/auth/home/Home";
 
 function App() {
   const [auth, setAuth] = useState();
-
+  //localStorage.removeItem("token");
   useEffect(() => {
     const token = getToken();
     if (token) setAuth(token);
     else setAuth(null);
   }, [setAuth]);
 
+  const logout = () => {
+    console.log("Logged out!");
+  };
+
+  const setUserData = (userData) => {
+    setAuth(userData);
+  };
+
+  const authData = useMemo(
+    () => ({
+      logout,
+      auth,
+      setUserData,
+    }),
+    [auth]
+  );
+
   return (
     <ApolloProvider client={client}>
-      {!auth ? <Auth /> : <h1>{auth.name} is logged in!</h1>}
-      <ToastContainer closeOnClick draggable />
+      <AuthContext.Provider value={authData}>
+        {!auth ? <Auth /> : <Home />}
+        <ToastContainer closeOnClick draggable />
+      </AuthContext.Provider>
     </ApolloProvider>
   );
 }
