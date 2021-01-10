@@ -13,8 +13,14 @@ export default function Navigation() {
             path={route.path}
             exact={route.exact}
             component={(props) => {
-              const Component = route.component; // Just to use PascalCase in the component's statement
-              <Component {...props} />;
+              // Just to use PascalCase in the component's statement
+              const Component = route.component;
+              const Layout = route.layout;
+              return (
+                <Layout>
+                  <Component {...props} />
+                </Layout>
+              );
             }}
           />
         ))}
