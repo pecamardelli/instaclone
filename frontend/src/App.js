@@ -35,6 +35,10 @@ function App() {
     [auth]
   );
 
+  // Just to avoid the rendering of the login page when the user is actually logged in.
+  // Comment this line and you'll see the login page for an instant when refreshing the page.
+  if (auth === undefined) return null;
+
   return (
     <ApolloProvider client={client}>
       <AuthContext.Provider value={authData}>

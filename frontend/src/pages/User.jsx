@@ -1,12 +1,7 @@
+import { useQuery } from "@apollo/client";
 import React from "react";
-import { useParams } from "react-router-dom";
+import Profile from "../components/Profile/Profile";
 
 export default function User() {
-  const params = useParams();
-
-  return (
-    <div>
-      <h1>User Component!</h1>
-    </div>
-  );
+  return <Profile />;
 }

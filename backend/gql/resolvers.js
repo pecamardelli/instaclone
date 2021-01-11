@@ -1,18 +1,15 @@
-const { registerUser, loginUser } = require("../controllers/user");
+const { registerUser, loginUser, getUser } = require("../controllers/user");
 
 const resolvers = {
-    Query: {
-        // User
-        getUser: () => {
-            console.log("Getting user...");
-            return null;
-        }
-    },
-    Mutation: {
-        // User
-        registerUser: (_, { input }) => registerUser(input),
-        loginUser: (_, { input }) => loginUser(input),
-    }
+  Query: {
+    // User
+    getUser: (_, { id, username }) => getUser(id, username),
+  },
+  Mutation: {
+    // User
+    registerUser: (_, { input }) => registerUser(input),
+    loginUser: (_, { input }) => loginUser(input),
+  },
 };
 
 module.exports = resolvers;
