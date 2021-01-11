@@ -5,7 +5,7 @@ import client from "./config/apollo";
 import Auth from "./pages/auth/Auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getToken } from "./utils/token";
+import { decodeToken, getToken } from "./utils/token";
 import AuthContext from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
 
@@ -14,7 +14,7 @@ function App() {
   //localStorage.removeItem("token");
   useEffect(() => {
     const token = getToken();
-    if (token) setAuth(token);
+    if (token) setAuth(decodeToken(token));
     else setAuth(null);
   }, [setAuth]);
 
