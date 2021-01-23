@@ -1,6 +1,9 @@
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const saveImage = require("../utils/saveImage");
+
+const avatarDir = "./public/images/avatars";
 
 async function registerUser(input) {
   const userData = input;
@@ -57,7 +60,12 @@ async function getUser(id, username) {
 }
 
 async function updateAvatar(file) {
-  console.log(file);
+  const { createReadStream, mimetype } = await file;
+  const imageType = mimetype.split("/")[1]; // Should be jpeg or png and equal to the extension...
+  const imagePath = `${avatarDir}/holaMundo.${imageType}`;
+  const imageData = createReadStream();
+  console.log(imagePath);
+  saveImage(imageData, imagePath);
   return null;
 }
 
