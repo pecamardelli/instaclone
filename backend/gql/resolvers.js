@@ -1,4 +1,9 @@
-const { registerUser, loginUser, getUser } = require("../controllers/user");
+const {
+  registerUser,
+  loginUser,
+  getUser,
+  updateAvatar,
+} = require("../controllers/user");
 
 const resolvers = {
   Query: {
@@ -9,6 +14,7 @@ const resolvers = {
     // User
     registerUser: (_, { input }) => registerUser(input),
     loginUser: (_, { input }) => loginUser(input),
+    updateAvatar: (_, { file }) => updateAvatar(file),
   },
 };
 
