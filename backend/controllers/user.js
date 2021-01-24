@@ -79,6 +79,17 @@ async function updateAvatar(file, ctx) {
       const imagePath = `${avatarDir}/${user.id}.${imageType}`;
       const imageData = createReadStream();
       saveImage(imageData, imagePath);
+
+      User.findByIdAndUpdate(
+        user.id,
+        {
+          avatar: `${user.id}.${imageType}`,
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
       return {
         status: true,
         avatarUrl: "",
