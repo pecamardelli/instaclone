@@ -1,6 +1,9 @@
 # The pending stuff file
 TODO
 
+# Static images
+public/
+
 # Logs
 log/
 logs
