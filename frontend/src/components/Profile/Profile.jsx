@@ -50,7 +50,11 @@ export default function Profile() {
     <>
       <Grid className='profile'>
         <Grid.Column width='5' className='profile__left'>
-          <Image src={noAvatar} avatar onClick={handleAvatarClick} />
+          <Image
+            src={`http://localhost:3010/images/avatars/${userData.id}.jpeg`}
+            avatar
+            onClick={handleAvatarClick}
+          />
         </Grid.Column>
         <Grid.Column width='11' className='profile__right'>
           <div>Profile Header</div>

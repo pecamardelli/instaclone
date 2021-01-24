@@ -14,7 +14,7 @@ const resolvers = {
     // User
     registerUser: (_, { input }) => registerUser(input),
     loginUser: (_, { input }) => loginUser(input),
-    updateAvatar: (_, { file }) => updateAvatar(file),
+    updateAvatar: (_, { file }, ctx) => updateAvatar(file, ctx),
   },
 };
 

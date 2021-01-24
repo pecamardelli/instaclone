@@ -59,14 +59,37 @@ async function getUser(id, username) {
   return user;
 }
 
-async function updateAvatar(file) {
-  const { createReadStream, mimetype } = await file;
-  const imageType = mimetype.split("/")[1]; // Should be jpeg or png and equal to the extension...
-  const imagePath = `${avatarDir}/holaMundo.${imageType}`;
-  const imageData = createReadStream();
-  console.log(imagePath);
-  saveImage(imageData, imagePath);
-  return null;
+async function updateAvatar(file, ctx) {
+  // In order to get this function working, there's a tweak that must be done.
+  // Copy the following code to package.json:
+  //
+  // "resolutions": {
+  //  "**/**/fs-capacitor": "^4.0.0",
+  //  "**/graphql-upload": "^9.0.0"
+  // }
+  //
+  // Apparently, there are compatibility issues between newest versions of node and fs-capacitor.
+  // https://stackoverflow.com/questions/59620803/createreadstream-throwing-rangeerror-maximum-call-stack-size-exceeded-when-up
+
+  return file
+    .then((file) => {
+      const { user } = ctx;
+      const { createReadStream, mimetype } = file;
+      const imageType = mimetype.split("/")[1]; // Should be jpeg or png and equal to the extension...
+      const imagePath = `${avatarDir}/${user.id}.${imageType}`;
+      const imageData = createReadStream();
+      saveImage(imageData, imagePath);
+      return {
+        status: true,
+        avatarUrl: "",
+      };
+    })
+    .catch((err) => {
+      return {
+        status: false,
+        avatarUrl: "",
+      };
+    });
 }
 
 module.exports = {

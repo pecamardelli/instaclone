@@ -2,26 +2,58 @@ const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./gql/schema");
 const resolvers = require("./gql/resolvers");
+const jwt = require("jsonwebtoken");
+const express = require("express");
 
-require("dotenv").config({ path: ".env"});
+require("dotenv").config({ path: ".env" });
 
-mongoose.connect(process.env.DB_CON, {
+// Creating this app only to serve static files
+const app = express();
+app.use("/", express.static(__dirname + "/public"));
+
+mongoose.connect(
+  process.env.DB_CON,
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
-    useCreateIndex: true
-}, (err) => {
+    useCreateIndex: true,
+  },
+  (err) => {
     if (err) console.log("Error connecting database: " + err.message);
     else server();
-});
+  }
+);
 
 function server() {
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers
-    });
+  const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => {
+      const token = req.headers.authorization;
 
-    apolloServer.listen().then((response) => {
-        console.log(`Server listening on ${response.url}`);
-    });
+      //if (token) {
+      try {
+        const user = jwt.verify(
+          token.replace("Bearer ", ""),
+          process.env.JWT_PRIVATE_KEY
+        );
+
+        return { user };
+      } catch (error) {
+        console.log("#### AUTH ERROR ####");
+        console.log("Invalid token provided");
+        console.log(error);
+        return null;
+      }
+      //}
+    },
+  });
+
+  apolloServer.listen().then((response) => {
+    console.log(`Server listening on ${response.url}`);
+  });
+
+  // Couldn't find a way to serve static files with Apollo-server...
+  app.listen(3010);
 }
