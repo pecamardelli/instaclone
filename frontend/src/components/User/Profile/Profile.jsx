@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GET_USER } from "../../../gql/user";
 import useAuth from "../../../hooks/useAuth";
@@ -9,13 +9,14 @@ import "./Profile.scss";
 import UserNotFound from "../../UserNotFound/UserNotFound";
 import BasicModal from "../../Modal/BasicModal";
 import AvatarForm from "../AvatarForm/AvatarForm";
+import AuthContext from "./../../../context/AuthContext";
 
 export default function Profile() {
   const { username } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalChildren, setModalChildren] = useState(null);
-
+  const authContext = useContext(AuthContext);
   const { auth } = useAuth();
 
   const { data, loading, error } = useQuery(GET_USER, {
@@ -50,31 +51,38 @@ export default function Profile() {
 
   return (
     <>
-      <Grid className="profile">
-        <Grid.Column width="5" className="profile__left">
+      <Grid className='profile'>
+        <Grid.Column width='5' className='profile__left'>
           <Image
-            src={userData.avatar ? `${avatarUrl}/${userData.avatar}` : noAvatar}
+            src={
+              auth.username === username
+                ? authContext.auth.avatar
+                  ? `${avatarUrl}/${authContext.auth.avatar}`
+                  : noAvatar
+                : userData.avatar
+                ? `${avatarUrl}/${userData.avatar}`
+                : noAvatar
+            }
             avatar
             onClick={handleAvatarClick}
           />
         </Grid.Column>
-        <Grid.Column width="11" className="profile__right">
+        <Grid.Column width='11' className='profile__right'>
           <div>Profile Header</div>
           <div>Followers</div>
-          <div className="other">
-            <p className="name">{userData.name}</p>
+          <div className='other'>
+            <p className='name'>{userData.name}</p>
             {userData.website && (
               <a
                 href={`http://${userData.website}`}
-                className="website"
-                target="_blank"
-                rel="noreferrer"
-              >
+                className='website'
+                target='_blank'
+                rel='noreferrer'>
                 {userData.website}
               </a>
             )}
             {userData.description && (
-              <p className="description">{userData.description}</p>
+              <p className='description'>{userData.description}</p>
             )}
           </div>
         </Grid.Column>

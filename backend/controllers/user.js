@@ -41,8 +41,8 @@ async function loginUser(input) {
   const passwd = await bcryptjs.compare(input.password, user.password);
   if (!passwd) throw new Error("Invalid login");
 
-  const { id, name, username, email } = user;
-  const payload = { id, name, username, email };
+  const { id, name, username, email, avatar } = user;
+  const payload = { id, name, username, email, avatar };
 
   return {
     token: jwt.sign(payload, process.env.JWT_PRIVATE_KEY, { expiresIn: "24h" }),
@@ -92,7 +92,7 @@ async function updateAvatar(file, ctx) {
 
       return {
         status: true,
-        avatarUrl: "",
+        avatarUrl: `${user.id}.${imageType}`,
       };
     })
     .catch((err) => {
@@ -103,9 +103,21 @@ async function updateAvatar(file, ctx) {
     });
 }
 
+async function deleteAvatar(ctx) {
+  const { id } = ctx.user;
+
+  try {
+    await User.findByIdAndUpdate(id, { avatar: "" });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   getUser,
   updateAvatar,
+  deleteAvatar,
 };
