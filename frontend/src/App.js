@@ -5,7 +5,7 @@ import client from "./config/apollo";
 import Auth from "./pages/auth/Auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { decodeToken, getToken } from "./utils/token";
+import { decodeToken, getToken, removeToken } from "./utils/token";
 import AuthContext from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
 
@@ -19,7 +19,8 @@ function App() {
   }, [setAuth]);
 
   const logout = () => {
-    console.log("Logged out!");
+    removeToken();
+    setAuth(null);
   };
 
   const setUserData = (userData) => {
