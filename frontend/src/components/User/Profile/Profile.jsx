@@ -1,15 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
 import { GET_USER } from "../../../gql/user";
 import useAuth from "../../../hooks/useAuth";
-import { Grid, Image } from "semantic-ui-react";
 import noAvatar from "../../../assets/images/avatar.png";
-import { useQuery } from "@apollo/client";
-import "./Profile.scss";
 import UserNotFound from "../../UserNotFound/UserNotFound";
 import BasicModal from "../../Modal/BasicModal";
 import AvatarForm from "../AvatarForm/AvatarForm";
 import AuthContext from "./../../../context/AuthContext";
+import ProfileHeader from "./ProfileHeader/ProfileHeader";
+import SettingsForm from "./SettingsForm";
+import { Grid, Image } from "semantic-ui-react";
+
+import "./Profile.scss";
 
 export default function Profile() {
   const { username } = useParams();
@@ -36,12 +39,16 @@ export default function Profile() {
       case "avatar":
         setModalTitle("My Avatar!");
         setModalChildren(<AvatarForm setShowModal={setShowModal} />);
-        setShowModal(true);
         break;
 
+      case "settings":
+        setModalTitle("");
+        setModalChildren(<SettingsForm setShowModal={setShowModal} />);
+        break;
       default:
         break;
     }
+    setShowModal(true);
   };
 
   const handleAvatarClick = () => {
@@ -68,7 +75,7 @@ export default function Profile() {
           />
         </Grid.Column>
         <Grid.Column width='11' className='profile__right'>
-          <div>Profile Header</div>
+          <ProfileHeader userData={userData} openModal={openModal} />
           <div>Followers</div>
           <div className='other'>
             <p className='name'>{userData.name}</p>
