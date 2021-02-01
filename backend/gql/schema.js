@@ -30,10 +30,19 @@ const typeDefs = gql`
     email: String!
     password: String!
   }
+  input UpdateUserInput {
+    username: String
+    email: String
+    website: String
+    currentPassword: String
+    newPassword: String
+    description: String
+  }
 
   type Query {
     # User
     getUser(id: ID, username: String): User
+    search(keyword: String): [User]
   }
 
   type Mutation {
@@ -42,6 +51,7 @@ const typeDefs = gql`
     loginUser(input: LoginInput): Token
     updateAvatar(file: Upload): UpdateAvatar
     deleteAvatar: Boolean
+    updateUser(input: UpdateUserInput): User
   }
 `;
 

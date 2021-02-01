@@ -41,9 +41,7 @@ function server() {
 
         return { user };
       } catch (error) {
-        console.log("#### AUTH ERROR ####");
-        console.log("Invalid token provided");
-        console.log(error);
+        console.error(`AUTHENTICATION ERROR: ${error.message}`);
         return null;
       }
       //}

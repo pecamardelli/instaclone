@@ -28,33 +28,33 @@ export default function LoginForm() {
         setToken(token);
         setUserData(decodeToken(token));
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
         setError(error.message);
       }
     },
   });
 
   return (
-    <Form className="login-form" onSubmit={formik.handleSubmit}>
+    <Form className='login-form' onSubmit={formik.handleSubmit}>
       <h2>Login to share photos and videos with your friends!</h2>
       <Form.Input
-        type="text"
-        placeholder="Your email address..."
-        name="email"
+        type='text'
+        placeholder='Your email address...'
+        name='email'
         onChange={formik.handleChange}
         error={formik.errors.email && true}
       />
       <Form.Input
-        type="password"
-        placeholder="Your password..."
-        name="password"
+        type='password'
+        placeholder='Your password...'
+        name='password'
         onChange={formik.handleChange}
         error={formik.errors.password && true}
       />
-      <Button type="submit" className="btn-submit">
+      <Button type='submit' className='btn-submit'>
         Login
       </Button>
-      {error && <h4 className="submit-error">{error}</h4>}
+      {error && <h4 className='submit-error'>{error}</h4>}
     </Form>
   );
 }

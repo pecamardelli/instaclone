@@ -114,10 +114,71 @@ async function deleteAvatar(ctx) {
   }
 }
 
+async function updateUser(input, ctx) {
+  const { user } = ctx;
+  const {
+    username,
+    email,
+    website,
+    description,
+    currentPassword,
+    newPassword,
+  } = input;
+
+  try {
+    const userFound = await User.findById(user.id);
+
+    if (currentPassword && newPassword) {
+      const passwordIsCorrect = await bcryptjs.compare(
+        currentPassword,
+        userFound.password
+      );
+
+      if (!passwordIsCorrect) throw new Error("Wrong password.");
+
+      const salt = await bcryptjs.genSalt();
+      const encryptedNewPassword = await bcryptjs.hash(newPassword, salt);
+
+      userFound.password = encryptedNewPassword;
+    }
+
+    if (email) {
+      const result = await User.findOne({ email });
+      if (result) return "Email is already in use.";
+      userFound.email = email;
+    }
+
+    if (website) userFound.website = website;
+    if (description) userFound.description = description;
+
+    userFound.save();
+    return userFound;
+  } catch (error) {
+    console.error(error);
+    return error.message;
+  }
+}
+
+async function search(keyword) {
+  try {
+    const users = await User.find({
+      name: { $regex: keyword, $options: "i" },
+    });
+
+    console.dir({ users: users[0] });
+
+    return users;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   getUser,
   updateAvatar,
   deleteAvatar,
+  updateUser,
+  search,
 };

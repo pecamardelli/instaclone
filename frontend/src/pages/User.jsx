@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import React from "react";
 import Profile from "../components/User/Profile";
 

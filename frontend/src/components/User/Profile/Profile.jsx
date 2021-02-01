@@ -43,7 +43,14 @@ export default function Profile() {
 
       case "settings":
         setModalTitle("");
-        setModalChildren(<SettingsForm setShowModal={setShowModal} />);
+        setModalChildren(
+          <SettingsForm
+            setShowModal={setShowModal}
+            setModalTitle={setModalTitle}
+            setModalChildren={setModalChildren}
+            userData={userData}
+          />
+        );
         break;
       default:
         break;

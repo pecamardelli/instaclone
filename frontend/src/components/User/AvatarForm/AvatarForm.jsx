@@ -45,7 +45,6 @@ export default function AvatarForm(props) {
         setLoading(true);
         const result = await updateAvatar({ variables: { file: avatarImage } });
         const { data } = result;
-        console.log(result);
 
         if (!data.updateAvatar.status) {
           toast.error("Failed to upload avatar!");
