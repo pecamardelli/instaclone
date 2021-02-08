@@ -20,7 +20,7 @@ mongoose.connect(
     useCreateIndex: true,
   },
   (err) => {
-    if (err) console.log("Error connecting database: " + err.message);
+    if (err) console.log("Error connecting to database: " + err.message);
     else server();
   }
 );

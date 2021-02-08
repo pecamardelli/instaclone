@@ -1,32 +1,56 @@
 import { useLazyQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
 import "./SearchBar.scss";
 import { SEARCH_USERS } from "./../../../gql/user";
+import SearchResult from "./SearchResult/SearchResult";
 
 export default function SearchBar() {
-  //const [keyword, setKeyword] = useState(null);
-  const [doSearch, { data, loading, error, called }] = useLazyQuery(
-    SEARCH_USERS
-  );
+  const [keyword, setKeyword] = useState(null);
+  const [results, setResults] = useState([]);
+  const [doSearch, { data, loading, error }] = useLazyQuery(SEARCH_USERS);
 
-  const handleSearchChange = (event) => {
-    if (loading || error) return null;
-    const keyword = event.target.value;
+  if (error) console.error(error);
 
+  useEffect(() => {
     if (keyword) {
       doSearch({ variables: { keyword } });
-      console.dir({ data });
     }
+
+    if (data) {
+      const users = data.search;
+      const formattedUserArray = [];
+
+      users.forEach((user, index) => {
+        formattedUserArray.push({
+          key: index,
+          title: user.name,
+          username: user.username,
+          avatar: user.avatar,
+        });
+      });
+
+      setResults(formattedUserArray);
+    }
+  }, [data, keyword, setResults, doSearch]);
+
+  const handleResultSelect = () => {
+    setResults([]);
+    setKeyword("");
   };
 
   return (
     <Search
-      className='search-bar'
+      className='search-results'
       fluid
       input={{ icon: "search", iconPosition: "left" }}
       placeholder='Search for your friends!'
-      onSearchChange={(e) => handleSearchChange(e)}
+      onSearchChange={(e) => setKeyword(e.target.value)}
+      onResultSelect={handleResultSelect}
+      results={results}
+      resultRenderer={(e) => <SearchResult data={e} />}
+      loading={loading}
+      value={keyword || ""}
     />
   );
 }
