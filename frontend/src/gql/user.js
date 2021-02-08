@@ -61,3 +61,16 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const SEARCH_USERS = gql`
+  query Search($keyword: String) {
+    search(keyword: $keyword) {
+      id
+      name
+      username
+      email
+      website
+      description
+    }
+  }
+`;

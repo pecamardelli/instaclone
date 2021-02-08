@@ -28,7 +28,7 @@ export default function LoginForm() {
         setToken(token);
         setUserData(decodeToken(token));
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         setError(error.message);
       }
     },

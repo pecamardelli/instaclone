@@ -165,11 +165,10 @@ async function search(keyword) {
       name: { $regex: keyword, $options: "i" },
     });
 
-    console.dir({ users: users[0] });
-
     return users;
   } catch (error) {
     console.error(error);
+    return null;
   }
 }
 

@@ -12,7 +12,7 @@ const app = express();
 app.use("/", express.static(__dirname + "/public"));
 
 mongoose.connect(
-  process.env.DB_CON,
+  process.env.MONGO_DB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -32,19 +32,19 @@ function server() {
     context: ({ req }) => {
       const token = req.headers.authorization;
 
-      //if (token) {
-      try {
-        const user = jwt.verify(
-          token.replace("Bearer ", ""),
-          process.env.JWT_PRIVATE_KEY
-        );
+      if (token) {
+        try {
+          const user = jwt.verify(
+            token.replace("Bearer ", ""),
+            process.env.JWT_PRIVATE_KEY
+          );
 
-        return { user };
-      } catch (error) {
-        console.error(`AUTHENTICATION ERROR: ${error.message}`);
-        return null;
+          return { user };
+        } catch (error) {
+          console.error(`AUTHENTICATION ERROR: ${error.message}`);
+          return null;
+        }
       }
-      //}
     },
   });
 
