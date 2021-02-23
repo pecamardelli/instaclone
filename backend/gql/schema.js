@@ -19,6 +19,15 @@ const typeDefs = gql`
     status: Boolean
     avatarUrl: String
   }
+  type Follower {
+    id: ID
+    name: String
+    username: String
+    email: String
+    website: String
+    avatar: String
+    description: String
+  }
 
   input UserInput {
     name: String!
@@ -43,15 +52,24 @@ const typeDefs = gql`
     # User
     getUser(id: ID, username: String): User
     search(keyword: String): [User]
+
+    # Follower system queries
+    isFollowing(username: String!): Boolean
+    getFollowers(username: String!): [Follower]
+    getFolloweds(username: String!): [Follower]
   }
 
   type Mutation {
-    #User
+    #User system mutations
     registerUser(input: UserInput): User
     loginUser(input: LoginInput): Token
     updateAvatar(file: Upload): UpdateAvatar
     deleteAvatar: Boolean
     updateUser(input: UpdateUserInput): User
+
+    #Follower system mutations
+    followUser(username: String!): Boolean
+    unfollowUser(username: String!): Boolean
   }
 `;
 

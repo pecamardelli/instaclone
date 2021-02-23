@@ -13,6 +13,7 @@ import SettingsForm from "./SettingsForm";
 import { Grid, Image } from "semantic-ui-react";
 
 import "./Profile.scss";
+import Followers from "./Followers/Followers";
 
 export default function Profile() {
   const { username } = useParams();
@@ -65,8 +66,8 @@ export default function Profile() {
 
   return (
     <>
-      <Grid className='profile'>
-        <Grid.Column width='5' className='profile__left'>
+      <Grid className="profile">
+        <Grid.Column width="5" className="profile__left">
           <Image
             src={
               auth.username === username
@@ -81,22 +82,23 @@ export default function Profile() {
             onClick={handleAvatarClick}
           />
         </Grid.Column>
-        <Grid.Column width='11' className='profile__right'>
+        <Grid.Column width="11" className="profile__right">
           <ProfileHeader userData={userData} openModal={openModal} />
-          <div>Followers</div>
-          <div className='other'>
-            <p className='name'>{userData.name}</p>
+          <Followers username={userData.username} />
+          <div className="other">
+            <p className="name">{userData.name}</p>
             {userData.website && (
               <a
                 href={`http://${userData.website}`}
-                className='website'
-                target='_blank'
-                rel='noreferrer'>
+                className="website"
+                target="_blank"
+                rel="noreferrer"
+              >
                 {userData.website}
               </a>
             )}
             {userData.description && (
-              <p className='description'>{userData.description}</p>
+              <p className="description">{userData.description}</p>
             )}
           </div>
         </Grid.Column>

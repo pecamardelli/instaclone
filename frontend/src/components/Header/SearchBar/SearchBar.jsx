@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
 import "./SearchBar.scss";
 import { SEARCH_USERS } from "./../../../gql/user";
-import SearchResult from "./SearchResult/SearchResult";
+import SearchResult from "../../common/SearchResult/SearchResult";
 
 export default function SearchBar() {
   const [keyword, setKeyword] = useState(null);
@@ -41,10 +41,10 @@ export default function SearchBar() {
 
   return (
     <Search
-      className='search-results'
+      className="search-results"
       fluid
       input={{ icon: "search", iconPosition: "left" }}
-      placeholder='Search for your friends!'
+      placeholder="Search for your friends!"
       onSearchChange={(e) => setKeyword(e.target.value)}
       onResultSelect={handleResultSelect}
       results={results}

@@ -1,4 +1,4 @@
-@import "../../../../scss/index.scss";
+@import "../../../scss/index.scss";
 
 .search-results {
   .ui.left.icon.input {
@@ -13,6 +13,7 @@
   &__item {
     display: flex;
     align-items: center;
+    margin: 5px;
 
     .ui.image {
       width: 35px !important;
