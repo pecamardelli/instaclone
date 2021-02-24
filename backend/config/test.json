@@ -1,0 +1,5 @@
+{
+  "jwtPrivateKey": "1234",
+  "name": "Instaclone - Test",
+  "jwtLifeTime": "84600"
+}

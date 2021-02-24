@@ -28,6 +28,10 @@ const typeDefs = gql`
     avatar: String
     description: String
   }
+  type Publish {
+    status: Boolean
+    fileUrl: String
+  }
 
   input UserInput {
     name: String!
@@ -70,6 +74,9 @@ const typeDefs = gql`
     #Follower system mutations
     followUser(username: String!): Boolean
     unfollowUser(username: String!): Boolean
+
+    #Publication system mutations
+    publish(file: Upload): Publish
   }
 `;
 

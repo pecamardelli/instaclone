@@ -1,13 +1,29 @@
-import React, { useCallback } from "react";
-import { Modal } from "semantic-ui-react";
+import React, { useCallback, useState } from "react";
+import { Button, Icon, Modal } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import "./PostModal.scss";
+import { useMutation } from "@apollo/client";
+import { PUBLISH } from "../../../gql/publication";
 
 export default function PostModal(props) {
   const { show, setShow } = props;
-  const onDrop = useCallback((upload) => {
-    console.log({ upload });
-  });
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [publish] = useMutation(PUBLISH);
+
+  const onDrop = useCallback(
+    (upload) => {
+      const file = upload[0];
+      if (!file) return console.error("No file uploaded");
+
+      setUploadedFile({
+        type: "image",
+        file,
+        preview: URL.createObjectURL(file),
+      });
+    },
+    [setUploadedFile]
+  );
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/jpeg, image/png",
     noKeyboard: true,
@@ -17,6 +33,13 @@ export default function PostModal(props) {
 
   const handleClose = () => setShow(false);
 
+  const handlePublish = async () => {
+    setShow(false);
+    setUploadedFile(null);
+    const result = await publish({ variables: { file: uploadedFile.file } });
+    console.log({ result, uploadedFile });
+  };
+
   return (
     <Modal
       className="post-modal"
@@ -24,9 +47,31 @@ export default function PostModal(props) {
       size="small"
       onClose={handleClose}
     >
-      <div {...getRootProps()} className="dropzone">
+      <div
+        {...getRootProps()}
+        className="dropzone"
+        style={uploadedFile && { border: "0" }}
+      >
+        {!uploadedFile && (
+          <>
+            <Icon name="cloud upload" />
+            <p>Drop your images here</p>
+          </>
+        )}
         <input {...getInputProps()} />
       </div>
+      {uploadedFile?.type === "image" && (
+        <div
+          className="upload-preview"
+          style={{ backgroundImage: `url("${uploadedFile.preview}")` }}
+        />
+      )}
+
+      {uploadedFile && (
+        <Button className="btn-upload btn-action" onClick={handlePublish}>
+          Publish
+        </Button>
+      )}
     </Modal>
   );
 }

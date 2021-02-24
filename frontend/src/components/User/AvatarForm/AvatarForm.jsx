@@ -18,7 +18,7 @@ export default function AvatarForm(props) {
   // The second argument updates the Apollo cache with the new avatar url
   // It doesn't work if the images have the same uploaded name (same url as well).
   // This is a bug that wasn't fixed in the course, so implementing a context
-  // would be a solution for this.
+  // would be a solution to this.
   const [updateAvatar] = useMutation(UPDATE_AVATAR, {
     update(cache, { data: { updateAvatar } }) {
       const { getUser } = cache.readQuery({
@@ -89,7 +89,7 @@ export default function AvatarForm(props) {
   };
 
   return (
-    <div className='avatar-form'>
+    <div className="avatar-form">
       <Button {...getRootProps()} loading={loading}>
         Subir foto
       </Button>

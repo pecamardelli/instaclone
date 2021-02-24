@@ -14,6 +14,7 @@ const {
   updateUser,
   search,
 } = require("../controllers/user");
+const { publish } = require("../controllers/publication");
 
 const resolvers = {
   Query: {
@@ -37,6 +38,9 @@ const resolvers = {
     // Followers
     followUser: (_, { username }, ctx) => followUser(username, ctx),
     unfollowUser: (_, { username }, ctx) => unfollowUser(username, ctx),
+
+    // Publications
+    publish: (_, { file }, ctx) => publish(file, ctx),
   },
 };
 

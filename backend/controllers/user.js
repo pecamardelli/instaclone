@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const saveImage = require("../utils/saveImage");
+const { storage } = require("../config/config");
 
 const avatarDir = "./public/images/avatars";
 
@@ -76,7 +77,7 @@ async function updateAvatar(file, ctx) {
       const { user } = ctx;
       const { createReadStream, mimetype } = file;
       const imageType = mimetype.split("/")[1]; // Should be jpeg or png and equal to the extension...
-      const imagePath = `${avatarDir}/${user.id}.${imageType}`;
+      const imagePath = `${storage.userAvatarDir}/${user.id}.${imageType}`;
       const imageData = createReadStream();
       saveImage(imageData, imagePath);
 

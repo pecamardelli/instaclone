@@ -1,0 +1,7 @@
+{
+  "jwtPrivateKey": "1234",
+  "name": "Instaclone",
+  "baseDir": "/public",
+  "userDir": "/user",
+  "userAvatarDir": "/avatar"
+}

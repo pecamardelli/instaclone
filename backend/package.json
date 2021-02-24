@@ -11,13 +11,16 @@
   "dependencies": {
     "apollo-server": "^2.19.1",
     "bcryptjs": "^2.4.3",
+    "config": "^3.3.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs-capacitor": "^6.2.0",
+    "ftp": "^0.3.10",
     "graphql": "^15.5.0",
     "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.8"
+    "mongoose": "^5.11.8",
+    "ssh2": "^0.8.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

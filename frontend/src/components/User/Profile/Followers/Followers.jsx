@@ -15,8 +15,8 @@ export default function Followers(props) {
   const {
     data: followersData,
     loading: followersLoading,
-    startPolling: startPollingFollowers,
-    stopPolling: stopPollingFollowers,
+    //startPolling: startPollingFollowers,
+    //stopPolling: stopPollingFollowers,
   } = useQuery(GET_FOLLOWERS, {
     variables: { username },
   });
@@ -26,12 +26,14 @@ export default function Followers(props) {
     loading: followedsLoading,
   } = useQuery(GET_FOLLOWEDS, { variables: { username } });
 
-  useEffect(() => {
-    startPollingFollowers(1000);
-    return () => {
-      stopPollingFollowers();
-    };
-  }, [startPollingFollowers, stopPollingFollowers]);
+  // In the course, the teacher does this to get realtime followers count.
+  // I'll disable it because it's a terrible idea.
+  // useEffect(() => {
+  //   startPollingFollowers(1000);
+  //   return () => {
+  //     stopPollingFollowers();
+  //   };
+  // }, [startPollingFollowers, stopPollingFollowers]);
 
   if (followersLoading || followedsLoading) return null;
 

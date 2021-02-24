@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 async function saveImage(data, filename) {
-  if (!data || !filename) return console.log("Invalid file name.");
+  if (!data || !filename) return console.error("Invalid file name.");
 
   data.pipe(fs.createWriteStream(filename));
 

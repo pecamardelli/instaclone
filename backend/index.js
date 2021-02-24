@@ -1,18 +1,20 @@
+require("dotenv").config({ path: ".env" });
+
 const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./gql/schema");
 const resolvers = require("./gql/resolvers");
 const jwt = require("jsonwebtoken");
 const express = require("express");
-
-require("dotenv").config({ path: ".env" });
+const { mongodb } = require("./config/config");
 
 // Creating this app only to serve static files
 const app = express();
 app.use("/", express.static(__dirname + "/public"));
 
 mongoose.connect(
-  process.env.MONGO_DB_URI,
+  //process.env.MONGO_DB_URI,
+  mongodb.uri,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
