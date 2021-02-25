@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GET_FOLLOWEDS, GET_FOLLOWERS } from "../../../../gql/follower";
 import SearchResult from "../../../common/SearchResult/SearchResult";
 import BasicModal from "../../../Modal/BasicModal/BasicModal";

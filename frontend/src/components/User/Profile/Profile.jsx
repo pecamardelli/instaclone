@@ -27,7 +27,7 @@ export default function Profile() {
     variables: { username },
   });
 
-  const avatarUrl = "http://localhost:3010/images/avatars";
+  const avatarUrl = "http://localhost:3010/images/user/avatar";
 
   if (loading) return null;
   if (error) return <h1>An error ocurred: {error}</h1>;

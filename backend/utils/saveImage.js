@@ -3,7 +3,11 @@ const fs = require("fs");
 async function saveImage(data, filename) {
   if (!data || !filename) return console.error("Invalid file name.");
 
-  data.pipe(fs.createWriteStream(filename));
+  try {
+    data.pipe(fs.createWriteStream(filename));
+  } catch (error) {
+    console.error(error);
+  }
 
   /*
   fs.open(filename, "w", (err, fd) => {

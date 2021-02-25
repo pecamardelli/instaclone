@@ -2,9 +2,9 @@ const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const saveImage = require("../utils/saveImage");
-const { storage } = require("../config/config");
+const { fileUploads, jwt: jwtCfg } = require("../config/config");
 
-const avatarDir = "./public/images/avatars";
+const { publicDir, baseDir, userDir, userAvatarDir } = fileUploads.directories;
 
 async function registerUser(input) {
   const userData = input;
@@ -46,7 +46,7 @@ async function loginUser(input) {
   const payload = { id, name, username, email, avatar };
 
   return {
-    token: jwt.sign(payload, process.env.JWT_PRIVATE_KEY, { expiresIn: "24h" }),
+    token: jwt.sign(payload, jwtCfg.privateKey, { expiresIn: jwtCfg.lifeTime }),
   };
 }
 
@@ -77,7 +77,8 @@ async function updateAvatar(file, ctx) {
       const { user } = ctx;
       const { createReadStream, mimetype } = file;
       const imageType = mimetype.split("/")[1]; // Should be jpeg or png and equal to the extension...
-      const imagePath = `${storage.userAvatarDir}/${user.id}.${imageType}`;
+      const imageDir = `${publicDir}${baseDir}${userDir}${userAvatarDir}`;
+      const imagePath = `${imageDir}/${user.id}.${imageType}`;
       const imageData = createReadStream();
       saveImage(imageData, imagePath);
 

@@ -6,11 +6,12 @@ const typeDefs = require("./gql/schema");
 const resolvers = require("./gql/resolvers");
 const jwt = require("jsonwebtoken");
 const express = require("express");
-const { mongodb } = require("./config/config");
-
-// Creating this app only to serve static files
-const app = express();
-app.use("/", express.static(__dirname + "/public"));
+const {
+  mongodb,
+  jwt: jwtCfg,
+  restApi,
+  fileUploads,
+} = require("./config/config");
 
 mongoose.connect(
   //process.env.MONGO_DB_URI,
@@ -38,7 +39,7 @@ function server() {
         try {
           const user = jwt.verify(
             token.replace("Bearer ", ""),
-            process.env.JWT_PRIVATE_KEY
+            jwtCfg.privateKey
           );
 
           return { user };
@@ -50,10 +51,31 @@ function server() {
     },
   });
 
-  apolloServer.listen().then((response) => {
-    console.log(`Server listening on ${response.url}`);
-  });
+  apolloServer
+    .listen()
+    .then((response) => {
+      console.log(`Apollo Server listening on ${response.url}`);
+    })
+    .catch((err) => {
+      console.error(`Apollo Server error: ${err.message}`);
+    });
 
-  // Couldn't find a way to serve static files with Apollo-server...
-  app.listen(3010);
+  if (restApi.serveStaticFiles) {
+    // Creating this app only to serve static files
+    const app = express();
+    app.use(
+      "/",
+      express.static(
+        `${__dirname}/${fileUploads.directories.publicDir || "public"}`
+      )
+    );
+    // Couldn't find a way to serve static files with Apollo-server...
+    app
+      .listen(restApi.serverPort || 3010, () => {
+        console.log(`REST Api listening on port ${restApi.serverPort}`);
+      })
+      .on("error", (e) => {
+        console.error(`REST Api error: ${e.message}`);
+      });
+  }
 }

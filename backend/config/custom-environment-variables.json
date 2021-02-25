@@ -1,6 +1,8 @@
 {
   "jwtPrivateKey": "INSTACLONE_JWT_PRIVATE_KEY",
   "jwtLifeTime": "INSTACLONE_JWT_LIFETIME",
+  "serveStaticFiles": "INSTACLONE_SERVE_STATIC_FILES",
+  "restApiServerPort": "INSTACLONE_REST_API_SERVER_PORT",
   "mongodbUriPreffix": "INSTACLONE_MONGO_DB_PREFFIX",
   "mongodbUser": "INSTACLONE_MONGO_DB_USER",
   "mongodbPassword": "INSTACLONE_MONGO_DB_PASSWORD",

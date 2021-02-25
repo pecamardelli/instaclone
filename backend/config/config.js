@@ -12,14 +12,24 @@ const mongodbUri = `${mongodbUriPreffix}${mongodbUser}:${mongodbPassword}@${mong
 // The purpose of this object is to centralize all config values in one place.
 // This way we can make changes from here and be sure that the app won't break up.
 const configurations = {
+  jwt: {
+    privateKey: config.get("jwtPrivateKey"),
+    lifeTime: config.get("jwtLifeTime"),
+  },
+  restApi: {
+    serveStaticFiles: config.get("serveStaticFiles"),
+    serverPort: config.get("restApiServerPort"),
+  },
   mongodb: {
     uri: mongodbUri,
   },
   fileUploads: {
     directories: {
+      publicDir: config.get("publicDir"),
       baseDir: config.get("baseDir"),
       userDir: config.get("userDir"), // Directory where user data will be stored
       userAvatarDir: config.get("userAvatarDir"), // Directory where profile images will be stored
+      publicationsDir: config.get("publicationsDir"),
     },
     maxUploadSize: config.get("maxUploadSize") || 2097152, // Set to two megabytes if not defined
     protocol: config.get("uploadProtocol") || "ftp", // This value must be one of the keys that define a protocol
