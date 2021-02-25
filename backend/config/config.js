@@ -52,6 +52,11 @@ const configurations = {
       privatePassword: config.get("sftpPrivatePassword"),
       secure: true,
     },
+    aws: {
+      id: config.get("awsId"),
+      secretKey: config.get("awsSecretKey"),
+      bucketName: config.get("awsBucketName"),
+    },
   },
 };
 

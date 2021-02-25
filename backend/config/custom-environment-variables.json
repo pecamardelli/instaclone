@@ -22,5 +22,8 @@
   "sftpPublicUser": "INSTACLONE_SFTP_PUBLIC_USER",
   "sftpPublicPassword": "INSTACLONE_SFTP_PUBLIC_PASSWORD",
   "sftpPrivateUser": "INSTACLONE_SFTP_PRIVATE_USER",
-  "sftpPrivatePassword": "INSTACLONE_SFTP_PRIVATE_PASSWORD"
+  "sftpPrivatePassword": "INSTACLONE_SFTP_PRIVATE_PASSWORD",
+  "awsId": "INSTACLONE_AWS_ID",
+  "awsSecretKey": "INSTACLONE_AWS_SECRET_KEY",
+  "awsBucketName": "INSTACLONE_AWS_BUCKET_NAME"
 }

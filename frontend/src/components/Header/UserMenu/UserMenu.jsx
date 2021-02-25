@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import AuthContext from "./../../../context/AuthContext";
 import PostModal from "../../Modal/PostModal/PostModal";
-
-const avatarUrl = process.env.REACT_APP_AVATAR_URL;
+import configurations from "../../../config/config";
 
 export default function UserMenu() {
   const [showPostModal, setShowPostModal] = useState(false);
   const { auth } = useAuth();
   const authContext = useContext(AuthContext);
+  const { urls } = configurations;
 
   const handleShowPostModal = () => {
     setShowPostModal(true);
@@ -29,7 +29,7 @@ export default function UserMenu() {
           <Image
             src={
               authContext.auth.avatar
-                ? `${avatarUrl}/${authContext.auth.avatar}`
+                ? `${urls.userAvatarPath}/${authContext.auth.avatar}`
                 : noAvatar
             }
             avatar

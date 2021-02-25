@@ -14,7 +14,7 @@ const {
   updateUser,
   search,
 } = require("../controllers/user");
-const { publish } = require("../controllers/publication");
+const { publish, getPublications } = require("../controllers/publication");
 
 const resolvers = {
   Query: {
@@ -26,6 +26,9 @@ const resolvers = {
     isFollowing: (_, { username }, ctx) => isFollowing(username, ctx),
     getFollowers: (_, { username }, ctx) => getFollowers(username, ctx),
     getFolloweds: (_, { username }, ctx) => getFolloweds(username, ctx),
+
+    // Publication resolvers
+    getPublications: (_, { username }) => getPublications(username),
   },
   Mutation: {
     // User

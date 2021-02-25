@@ -11,11 +11,13 @@ import AuthContext from "./../../../context/AuthContext";
 import ProfileHeader from "./ProfileHeader/ProfileHeader";
 import SettingsForm from "./SettingsForm";
 import { Grid, Image } from "semantic-ui-react";
+import Followers from "./Followers/Followers";
+import configurations from "../../../config/config";
 
 import "./Profile.scss";
-import Followers from "./Followers/Followers";
 
-export default function Profile() {
+export default function Profile(props) {
+  const { totalPublications } = props;
   const { username } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -27,7 +29,9 @@ export default function Profile() {
     variables: { username },
   });
 
-  const avatarUrl = "http://localhost:3010/images/user/avatar";
+  const { urls } = configurations;
+
+  //const avatarUrl = "http://localhost:3010/images/user/avatar";
 
   if (loading) return null;
   if (error) return <h1>An error ocurred: {error}</h1>;
@@ -72,10 +76,10 @@ export default function Profile() {
             src={
               auth.username === username
                 ? authContext.auth.avatar
-                  ? `${avatarUrl}/${authContext.auth.avatar}`
+                  ? `${urls.userAvatarPath}/${authContext.auth.avatar}`
                   : noAvatar
                 : userData.avatar
-                ? `${avatarUrl}/${userData.avatar}`
+                ? `${urls.userAvatarPath}/${userData.avatar}`
                 : noAvatar
             }
             avatar
@@ -84,7 +88,10 @@ export default function Profile() {
         </Grid.Column>
         <Grid.Column width="11" className="profile__right">
           <ProfileHeader userData={userData} openModal={openModal} />
-          <Followers username={userData.username} />
+          <Followers
+            username={userData.username}
+            totalPublications={totalPublications}
+          />
           <div className="other">
             <p className="name">{userData.name}</p>
             {userData.website && (

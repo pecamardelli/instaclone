@@ -115,7 +115,6 @@ async function getFollowers(username, ctx) {
 async function getFolloweds(username, ctx) {
   try {
     const userToGetFolloweds = await UserModel.findOne({ username });
-    console.dir(userToGetFolloweds);
     const followedList = await FollowerModel.find({
       userId: userToGetFolloweds._id,
     }).populate("followId");

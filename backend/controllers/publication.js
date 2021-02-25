@@ -1,4 +1,5 @@
 const PublicationModel = require("../models/publication");
+const UserModel = require("../models/user");
 const saveImage = require("../utils/saveImage");
 const { fileUploads } = require("../config/config");
 const { v4: uuidv4 } = require("uuid");
@@ -6,7 +7,6 @@ const { v4: uuidv4 } = require("uuid");
 const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
 
 async function publish(file, ctx) {
-  console.log({ file, ctx });
   return file
     .then((file) => {
       const { user } = ctx;
@@ -39,6 +39,21 @@ async function publish(file, ctx) {
     });
 }
 
+async function getPublications(username) {
+  if (!username) throw new Error("Username is not defined.");
+
+  const user = await UserModel.findOne({ username });
+  if (!user)
+    throw new Error(`Couldn't find a user with the username ${username}.`);
+
+  const publications = PublicationModel.find()
+    .where({ userId: user._id })
+    .sort({ createdAt: -1 });
+
+  return publications;
+}
+
 module.exports = {
   publish,
+  getPublications,
 };

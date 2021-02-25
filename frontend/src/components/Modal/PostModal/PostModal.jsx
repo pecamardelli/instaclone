@@ -1,13 +1,16 @@
 import React, { useCallback, useState } from "react";
-import { Button, Icon, Modal } from "semantic-ui-react";
+import { Button, Dimmer, Icon, Loader, Modal } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
-import "./PostModal.scss";
 import { useMutation } from "@apollo/client";
 import { PUBLISH } from "../../../gql/publication";
+import { toast } from "react-toastify";
+
+import "./PostModal.scss";
 
 export default function PostModal(props) {
   const { show, setShow } = props;
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [publish] = useMutation(PUBLISH);
 
   const onDrop = useCallback(
@@ -34,10 +37,20 @@ export default function PostModal(props) {
   const handleClose = () => setShow(false);
 
   const handlePublish = async () => {
-    setShow(false);
-    setUploadedFile(null);
-    const result = await publish({ variables: { file: uploadedFile.file } });
-    console.log({ result, uploadedFile });
+    try {
+      setIsLoading(true);
+      const { data } = await publish({
+        variables: { file: uploadedFile.file },
+      });
+      setIsLoading(false);
+      setShow(false);
+      setUploadedFile(null);
+
+      if (!data.publish.status)
+        toast.error("Error: Could not publish your photo!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -71,6 +84,13 @@ export default function PostModal(props) {
         <Button className="btn-upload btn-action" onClick={handlePublish}>
           Publish
         </Button>
+      )}
+
+      {isLoading && (
+        <Dimmer active className="publishing">
+          <Loader />
+          <p>Publishing your photo...</p>
+        </Dimmer>
       )}
     </Modal>
   );

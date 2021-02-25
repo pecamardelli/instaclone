@@ -11,7 +11,7 @@ export default function Followers(props) {
   const [modalTitle, setModalTitle] = useState("");
   const [modalChildren, setModalChildren] = useState(null);
 
-  const { username } = props;
+  const { username, totalPublications } = props;
   const {
     data: followersData,
     loading: followersLoading,
@@ -27,7 +27,7 @@ export default function Followers(props) {
   } = useQuery(GET_FOLLOWEDS, { variables: { username } });
 
   // In the course, the teacher does this to get realtime followers count.
-  // I'll disable it because it's a terrible idea.
+  // I'll comment this because it's a terrible idea.
   // useEffect(() => {
   //   startPollingFollowers(1000);
   //   return () => {
@@ -63,7 +63,7 @@ export default function Followers(props) {
     <>
       <div className="followers">
         <p>
-          <span>??</span> posts
+          <span>{totalPublications}</span> posts
         </p>
         <p
           className="link"
