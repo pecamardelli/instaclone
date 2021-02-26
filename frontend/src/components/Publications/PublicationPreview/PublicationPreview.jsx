@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image } from "semantic-ui-react";
+import configurations from "../../../config/config";
+import PublicationModal from "../../Modal/PublicationModal/PublicationModal";
+
 import "./PublicationPreview.scss";
-import config from "../../../config/config";
 
 export default function PublicationPreview(props) {
+  const [showPublicationModal, setShowPublicationModal] = useState(false);
   const { publication } = props;
-  const { urls } = config;
+  const { urls } = configurations;
 
-  console.log(publication);
+  const handleClick = () => setShowPublicationModal(true);
+
   return (
-    <div className="publication-preview">
-      <Image
-        className="publication-preview__image"
-        src={`${urls.publicationsPath}/${publication.fileUrl}`}
+    <>
+      <div className="publication-preview" onClick={handleClick}>
+        <Image
+          className="publication-preview__image"
+          src={`${urls.publicationsPath}/${publication.fileUrl}`}
+        />
+      </div>
+      <PublicationModal
+        show={showPublicationModal}
+        setShow={setShowPublicationModal}
+        publication={publication}
       />
-    </div>
+    </>
   );
 }
