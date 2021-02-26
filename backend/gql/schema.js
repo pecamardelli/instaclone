@@ -39,6 +39,12 @@ const typeDefs = gql`
     fileType: String
     createdAt: String
   }
+  type Comment {
+    publicationId: ID
+    userId: ID
+    text: String
+    createdAt: String
+  }
 
   input UserInput {
     name: String!
@@ -57,6 +63,10 @@ const typeDefs = gql`
     currentPassword: String
     newPassword: String
     description: String
+  }
+  input CommentInput {
+    publicationId: ID
+    text: String
   }
 
   type Query {
@@ -87,6 +97,9 @@ const typeDefs = gql`
 
     #Publication system mutations
     publish(file: Upload): Publish
+
+    #Comment system mutations
+    addComment(input: CommentInput): Comment
   }
 `;
 

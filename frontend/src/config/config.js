@@ -1,6 +1,8 @@
 import config from "./config.json";
 // The purpose of this object is to centralize all config values in one place.
 // This way we can make changes from here and be sure that the app won't break up.
+const { assets } = config;
+
 const {
   assetsProtocol,
   assetsDomain,
@@ -9,7 +11,7 @@ const {
   userDir,
   userAvatarDir,
   publicationsDir,
-} = config;
+} = assets;
 
 const assetsUrl = `${assetsProtocol}://${assetsDomain}${
   assetsPort ? ":" + assetsPort : ""
@@ -17,11 +19,9 @@ const assetsUrl = `${assetsProtocol}://${assetsDomain}${
 const userAvatarPath = `${assetsUrl}${baseDir}${userDir}${userAvatarDir}`;
 const publicationsPath = `${assetsUrl}${baseDir}${publicationsDir}`;
 
-const configurations = {
-  urls: {
-    userAvatarPath,
-    publicationsPath,
-  },
+export const urls = {
+  userAvatarPath,
+  publicationsPath,
 };
 
-export default configurations;
+export const publications = { ...config.publications };

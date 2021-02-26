@@ -15,6 +15,7 @@ const {
   search,
 } = require("../controllers/user");
 const { publish, getPublications } = require("../controllers/publication");
+const { addComment } = require("../controllers/comment");
 
 const resolvers = {
   Query: {
@@ -44,6 +45,9 @@ const resolvers = {
 
     // Publications
     publish: (_, { file }, ctx) => publish(file, ctx),
+
+    // Comments
+    addComment: (_, { input }, ctx) => addComment(input, ctx),
   },
 };
 

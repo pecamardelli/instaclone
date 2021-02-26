@@ -1,12 +1,11 @@
 import React from "react";
 import { Grid, Modal } from "semantic-ui-react";
-import configurations from "../../../config/config";
+import { urls } from "../../../config/config";
 import CommentForm from "../../forms/CommentForm/CommentForm";
 import "./PublicationModal.scss";
 
 export default function PublicationModal(props) {
   const { show, setShow, publication } = props;
-  const { urls } = configurations;
   const handleClose = () => setShow(false);
 
   return (
@@ -22,7 +21,7 @@ export default function PublicationModal(props) {
         <Grid.Column className="publication-modal__right" width={6}>
           <h3>Actions</h3>
           <h3>Comments</h3>
-          <CommentForm />
+          <CommentForm publication={publication} />
         </Grid.Column>
       </Grid>
     </Modal>

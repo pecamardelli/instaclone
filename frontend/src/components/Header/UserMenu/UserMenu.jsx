@@ -6,13 +6,12 @@ import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import AuthContext from "./../../../context/AuthContext";
 import PostModal from "../../Modal/PostModal/PostModal";
-import configurations from "../../../config/config";
+import { urls } from "../../../config/config";
 
 export default function UserMenu() {
   const [showPostModal, setShowPostModal] = useState(false);
   const { auth } = useAuth();
   const authContext = useContext(AuthContext);
-  const { urls } = configurations;
 
   const handleShowPostModal = () => {
     setShowPostModal(true);

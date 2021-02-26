@@ -12,7 +12,7 @@ import ProfileHeader from "./ProfileHeader/ProfileHeader";
 import SettingsForm from "./SettingsForm";
 import { Grid, Image } from "semantic-ui-react";
 import Followers from "./Followers/Followers";
-import configurations from "../../../config/config";
+import { urls } from "../../../config/config";
 
 import "./Profile.scss";
 
@@ -28,10 +28,6 @@ export default function Profile(props) {
   const { data, loading, error } = useQuery(GET_USER, {
     variables: { username },
   });
-
-  const { urls } = configurations;
-
-  //const avatarUrl = "http://localhost:3010/images/user/avatar";
 
   if (loading) return null;
   if (error) return <h1>An error ocurred: {error}</h1>;

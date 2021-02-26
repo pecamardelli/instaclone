@@ -1,10 +1,15 @@
 {
   "name": "Instaclone",
-  "assetsProtocol": "http",
-  "assetsDomain": "localhost",
-  "assetsPort": "3010",
-  "baseDir": "/images",
-  "userDir": "/user",
-  "userAvatarDir": "/avatar",
-  "publicationsDir": "/publications"
+  "assets": {
+    "assetsProtocol": "http",
+    "assetsDomain": "localhost",
+    "assetsPort": "3010",
+    "baseDir": "/images",
+    "userDir": "/user",
+    "userAvatarDir": "/avatar",
+    "publicationsDir": "/publications"
+  },
+  "publications": {
+    "maxCommentLength": "256"
+  }
 }

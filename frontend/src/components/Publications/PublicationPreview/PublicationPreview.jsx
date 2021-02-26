@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Image } from "semantic-ui-react";
-import configurations from "../../../config/config";
+import { urls } from "../../../config/config";
 import PublicationModal from "../../Modal/PublicationModal/PublicationModal";
-
 import "./PublicationPreview.scss";
 
 export default function PublicationPreview(props) {
   const [showPublicationModal, setShowPublicationModal] = useState(false);
   const { publication } = props;
-  const { urls } = configurations;
 
   const handleClick = () => setShowPublicationModal(true);
 
