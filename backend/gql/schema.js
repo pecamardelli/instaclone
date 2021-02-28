@@ -5,7 +5,6 @@ const typeDefs = gql`
     id: ID
     name: String
     username: String
-    password: String
     email: String
     website: String
     avatar: String
@@ -18,15 +17,6 @@ const typeDefs = gql`
   type UpdateAvatar {
     status: Boolean
     avatarUrl: String
-  }
-  type Follower {
-    id: ID
-    name: String
-    username: String
-    email: String
-    website: String
-    avatar: String
-    description: String
   }
   type Publish {
     status: Boolean
@@ -41,7 +31,7 @@ const typeDefs = gql`
   }
   type Comment {
     publicationId: ID
-    userId: ID
+    userId: User
     text: String
     createdAt: String
   }
@@ -76,11 +66,14 @@ const typeDefs = gql`
 
     # Follower system queries
     isFollowing(username: String!): Boolean
-    getFollowers(username: String!): [Follower]
-    getFolloweds(username: String!): [Follower]
+    getFollowers(username: String!): [User]
+    getFolloweds(username: String!): [User]
 
     # Publication queries
     getPublications(username: String!): [Publication]
+
+    # Comment queries
+    getComments(publicationId: ID!): [Comment]
   }
 
   type Mutation {

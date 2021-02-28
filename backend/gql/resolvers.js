@@ -15,7 +15,7 @@ const {
   search,
 } = require("../controllers/user");
 const { publish, getPublications } = require("../controllers/publication");
-const { addComment } = require("../controllers/comment");
+const { addComment, getComments } = require("../controllers/comment");
 
 const resolvers = {
   Query: {
@@ -30,6 +30,9 @@ const resolvers = {
 
     // Publication resolvers
     getPublications: (_, { username }) => getPublications(username),
+
+    // Comment resolvers
+    getComments: (_, { publicationId }) => getComments(publicationId),
   },
   Mutation: {
     // User

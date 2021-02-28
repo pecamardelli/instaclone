@@ -5,5 +5,8 @@
   "baseDir": "/images",
   "userDir": "/user",
   "userAvatarDir": "/avatar",
-  "publicationsDir": "/publications"
+  "publicationsDir": "/publications",
+  "comments": {
+    "maxLength": "256"
+  }
 }

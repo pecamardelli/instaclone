@@ -58,6 +58,9 @@ const configurations = {
       bucketName: config.get("awsBucketName"),
     },
   },
+  comments: {
+    maxLength: config.get("comments.maxLength"),
+  },
 };
 
 module.exports = configurations;
