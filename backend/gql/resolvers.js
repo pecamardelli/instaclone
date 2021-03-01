@@ -16,6 +16,12 @@ const {
 } = require("../controllers/user");
 const { publish, getPublications } = require("../controllers/publication");
 const { addComment, getComments } = require("../controllers/comment");
+const {
+  doLike,
+  removeLike,
+  hasLiked,
+  likeCount,
+} = require("../controllers/like");
 
 const resolvers = {
   Query: {
@@ -33,6 +39,10 @@ const resolvers = {
 
     // Comment resolvers
     getComments: (_, { publicationId }) => getComments(publicationId),
+
+    // Like resolvers
+    hasLiked: (_, { publicationId }, ctx) => hasLiked(publicationId, ctx),
+    likeCount: (_, { publicationId }) => likeCount(publicationId),
   },
   Mutation: {
     // User
@@ -51,6 +61,10 @@ const resolvers = {
 
     // Comments
     addComment: (_, { input }, ctx) => addComment(input, ctx),
+
+    // Like
+    doLike: (_, { publicationId }, ctx) => doLike(publicationId, ctx),
+    removeLike: (_, { publicationId }, ctx) => removeLike(publicationId, ctx),
   },
 };
 

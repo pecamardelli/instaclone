@@ -35,6 +35,11 @@ const typeDefs = gql`
     text: String
     createdAt: String
   }
+  type Like {
+    id: ID
+    publicationId: ID
+    userId: ID
+  }
 
   input UserInput {
     name: String!
@@ -74,6 +79,10 @@ const typeDefs = gql`
 
     # Comment queries
     getComments(publicationId: ID!): [Comment]
+
+    # Like queries
+    hasLiked(publicationId: ID!): Boolean
+    likeCount(publicationId: ID!): Int
   }
 
   type Mutation {
@@ -89,10 +98,14 @@ const typeDefs = gql`
     unfollowUser(username: String!): Boolean
 
     #Publication system mutations
-    publish(file: Upload): Publish
+    publish(file: Upload!): Publish
 
     #Comment system mutations
     addComment(input: CommentInput): Comment
+
+    #Like system mutations
+    doLike(publicationId: ID!): Like
+    removeLike(publicationId: ID!): Boolean
   }
 `;
 
