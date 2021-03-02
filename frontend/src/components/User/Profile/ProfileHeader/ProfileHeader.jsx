@@ -29,7 +29,14 @@ export default function ProfileHeader({ userData, openModal }) {
 
       if (data?.isFollowing) setIsFollowing(true);
     }
-  }, [data]);
+  }, [
+    data,
+    auth.username,
+    called,
+    checkIfIsFollowing,
+    loading,
+    userData.username,
+  ]);
 
   const handleFollowUser = async () => {
     try {

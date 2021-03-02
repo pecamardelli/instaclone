@@ -15,6 +15,8 @@ export default function CommentList(props) {
   });
 
   if (loading) return null;
+  if (error) return <h3>{error.message}</h3>;
+
   const commentList = data.getComments || [];
 
   return (

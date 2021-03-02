@@ -6,7 +6,6 @@ export const REGISTER_USER = gql`
       name
       username
       email
-      password
     }
   }
 `;

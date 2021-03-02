@@ -24,7 +24,7 @@ const typeDefs = gql`
   }
   type Publication {
     id: ID
-    userId: ID
+    userId: User
     fileUrl: String
     fileType: String
     createdAt: String
@@ -76,6 +76,7 @@ const typeDefs = gql`
 
     # Publication queries
     getPublications(username: String!): [Publication]
+    getFollowedPublications: [Publication]
 
     # Comment queries
     getComments(publicationId: ID!): [Comment]

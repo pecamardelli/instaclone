@@ -3,6 +3,7 @@ const UserModel = require("../models/user");
 const saveImage = require("../utils/saveImage");
 const { fileUploads } = require("../config/config");
 const { v4: uuidv4 } = require("uuid");
+const FollowerModel = require("../models/follower");
 
 const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
 
@@ -53,7 +54,31 @@ async function getPublications(username) {
   return publications;
 }
 
+async function getFollowedPublications(ctx) {
+  try {
+    const followedData = await FollowerModel.find({
+      userId: ctx.user.id,
+    }).populate("followId");
+
+    const publicationList = [];
+    for (const f of followedData) {
+      const userFollowed = f.followId;
+      const followedUserPublications = await PublicationModel.find({
+        userId: userFollowed.id,
+      }).populate("userId");
+      publicationList.push(...followedUserPublications);
+    }
+    return publicationList.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 module.exports = {
   publish,
   getPublications,
+  getFollowedPublications,
 };

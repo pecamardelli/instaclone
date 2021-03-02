@@ -14,7 +14,11 @@ const {
   updateUser,
   search,
 } = require("../controllers/user");
-const { publish, getPublications } = require("../controllers/publication");
+const {
+  publish,
+  getPublications,
+  getFollowedPublications,
+} = require("../controllers/publication");
 const { addComment, getComments } = require("../controllers/comment");
 const {
   doLike,
@@ -36,6 +40,7 @@ const resolvers = {
 
     // Publication resolvers
     getPublications: (_, { username }) => getPublications(username),
+    getFollowedPublications: (_, {}, ctx) => getFollowedPublications(ctx),
 
     // Comment resolvers
     getComments: (_, { publicationId }) => getComments(publicationId),

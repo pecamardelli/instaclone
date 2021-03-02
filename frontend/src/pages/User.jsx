@@ -12,6 +12,7 @@ export default function User() {
   });
 
   if (loading) return null;
+  if (error) return <h3>{error.message}</h3>;
 
   const { getPublications } = data;
 

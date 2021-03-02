@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const PUBLISH = gql`
-  mutation Publish($file: Upload) {
+  mutation Publish($file: Upload!) {
     publish(file: $file) {
       status
       fileUrl
@@ -9,14 +9,30 @@ export const PUBLISH = gql`
   }
 `;
 
+const publicationDefaultFields = `
+  id
+  userId {
+    name
+    username
+    avatar
+  }
+  fileUrl
+  fileType
+  createdAt
+`;
+
 export const GET_PUBLICATIONS = gql`
   query GetPublications($username: String!) {
     getPublications(username: $username) {
-      id
-      userId
-      fileUrl
-      fileType
-      createdAt
+      ${publicationDefaultFields}
+    }
+  }
+`;
+
+export const GET_FOLLOWED_PUBLICATIONS = gql`
+  query GetFollowedPublications {
+    getFollowedPublications {
+      ${publicationDefaultFields}
     }
   }
 `;

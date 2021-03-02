@@ -6,6 +6,7 @@ import { publications } from "../../../config/config";
 import "./CommentForm.scss";
 import { useMutation } from "@apollo/client";
 import { ADD_COMMENT } from "../../../gql/comment";
+import { toast } from "react-toastify";
 
 export default function CommentForm(props) {
   const { publication } = props;
@@ -22,7 +23,7 @@ export default function CommentForm(props) {
     }),
     onSubmit: async (formData) => {
       try {
-        const result = await addComment({
+        await addComment({
           variables: {
             input: {
               publicationId: publication.id,
@@ -33,6 +34,7 @@ export default function CommentForm(props) {
         formik.resetForm();
       } catch (error) {
         console.error(error);
+        toast.error(`Error adding comment: ${error.message || error.text}`);
       }
     },
   });
