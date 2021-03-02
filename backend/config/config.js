@@ -22,6 +22,7 @@ const configurations = {
   },
   mongodb: {
     uri: mongodbUri,
+    sampleSize: config.get("mongodbSampleSize"),
   },
   fileUploads: {
     directories: {

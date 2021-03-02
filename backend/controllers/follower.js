@@ -1,5 +1,6 @@
 const FollowerModel = require("../models/follower");
 const UserModel = require("../models/user");
+const { mongodb } = require("../config/config");
 
 // ######### HELPER FUNCTION ######### //
 // Check if username exists an it's being followed by caller.
@@ -97,7 +98,7 @@ async function unfollowUser(username, ctx) {
   }
 }
 
-async function getFollowers(username, ctx) {
+async function getFollowers(username) {
   try {
     const userToGetFollowers = await UserModel.findOne({ username });
 
@@ -126,10 +127,34 @@ async function getFolloweds(username, ctx) {
   }
 }
 
+async function getNotFolloweds(ctx) {
+  if (!ctx.user) throw new Error("User is not defined in context.");
+  const followedList = await getFolloweds(ctx.user.username);
+
+  // Get a sample of random users and spread them to a new set.
+  // This is because the $sample operand can return duplicates.
+  const randomUsers = [
+    ...new Set(
+      await UserModel.aggregate([
+        { $sample: { size: parseInt(mongodb.sampleSize) } },
+      ])
+    ),
+  ];
+
+  const notFollowedList = randomUsers.filter(
+    (user) =>
+      user._id.toString() !== ctx.user.id &&
+      !followedList.find((f) => f._id.toString() === user._id.toString())
+  );
+
+  return notFollowedList;
+}
+
 module.exports = {
   followUser,
   isFollowing,
   unfollowUser,
   getFollowers,
   getFolloweds,
+  getNotFolloweds,
 };

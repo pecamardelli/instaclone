@@ -4,6 +4,7 @@ const {
   unfollowUser,
   getFollowers,
   getFolloweds,
+  getNotFolloweds,
 } = require("../controllers/follower");
 const {
   registerUser,
@@ -35,8 +36,9 @@ const resolvers = {
 
     // Followers system resolvers
     isFollowing: (_, { username }, ctx) => isFollowing(username, ctx),
-    getFollowers: (_, { username }, ctx) => getFollowers(username, ctx),
+    getFollowers: (_, { username }) => getFollowers(username),
     getFolloweds: (_, { username }, ctx) => getFolloweds(username, ctx),
+    getNotFolloweds: (_, {}, ctx) => getNotFolloweds(ctx),
 
     // Publication resolvers
     getPublications: (_, { username }) => getPublications(username),

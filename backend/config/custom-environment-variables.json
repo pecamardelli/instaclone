@@ -9,6 +9,7 @@
   "mongodbCluster": "INSTACLONE_MONGO_DB_CLUSTER",
   "mongodbUriDomain": "INSTACLONE_MONGO_DB_DOMAIN",
   "mongodbNamePreffix": "INSTACLONE_MONGO_DB_NAME_PREFFIX",
+  "mongodbSampleSize": "INSTACLONE_MONGO_DB_SAMPLE_SIZE",
   "maxUploadSize": "INSTACLONE_MAX_UPLOAD_SIZE",
   "uploadProtocol": "INSTACLONE_UPLOAD_PROTOCOL",
   "ftpHost": "INSTACLONE_FTP_HOST",
