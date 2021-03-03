@@ -29,8 +29,7 @@ export default function WebsiteForm(props) {
           },
         });
 
-        if (!data.updateUser)
-          return toast.error(`Some shit has happened: ${data}`);
+        if (!data.updateUser) return toast.error(`An error ocurred: ${data}`);
 
         toast.success("Website successfully updated!");
         setShowModal(false);
@@ -41,15 +40,15 @@ export default function WebsiteForm(props) {
   });
 
   return (
-    <Form className='website-form' onSubmit={formik.handleSubmit}>
+    <Form className="website-form" onSubmit={formik.handleSubmit}>
       <Form.Input
-        name='website'
-        placeholder='Enter your new website url'
+        name="website"
+        placeholder="Enter your new website url"
         value={formik.values.website}
         onChange={formik.handleChange}
         error={formik.errors.website && true}
       />
-      <Button type='submit' className='btn-submit'>
+      <Button type="submit" className="btn-submit">
         Change
       </Button>
     </Form>

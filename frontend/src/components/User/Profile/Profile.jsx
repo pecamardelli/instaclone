@@ -3,16 +3,17 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../../../gql/user";
 import useAuth from "../../../hooks/useAuth";
-import noAvatar from "../../../assets/images/avatar.png";
+import noAvatar from "../../../assets/images/noAvatar.png";
 import UserNotFound from "../../UserNotFound/UserNotFound";
-import BasicModal from "../../Modal/BasicModal";
+import BasicModal from "../../Modal/BasicModal/BasicModal";
 import AvatarForm from "../AvatarForm/AvatarForm";
 import AuthContext from "./../../../context/AuthContext";
 import ProfileHeader from "./ProfileHeader/ProfileHeader";
-import SettingsForm from "./SettingsForm";
+import SettingsForm from "./SettingsForm/SettingsForm";
 import { Grid, Image } from "semantic-ui-react";
 import Followers from "./Followers/Followers";
 import { urls } from "../../../config/config";
+import Error from "../../common/Error/Error";
 
 import "./Profile.scss";
 
@@ -30,7 +31,7 @@ export default function Profile(props) {
   });
 
   if (loading) return null;
-  if (error) return <h1>An error ocurred: {error}</h1>;
+  if (error) return <Error error={error} />;
 
   const { getUser: userData } = data;
   if (!userData) return <UserNotFound />;

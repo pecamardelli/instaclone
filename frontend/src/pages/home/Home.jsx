@@ -1,8 +1,9 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import Feed from "./Feed/Feed";
-import "./Home.scss";
 import UsersNotFollowed from "./UsersNotFollowed/UsersNotFollowed";
+
+import "./Home.scss";
 
 export default function Home() {
   return (

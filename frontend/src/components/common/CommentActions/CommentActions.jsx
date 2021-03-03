@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Icon } from "semantic-ui-react";
 import { DO_LIKE, HAS_LIKED, LIKE_COUNT, REMOVE_LIKE } from "../../../gql/like";
 import { toast } from "react-toastify";
+import Error from "../Error/Error";
+
 import "./CommentActions.scss";
 
 export default function CommentActions(props) {
@@ -15,6 +17,9 @@ export default function CommentActions(props) {
 
   const hasLikedQuery = useQuery(HAS_LIKED, { variables });
   const likeCountQuery = useQuery(LIKE_COUNT, { variables });
+
+  if (hasLikedQuery.error) return <Error error={hasLikedQuery.error} />;
+  if (likeCountQuery.error) return <Error error={likeCountQuery.error} />;
 
   const handleDoLike = async () => {
     setExecuting(true);

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Image, ModalActions } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
 import { GET_FOLLOWED_PUBLICATIONS } from "../../../gql/publication";
-import noAvatar from "../../../assets/images/avatar.png";
+import noAvatar from "../../../assets/images/noAvatar.png";
 import CommentActions from "../../../components/common/CommentActions/CommentActions";
 import CommentForm from "../../../components/forms/CommentForm/CommentForm";
 import PublicationModal from "../../../components/Modal/PublicationModal/PublicationModal";
+import Error from "../../../components/common/Error/Error";
 
 import "./Feed.scss";
 
@@ -17,7 +18,7 @@ export default function Feed() {
   const [publicationToShow, setPublicationToShow] = useState(null);
 
   if (loading) return null;
-  if (error) return <h3>{error.message}</h3>;
+  if (error) return <Error error={error} />;
 
   const { getFollowedPublications } = data;
 

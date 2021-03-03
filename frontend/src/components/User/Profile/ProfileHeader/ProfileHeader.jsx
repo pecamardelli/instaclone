@@ -6,6 +6,7 @@ import {
   IS_FOLLOWING,
   UNFOLLOW_USER,
 } from "../../../../gql/follower";
+import Error from "../../../common/Error/Error";
 import AuthContext from "./../../../../context/AuthContext";
 
 import "./ProfileHeader.scss";
@@ -18,8 +19,6 @@ export default function ProfileHeader({ userData, openModal }) {
   const [checkIfIsFollowing, { data, loading, error, called }] = useLazyQuery(
     IS_FOLLOWING
   );
-
-  if (error) console.error(error);
 
   useEffect(() => {
     if (userData.username !== auth.username) {
@@ -37,6 +36,8 @@ export default function ProfileHeader({ userData, openModal }) {
     loading,
     userData.username,
   ]);
+
+  if (error) return <Error error={error} />;
 
   const handleFollowUser = async () => {
     try {

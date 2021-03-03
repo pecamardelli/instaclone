@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Icon, Image } from "semantic-ui-react";
 import "./UserMenu.scss";
-import noAvatar from "../../../assets/images/avatar.png";
+import noAvatar from "../../../assets/images/noAvatar.png";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import AuthContext from "./../../../context/AuthContext";

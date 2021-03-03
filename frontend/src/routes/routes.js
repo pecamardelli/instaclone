@@ -1,6 +1,6 @@
-import Home from "../pages/home";
+import Home from "../pages/home/Home";
 import User from "../pages/User";
-import NotFound from "../pages/not-found";
+import NotFound from "../pages/not-found/NotFound";
 import BasicLayout from "../layouts/BasicLayout";
 
 const routes = [

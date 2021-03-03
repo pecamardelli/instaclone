@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { GET_FOLLOWEDS, GET_FOLLOWERS } from "../../../../gql/follower";
-import SearchResult from "../../../common/SearchResult/SearchResult";
+import Error from "../../../common/Error/Error";
+import UserCard from "../../../common/UserCard/UserCard";
 import BasicModal from "../../../Modal/BasicModal/BasicModal";
 
 import "./Followers.scss";
@@ -15,6 +16,7 @@ export default function Followers(props) {
   const {
     data: followersData,
     loading: followersLoading,
+    error: followersError,
     //startPolling: startPollingFollowers,
     //stopPolling: stopPollingFollowers,
   } = useQuery(GET_FOLLOWERS, {
@@ -24,6 +26,7 @@ export default function Followers(props) {
   const {
     data: followedsData,
     loading: followedsLoading,
+    error: followedsError,
   } = useQuery(GET_FOLLOWEDS, { variables: { username } });
 
   // In the course, the teacher does this to get realtime followers count.
@@ -37,6 +40,9 @@ export default function Followers(props) {
 
   if (followersLoading || followedsLoading) return null;
 
+  if (followersError) return <Error error={followersError} />;
+  if (followedsError) return <Error error={followedsError} />;
+
   const { getFollowers } = followersData;
   const { getFolloweds } = followedsData;
 
@@ -46,7 +52,7 @@ export default function Followers(props) {
     setModalChildren(
       list.map((f, index) => {
         return (
-          <SearchResult
+          <UserCard
             key={index}
             data={{
               title: f.name,

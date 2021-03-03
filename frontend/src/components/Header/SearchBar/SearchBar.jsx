@@ -1,9 +1,10 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
-import "./SearchBar.scss";
 import { SEARCH_USERS } from "./../../../gql/user";
-import SearchResult from "../../common/SearchResult/SearchResult";
+import UserCard from "../../common/UserCard/UserCard";
+
+import "./SearchBar.scss";
 
 export default function SearchBar() {
   const [keyword, setKeyword] = useState(null);
@@ -48,7 +49,7 @@ export default function SearchBar() {
       onSearchChange={(e) => setKeyword(e.target.value)}
       onResultSelect={handleResultSelect}
       results={results}
-      resultRenderer={(e) => <SearchResult data={e} />}
+      resultRenderer={(e) => <UserCard data={e} />}
       loading={loading}
       value={keyword || ""}
     />

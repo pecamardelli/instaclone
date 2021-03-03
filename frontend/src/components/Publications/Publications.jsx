@@ -1,10 +1,12 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import PublicationPreview from "./PublicationPreview/PublicationPreview";
+
 import "./Publications.scss";
 
 export default function Publications(props) {
   const { publicationArray } = props;
+
   return (
     <div className="publications">
       <h2>Publications</h2>

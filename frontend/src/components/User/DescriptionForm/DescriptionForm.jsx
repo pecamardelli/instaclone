@@ -1,12 +1,12 @@
+import React from "react";
 import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
-import React from "react";
+import { toast } from "react-toastify";
 import { Button, Form } from "semantic-ui-react";
-import * as Yup from "yup";
 import { UPDATE_USER } from "../../../gql/user";
+import * as Yup from "yup";
 
 import "./DescriptionForm.scss";
-import { toast } from "react-toastify";
 
 export default function DescriptionForm(props) {
   const { setShowModal, userData } = props;
@@ -38,14 +38,14 @@ export default function DescriptionForm(props) {
   });
 
   return (
-    <Form className='description-form' onSubmit={formik.handleSubmit}>
+    <Form className="description-form" onSubmit={formik.handleSubmit}>
       <Form.TextArea
-        name='description'
+        name="description"
         value={formik.values.description}
         onChange={formik.handleChange}
         error={formik.errors.description && true}
       />
-      <Button type='submit' className='btn-submit'>
+      <Button type="submit" className="btn-submit">
         Change bio
       </Button>
     </Form>

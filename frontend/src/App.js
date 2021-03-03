@@ -1,14 +1,15 @@
 import { ApolloProvider } from "@apollo/client";
 import { useState, useEffect, useMemo } from "react";
-import "./App.css";
-import client from "./config/apollo";
-import Auth from "./pages/auth/Auth";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { decodeToken, getToken, removeToken } from "./utils/token";
+import { appConfig } from "./config/config";
 import AuthContext from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
-import { appConfig } from "./config/config";
+import client from "./config/apollo";
+import Auth from "./pages/auth/Auth";
+
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   const [auth, setAuth] = useState();

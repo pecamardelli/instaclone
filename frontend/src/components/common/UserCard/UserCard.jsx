@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Image } from "semantic-ui-react";
-import NoAvatar from "../../../assets/images/avatar.png";
+import NoAvatar from "../../../assets/images/noAvatar.png";
 import { urls } from "../../../config/config";
 
-import "./SearchResult.scss";
+import "./UserCard.scss";
 
-export default function SearchResult({ data }) {
+export default function UserCard({ data }) {
   const { title, username, avatar } = data;
 
   return (
-    <Link to={username} className="search-results__item">
+    <Link to={username} className="user-card__item">
       <Image src={avatar ? `${urls.userAvatarPath}/${avatar}` : NoAvatar} />
       <div>
         <p>{title}</p>

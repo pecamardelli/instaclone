@@ -1,7 +1,9 @@
-import { useQuery } from "@apollo/client";
 import React from "react";
-import SearchResult from "../../../components/common/SearchResult/SearchResult";
+import { useQuery } from "@apollo/client";
 import { GET_NOT_FOLLOWEDS } from "../../../gql/follower";
+import Error from "../../../components/common/Error/Error";
+import UserCard from "../../../components/common/UserCard/UserCard";
+
 import "./UsersNotFollowed.scss";
 
 export default function UsersNotFollowed() {
@@ -10,7 +12,7 @@ export default function UsersNotFollowed() {
   });
 
   if (loading) return null;
-  if (error) return <h3>{error.message}</h3>;
+  if (error) return <Error error={error} />;
 
   const { getNotFolloweds } = data;
 
@@ -19,7 +21,7 @@ export default function UsersNotFollowed() {
       <h3>People that you may know...</h3>
       {getNotFolloweds &&
         getNotFolloweds.map((user, index) => (
-          <SearchResult
+          <UserCard
             key={index}
             data={{
               title: user.name,

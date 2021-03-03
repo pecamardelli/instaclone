@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { GET_COMMENTS } from "../../../gql/comment";
 import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
+import Error from "../Error/Error";
 
 import "./CommentList.scss";
 
@@ -15,7 +16,7 @@ export default function CommentList(props) {
   });
 
   if (loading) return null;
-  if (error) return <h3>{error.message}</h3>;
+  if (error) return <Error error={error} />;
 
   const commentList = data.getComments || [];
 
