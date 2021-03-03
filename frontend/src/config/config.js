@@ -25,3 +25,4 @@ export const urls = {
 };
 
 export const publications = { ...config.publications };
+export const appConfig = { name: config.name };

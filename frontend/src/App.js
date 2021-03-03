@@ -8,10 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { decodeToken, getToken, removeToken } from "./utils/token";
 import AuthContext from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
+import { appConfig } from "./config/config";
 
 function App() {
   const [auth, setAuth] = useState();
   //localStorage.removeItem("token");
+
+  document.title = appConfig.name;
+
   useEffect(() => {
     const token = getToken();
     if (token) setAuth(decodeToken(token));
