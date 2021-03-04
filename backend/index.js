@@ -2,8 +2,9 @@ require("dotenv").config({ path: ".env" });
 
 const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server");
-const typeDefs = require("./gql/schema");
-const resolvers = require("./gql/resolvers");
+//const typeDefs = require("./gql/schema");
+//const resolvers = require("./gql/resolvers");
+const schema = require("./gql/schema");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const {
@@ -30,8 +31,7 @@ mongoose.connect(
 
 function server() {
   const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     context: ({ req }) => {
       const token = req.headers.authorization;
 
