@@ -24,6 +24,9 @@ const mutations = {
   userRemoveMany: UserTC.mongooseResolvers.removeMany(),
 };
 
+// Why would someone query the password field?
+UserTC.removeField("password");
+
 module.exports = {
   TC: UserTC,
   queries,

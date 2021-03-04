@@ -5,23 +5,23 @@ const customizationOptions = {}; // left it empty for simplicity, described belo
 const FollowerTC = composeMongoose(FollowerModel, customizationOptions);
 
 const queries = {
-  userById: FollowerTC.mongooseResolvers.findById(),
-  userByIds: FollowerTC.mongooseResolvers.findByIds(),
-  userOne: FollowerTC.mongooseResolvers.findOne(),
-  userMany: FollowerTC.mongooseResolvers.findMany(),
-  userCount: FollowerTC.mongooseResolvers.count(),
-  userPagination: FollowerTC.mongooseResolvers.pagination(),
+  followerById: FollowerTC.mongooseResolvers.findById(),
+  followerByIds: FollowerTC.mongooseResolvers.findByIds(),
+  followerOne: FollowerTC.mongooseResolvers.findOne(),
+  followerMany: FollowerTC.mongooseResolvers.findMany(),
+  followerCount: FollowerTC.mongooseResolvers.count(),
+  followerPagination: FollowerTC.mongooseResolvers.pagination(),
 };
 
 const mutations = {
-  userCreateOne: FollowerTC.mongooseResolvers.createOne(),
-  userCreateMany: FollowerTC.mongooseResolvers.createMany(),
-  userUpdateById: FollowerTC.mongooseResolvers.updateById(),
-  userUpdateOne: FollowerTC.mongooseResolvers.updateOne(),
-  userUpdateMany: FollowerTC.mongooseResolvers.updateMany(),
-  userRemoveById: FollowerTC.mongooseResolvers.removeById(),
-  userRemoveOne: FollowerTC.mongooseResolvers.removeOne(),
-  userRemoveMany: FollowerTC.mongooseResolvers.removeMany(),
+  followerCreateOne: FollowerTC.mongooseResolvers.createOne(),
+  followerCreateMany: FollowerTC.mongooseResolvers.createMany(),
+  followerUpdateById: FollowerTC.mongooseResolvers.updateById(),
+  followerUpdateOne: FollowerTC.mongooseResolvers.updateOne(),
+  followerUpdateMany: FollowerTC.mongooseResolvers.updateMany(),
+  followerRemoveById: FollowerTC.mongooseResolvers.removeById(),
+  followerRemoveOne: FollowerTC.mongooseResolvers.removeOne(),
+  followerRemoveMany: FollowerTC.mongooseResolvers.removeMany(),
 };
 
 module.exports = {

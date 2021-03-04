@@ -5,23 +5,23 @@ const customizationOptions = {}; // left it empty for simplicity, described belo
 const PublicationTC = composeMongoose(PublicationModel, customizationOptions);
 
 const queries = {
-  userById: PublicationTC.mongooseResolvers.findById(),
-  userByIds: PublicationTC.mongooseResolvers.findByIds(),
-  userOne: PublicationTC.mongooseResolvers.findOne(),
-  userMany: PublicationTC.mongooseResolvers.findMany(),
-  userCount: PublicationTC.mongooseResolvers.count(),
-  userPagination: PublicationTC.mongooseResolvers.pagination(),
+  publicationById: PublicationTC.mongooseResolvers.findById(),
+  publicationByIds: PublicationTC.mongooseResolvers.findByIds(),
+  publicationOne: PublicationTC.mongooseResolvers.findOne(),
+  publicationMany: PublicationTC.mongooseResolvers.findMany(),
+  publicationCount: PublicationTC.mongooseResolvers.count(),
+  publicationPagination: PublicationTC.mongooseResolvers.pagination(),
 };
 
 const mutations = {
-  userCreateOne: PublicationTC.mongooseResolvers.createOne(),
-  userCreateMany: PublicationTC.mongooseResolvers.createMany(),
-  userUpdateById: PublicationTC.mongooseResolvers.updateById(),
-  userUpdateOne: PublicationTC.mongooseResolvers.updateOne(),
-  userUpdateMany: PublicationTC.mongooseResolvers.updateMany(),
-  userRemoveById: PublicationTC.mongooseResolvers.removeById(),
-  userRemoveOne: PublicationTC.mongooseResolvers.removeOne(),
-  userRemoveMany: PublicationTC.mongooseResolvers.removeMany(),
+  publicationCreateOne: PublicationTC.mongooseResolvers.createOne(),
+  publicationCreateMany: PublicationTC.mongooseResolvers.createMany(),
+  publicationUpdateById: PublicationTC.mongooseResolvers.updateById(),
+  publicationUpdateOne: PublicationTC.mongooseResolvers.updateOne(),
+  publicationUpdateMany: PublicationTC.mongooseResolvers.updateMany(),
+  publicationRemoveById: PublicationTC.mongooseResolvers.removeById(),
+  publicationRemoveOne: PublicationTC.mongooseResolvers.removeOne(),
+  publicationRemoveMany: PublicationTC.mongooseResolvers.removeMany(),
 };
 
 module.exports = {

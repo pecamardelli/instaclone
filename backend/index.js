@@ -2,8 +2,6 @@ require("dotenv").config({ path: ".env" });
 
 const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server");
-//const typeDefs = require("./gql/schema");
-//const resolvers = require("./gql/resolvers");
 const schema = require("./gql/schema");
 const jwt = require("jsonwebtoken");
 const express = require("express");
@@ -15,7 +13,6 @@ const {
 } = require("./config/config");
 
 mongoose.connect(
-  //process.env.MONGO_DB_URI,
   mongodb.uri,
   {
     useNewUrlParser: true,

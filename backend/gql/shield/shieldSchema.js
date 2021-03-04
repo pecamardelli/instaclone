@@ -1,29 +1,14 @@
 const { applyMiddleware } = require("graphql-middleware");
-const {
-  rule,
-  inputRule,
-  shield,
-  chain,
-  and,
-  or,
-  not,
-  deny,
-  allow,
-} = require("graphql-shield");
-
-const isLoggedIn = rule({ cache: "contextual" })(
-  async (parent, args, ctx, info) => {
-    return true;
-  }
-);
+const { shield, and } = require("graphql-shield");
+const rules = require("./rules");
 
 const permissions = shield(
   {
     Query: {
-      "*": and(isLoggedIn),
+      "*": and(rules.isLoggedIn),
     },
     Mutation: {
-      "*": and(isLoggedIn),
+      "*": and(rules.isLoggedIn),
     },
   },
   {
@@ -32,5 +17,5 @@ const permissions = shield(
   }
 );
 
-const shieldedSchema = applyMiddleware(schema, permissions);
-module.exports = shieldedSchema;
+const shieldSchema = (schema) => applyMiddleware(schema, permissions);
+module.exports = shieldSchema;

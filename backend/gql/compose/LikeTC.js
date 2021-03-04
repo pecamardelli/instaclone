@@ -5,23 +5,23 @@ const customizationOptions = {}; // left it empty for simplicity, described belo
 const LikeTC = composeMongoose(LikeModel, customizationOptions);
 
 const queries = {
-  userById: LikeTC.mongooseResolvers.findById(),
-  userByIds: LikeTC.mongooseResolvers.findByIds(),
-  userOne: LikeTC.mongooseResolvers.findOne(),
-  userMany: LikeTC.mongooseResolvers.findMany(),
-  userCount: LikeTC.mongooseResolvers.count(),
-  userPagination: LikeTC.mongooseResolvers.pagination(),
+  likeById: LikeTC.mongooseResolvers.findById(),
+  likeByIds: LikeTC.mongooseResolvers.findByIds(),
+  likeOne: LikeTC.mongooseResolvers.findOne(),
+  likeMany: LikeTC.mongooseResolvers.findMany(),
+  likeCount: LikeTC.mongooseResolvers.count(),
+  likePagination: LikeTC.mongooseResolvers.pagination(),
 };
 
 const mutations = {
-  userCreateOne: LikeTC.mongooseResolvers.createOne(),
-  userCreateMany: LikeTC.mongooseResolvers.createMany(),
-  userUpdateById: LikeTC.mongooseResolvers.updateById(),
-  userUpdateOne: LikeTC.mongooseResolvers.updateOne(),
-  userUpdateMany: LikeTC.mongooseResolvers.updateMany(),
-  userRemoveById: LikeTC.mongooseResolvers.removeById(),
-  userRemoveOne: LikeTC.mongooseResolvers.removeOne(),
-  userRemoveMany: LikeTC.mongooseResolvers.removeMany(),
+  likeCreateOne: LikeTC.mongooseResolvers.createOne(),
+  likeCreateMany: LikeTC.mongooseResolvers.createMany(),
+  likeUpdateById: LikeTC.mongooseResolvers.updateById(),
+  likeUpdateOne: LikeTC.mongooseResolvers.updateOne(),
+  likeUpdateMany: LikeTC.mongooseResolvers.updateMany(),
+  likeRemoveById: LikeTC.mongooseResolvers.removeById(),
+  likeRemoveOne: LikeTC.mongooseResolvers.removeOne(),
+  likeRemoveMany: LikeTC.mongooseResolvers.removeMany(),
 };
 
 module.exports = {
