@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import { useMutation } from "@apollo/client";
-import { REGISTER_USER } from "./../../../gql/user";
+import { registerUserMutation } from "./../../../gql/user";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 
@@ -10,7 +10,7 @@ import "./RegisterForm.scss";
 
 export default function RegisterForm(props) {
   const { setShowLogin } = props;
-  const [registerUser] = useMutation(REGISTER_USER);
+  const [registerUser] = useMutation(registerUserMutation());
 
   const formik = useFormik({
     initialValues: getInitialValues(), // Defined below the component's code

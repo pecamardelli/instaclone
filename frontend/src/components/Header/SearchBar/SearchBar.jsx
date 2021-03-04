@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
-import { SEARCH_USERS } from "./../../../gql/user";
+import { searchUsersQuery } from "./../../../gql/user";
 import UserCard from "../../common/UserCard/UserCard";
 
 import "./SearchBar.scss";
@@ -9,7 +9,7 @@ import "./SearchBar.scss";
 export default function SearchBar() {
   const [keyword, setKeyword] = useState(null);
   const [results, setResults] = useState([]);
-  const [doSearch, { data, loading, error }] = useLazyQuery(SEARCH_USERS);
+  const [doSearch, { data, loading, error }] = useLazyQuery(searchUsersQuery());
 
   if (error) console.error(error);
 

@@ -1,7 +1,12 @@
 import { ApolloProvider } from "@apollo/client";
 import { useState, useEffect, useMemo } from "react";
 import { ToastContainer } from "react-toastify";
-import { decodeToken, getToken, removeToken } from "./utils/token";
+import {
+  decodeToken,
+  getToken,
+  removeToken,
+  verifyTokenExpiration,
+} from "./utils/token";
 import { appConfig } from "./config/config";
 import AuthContext from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
@@ -17,16 +22,17 @@ function App() {
 
   document.title = appConfig.name;
 
-  useEffect(() => {
-    const token = getToken();
-    if (token) setAuth(decodeToken(token));
-    else setAuth(null);
-  }, [setAuth]);
-
   const logout = () => {
     removeToken();
     setAuth(null);
   };
+
+  useEffect(() => {
+    const token = getToken();
+    if (!verifyTokenExpiration(token)) logout();
+    if (token) setAuth(decodeToken(token));
+    else setAuth(null);
+  }, [setAuth]);
 
   const setUserData = (userData) => {
     setAuth(userData);

@@ -16,3 +16,15 @@ export function decodeToken(token) {
 export function removeToken() {
   return localStorage.removeItem(TOKEN);
 }
+
+export function verifyTokenExpiration(token) {
+  if (!token) return false;
+  const decoded = decodeToken(token);
+  if (!decoded.exp) return false;
+
+  if (Date.now() >= decoded.exp * 1000) {
+    return false;
+  }
+
+  return true;
+}

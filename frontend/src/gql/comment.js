@@ -1,25 +1,39 @@
 import { gql } from "@apollo/client";
 
-export const ADD_COMMENT = gql`
-  mutation AddComment($input: CommentInput) {
-    addComment(input: $input) {
-      publicationId
-      text
-    }
-  }
+const addCommentDefaultFields = `
+  publicationId
+  text
 `;
 
-export const GET_COMMENTS = gql`
-  query GetComments($publicationId: ID!) {
-    getComments(publicationId: $publicationId) {
-      publicationId
-      userId {
-        username
-        id
-        avatar
+export const addCommentMutation = (customFields) => {
+  const fields = customFields || addCommentDefaultFields;
+  return gql`
+    mutation AddComment($input: CommentInput) {
+      addComment(input: $input) {
+        ${fields}
       }
-      text
-      createdAt
     }
+  `;
+};
+
+const getCommentsDefaultFields = `
+  publicationId
+  userId {
+    username
+    id
+    avatar
   }
+  text
+  createdAt
 `;
+
+export const getCommentsQuery = (customFields) => {
+  const fields = customFields || getCommentsDefaultFields;
+  return gql`
+    query GetComments($publicationId: ID!) {
+      getComments(publicationId: $publicationId) {
+        ${fields}
+      }
+    }
+`;
+};

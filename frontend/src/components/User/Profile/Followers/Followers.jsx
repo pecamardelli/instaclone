@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { GET_FOLLOWEDS, GET_FOLLOWERS } from "../../../../gql/follower";
+import { getFollowedsQuery, getFollowersQuery } from "../../../../gql/follower";
 import Error from "../../../common/Error/Error";
 import UserCard from "../../../common/UserCard/UserCard";
 import BasicModal from "../../../Modal/BasicModal/BasicModal";
@@ -19,7 +19,7 @@ export default function Followers(props) {
     error: followersError,
     //startPolling: startPollingFollowers,
     //stopPolling: stopPollingFollowers,
-  } = useQuery(GET_FOLLOWERS, {
+  } = useQuery(getFollowersQuery(), {
     variables: { username },
   });
 
@@ -27,7 +27,7 @@ export default function Followers(props) {
     data: followedsData,
     loading: followedsLoading,
     error: followedsError,
-  } = useQuery(GET_FOLLOWEDS, { variables: { username } });
+  } = useQuery(getFollowedsQuery(), { variables: { username } });
 
   // In the course, the teacher does this to get realtime followers count.
   // I'll comment this because it's a terrible idea.

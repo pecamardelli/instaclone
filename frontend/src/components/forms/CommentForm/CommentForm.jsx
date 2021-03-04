@@ -5,12 +5,12 @@ import * as Yup from "yup";
 import { publications } from "../../../config/config";
 import "./CommentForm.scss";
 import { useMutation } from "@apollo/client";
-import { ADD_COMMENT } from "../../../gql/comment";
+import { addCommentMutation } from "../../../gql/comment";
 import { toast } from "react-toastify";
 
 export default function CommentForm(props) {
   const { publication } = props;
-  const [addComment] = useMutation(ADD_COMMENT);
+  const [addComment] = useMutation(addCommentMutation());
 
   const formik = useFormik({
     initialValues: {

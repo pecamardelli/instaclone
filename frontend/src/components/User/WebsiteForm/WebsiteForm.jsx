@@ -3,14 +3,14 @@ import { useFormik } from "formik";
 import React from "react";
 import { Button, Form } from "semantic-ui-react";
 import * as Yup from "yup";
-import { UPDATE_USER } from "../../../gql/user";
+import { updateUserMutation } from "../../../gql/user";
 import { toast } from "react-toastify";
 
 import "./WebsiteForm.scss";
 
 export default function WebsiteForm(props) {
   const { setShowModal, userData } = props;
-  const [updateUser] = useMutation(UPDATE_USER);
+  const [updateUser] = useMutation(updateUserMutation());
 
   const formik = useFormik({
     initialValues: {

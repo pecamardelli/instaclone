@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
-import { GET_COMMENTS } from "../../../gql/comment";
+import { getCommentsQuery } from "../../../gql/comment";
 import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
 import Error from "../Error/Error";
@@ -11,7 +11,7 @@ import "./CommentList.scss";
 export default function CommentList(props) {
   const { publication } = props;
 
-  const { data, loading, error } = useQuery(GET_COMMENTS, {
+  const { data, loading, error } = useQuery(getCommentsQuery(), {
     variables: { publicationId: publication.id },
   });
 

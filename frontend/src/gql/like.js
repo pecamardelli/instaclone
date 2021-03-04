@@ -1,29 +1,42 @@
 import { gql } from "@apollo/client";
 
-export const DO_LIKE = gql`
-  mutation DoLike($publicationId: ID!) {
-    doLike(publicationId: $publicationId) {
-      id
-      publicationId
-      userId
+const doLikeDefaultFields = `
+  id
+  publicationId
+  userId
+`;
+
+export const doLikeMutation = (customFields) => {
+  const fields = customFields || doLikeDefaultFields;
+  return gql`
+    mutation DoLike($publicationId: ID!) {
+      doLike(publicationId: $publicationId) {
+        ${fields}
+      }
     }
-  }
-`;
+  `;
+};
 
-export const REMOVE_LIKE = gql`
-  mutation RemoveLike($publicationId: ID!) {
-    removeLike(publicationId: $publicationId)
-  }
-`;
+export const removeLikeMutation = () => {
+  return gql`
+    mutation RemoveLike($publicationId: ID!) {
+      removeLike(publicationId: $publicationId)
+    }
+  `;
+};
 
-export const HAS_LIKED = gql`
-  query HasLiked($publicationId: ID!) {
-    hasLiked(publicationId: $publicationId)
-  }
-`;
+export const hasLikedQuery = () => {
+  return gql`
+    query HasLiked($publicationId: ID!) {
+      hasLiked(publicationId: $publicationId)
+    }
+  `;
+};
 
-export const LIKE_COUNT = gql`
-  query LikeCount($publicationId: ID!) {
-    likeCount(publicationId: $publicationId)
-  }
-`;
+export const likeCountQuery = () => {
+  return gql`
+    query LikeCount($publicationId: ID!) {
+      likeCount(publicationId: $publicationId)
+    }
+  `;
+};

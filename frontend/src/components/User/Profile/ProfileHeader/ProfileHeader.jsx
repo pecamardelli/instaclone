@@ -2,9 +2,9 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "semantic-ui-react";
 import {
-  FOLLOW_USER,
-  IS_FOLLOWING,
-  UNFOLLOW_USER,
+  followUserMutation,
+  isFollowingQuery,
+  unfollowUserMutation,
 } from "../../../../gql/follower";
 import Error from "../../../common/Error/Error";
 import AuthContext from "./../../../../context/AuthContext";
@@ -14,10 +14,10 @@ import "./ProfileHeader.scss";
 export default function ProfileHeader({ userData, openModal }) {
   const { auth } = useContext(AuthContext);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followUser] = useMutation(FOLLOW_USER);
-  const [unfollowUser] = useMutation(UNFOLLOW_USER);
+  const [followUser] = useMutation(followUserMutation());
+  const [unfollowUser] = useMutation(unfollowUserMutation());
   const [checkIfIsFollowing, { data, loading, error, called }] = useLazyQuery(
-    IS_FOLLOWING
+    isFollowingQuery()
   );
 
   useEffect(() => {

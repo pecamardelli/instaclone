@@ -1,7 +1,11 @@
 import React, { useCallback, useContext, useState } from "react";
 import { Button } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
-import { GET_USER, UPDATE_AVATAR, DELETE_AVATAR } from "../../../gql/user";
+import {
+  getUserQuery,
+  updateAvatarMutation,
+  deleteAvatarMutation,
+} from "../../../gql/user";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
@@ -19,15 +23,15 @@ export default function AvatarForm(props) {
   // It doesn't work if the images have the same uploaded name (same url as well).
   // This is a bug that wasn't fixed in the course, so implementing a context
   // would be a solution to this.
-  const [updateAvatar] = useMutation(UPDATE_AVATAR, {
+  const [updateAvatar] = useMutation(updateAvatarMutation(), {
     update(cache, { data: { updateAvatar } }) {
       const { getUser } = cache.readQuery({
-        query: GET_USER,
+        query: getUserQuery(),
         variables: { username: auth.username },
       });
 
       cache.writeQuery({
-        query: GET_USER,
+        query: getUserQuery,
         variables: { username: auth.username },
         data: {
           getUser: { ...getUser, avatar: updateAvatar.avatar },
@@ -36,7 +40,7 @@ export default function AvatarForm(props) {
     },
   });
 
-  const [deleteAvatar] = useMutation(DELETE_AVATAR);
+  const [deleteAvatar] = useMutation(deleteAvatarMutation());
 
   const onDrop = useCallback(
     async (uploadedFile) => {

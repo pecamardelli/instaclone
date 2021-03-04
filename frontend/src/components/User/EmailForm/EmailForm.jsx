@@ -3,13 +3,13 @@ import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import { Button, Form } from "semantic-ui-react";
 import * as Yup from "yup";
-import { UPDATE_USER } from "../../../gql/user";
+import { updateUserMutation } from "../../../gql/user";
 
 import "./EmailForm.scss";
 import { toast } from "react-toastify";
 
 export default function EmailForm({ setShowModal, userData }) {
-  const [updateUser] = useMutation(UPDATE_USER);
+  const [updateUser] = useMutation(updateUserMutation());
 
   const formik = useFormik({
     initialValues: {
@@ -41,15 +41,15 @@ export default function EmailForm({ setShowModal, userData }) {
   });
 
   return (
-    <Form className='email-form' onSubmit={formik.handleSubmit}>
+    <Form className="email-form" onSubmit={formik.handleSubmit}>
       <Form.Input
-        type='text'
-        name='email'
-        placeholder='Enter your new email'
+        type="text"
+        name="email"
+        placeholder="Enter your new email"
         value={formik.values.email}
         onChange={formik.handleChange}
       />
-      <Button type='submit' className='btn-submit'>
+      <Button type="submit" className="btn-submit">
         Change
       </Button>
     </Form>

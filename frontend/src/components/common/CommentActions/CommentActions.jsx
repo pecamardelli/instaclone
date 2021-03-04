@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Icon } from "semantic-ui-react";
-import { DO_LIKE, HAS_LIKED, LIKE_COUNT, REMOVE_LIKE } from "../../../gql/like";
+import {
+  doLikeMutation,
+  hasLikedQuery,
+  likeCountQuery,
+  removeLikeMutation,
+} from "../../../gql/like";
 import { toast } from "react-toastify";
 import Error from "../Error/Error";
 
@@ -10,23 +15,23 @@ import "./CommentActions.scss";
 export default function CommentActions(props) {
   const { publication } = props;
   const [executing, setExecuting] = useState(false);
-  const [doLike] = useMutation(DO_LIKE);
-  const [removeLike] = useMutation(REMOVE_LIKE);
+  const [doLike] = useMutation(doLikeMutation());
+  const [removeLike] = useMutation(removeLikeMutation());
 
   const variables = { publicationId: publication.id };
 
-  const hasLikedQuery = useQuery(HAS_LIKED, { variables });
-  const likeCountQuery = useQuery(LIKE_COUNT, { variables });
+  const hasLikedResult = useQuery(hasLikedQuery(), { variables });
+  const likeCountResult = useQuery(likeCountQuery(), { variables });
 
-  if (hasLikedQuery.error) return <Error error={hasLikedQuery.error} />;
-  if (likeCountQuery.error) return <Error error={likeCountQuery.error} />;
+  if (hasLikedResult.error) return <Error error={hasLikedResult.error} />;
+  if (likeCountResult.error) return <Error error={likeCountResult.error} />;
 
   const handleDoLike = async () => {
     setExecuting(true);
     try {
       await doLike({ variables });
-      hasLikedQuery.refetch();
-      likeCountQuery.refetch();
+      hasLikedResult.refetch();
+      likeCountResult.refetch();
     } catch (error) {
       toast.error(error.message || error.text);
     } finally {
@@ -38,8 +43,8 @@ export default function CommentActions(props) {
     setExecuting(true);
     try {
       await removeLike({ variables });
-      hasLikedQuery.refetch();
-      likeCountQuery.refetch();
+      hasLikedResult.refetch();
+      likeCountResult.refetch();
     } catch (error) {
       toast.error(error.message || error.text);
     } finally {
@@ -55,18 +60,18 @@ export default function CommentActions(props) {
   return (
     <div className="comment-actions">
       <Icon
-        className={hasLikedQuery.data?.hasLiked ? "like active" : "like"}
-        name={hasLikedQuery.data?.hasLiked ? "heart" : "heart outline"}
+        className={hasLikedResult.data?.hasLiked ? "like active" : "like"}
+        name={hasLikedResult.data?.hasLiked ? "heart" : "heart outline"}
         onClick={() =>
           handleClick(
-            hasLikedQuery.data?.hasLiked ? handleRemoveLike : handleDoLike
+            hasLikedResult.data?.hasLiked ? handleRemoveLike : handleDoLike
           )
         }
       />
       <p>
-        {likeCountQuery.data?.likeCount ? likeCountQuery.data?.likeCount : 0}{" "}
+        {likeCountResult.data?.likeCount ? likeCountResult.data?.likeCount : 0}{" "}
         like
-        {likeCountQuery.data?.likeCount === 1 ? "" : "s"}
+        {likeCountResult.data?.likeCount === 1 ? "" : "s"}
       </p>
     </div>
   );

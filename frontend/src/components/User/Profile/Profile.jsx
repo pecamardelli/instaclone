@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { GET_USER } from "../../../gql/user";
+import { getUserQuery } from "../../../gql/user";
 import useAuth from "../../../hooks/useAuth";
 import noAvatar from "../../../assets/images/noAvatar.png";
 import UserNotFound from "../../UserNotFound/UserNotFound";
@@ -26,7 +26,7 @@ export default function Profile(props) {
   const authContext = useContext(AuthContext);
   const { auth } = useAuth();
 
-  const { data, loading, error } = useQuery(GET_USER, {
+  const { data, loading, error } = useQuery(getUserQuery(), {
     variables: { username },
   });
 
