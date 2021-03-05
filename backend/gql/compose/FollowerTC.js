@@ -1,5 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const FollowerModel = require("../../models/follower");
+const { followerCreateOneWrapper } = require("./wrappers/follower");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const FollowerTC = composeMongoose(FollowerModel, customizationOptions);
@@ -14,7 +15,9 @@ const queries = {
 };
 
 const mutations = {
-  followerCreateOne: FollowerTC.mongooseResolvers.createOne(),
+  followerCreateOne: FollowerTC.mongooseResolvers
+    .createOne()
+    .wrapResolve(followerCreateOneWrapper),
   followerCreateMany: FollowerTC.mongooseResolvers.createMany(),
   followerUpdateById: FollowerTC.mongooseResolvers.updateById(),
   followerUpdateOne: FollowerTC.mongooseResolvers.updateOne(),

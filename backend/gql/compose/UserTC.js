@@ -1,5 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const UserModel = require("../../models/user");
+const { userManyNotFollowed } = require("./wrappers/user");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const UserTC = composeMongoose(UserModel, customizationOptions);
@@ -9,6 +10,9 @@ const queries = {
   userByIds: UserTC.mongooseResolvers.findByIds(),
   userOne: UserTC.mongooseResolvers.findOne(),
   userMany: UserTC.mongooseResolvers.findMany(),
+  userManyNotFollowed: UserTC.mongooseResolvers
+    .findMany()
+    .wrapResolve(userManyNotFollowed),
   userCount: UserTC.mongooseResolvers.count(),
   userPagination: UserTC.mongooseResolvers.pagination(),
 };

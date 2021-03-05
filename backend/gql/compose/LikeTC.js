@@ -1,5 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const LikeModel = require("../../models/like");
+const { likeCreateOneWrapper } = require("./wrappers/like");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const LikeTC = composeMongoose(LikeModel, customizationOptions);
@@ -14,7 +15,9 @@ const queries = {
 };
 
 const mutations = {
-  likeCreateOne: LikeTC.mongooseResolvers.createOne(),
+  likeCreateOne: LikeTC.mongooseResolvers
+    .createOne()
+    .wrapResolve(likeCreateOneWrapper),
   likeCreateMany: LikeTC.mongooseResolvers.createMany(),
   likeUpdateById: LikeTC.mongooseResolvers.updateById(),
   likeUpdateOne: LikeTC.mongooseResolvers.updateOne(),

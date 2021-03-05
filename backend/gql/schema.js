@@ -5,6 +5,9 @@ const LikeTC = require("./compose/LikeTC");
 const PublicationTC = require("./compose/PublicationTC");
 const UserTC = require("./compose/UserTC");
 const shieldSchema = require("./shield/shieldSchema");
+const { GraphQLUpload } = require("apollo-server");
+
+schemaComposer.add(GraphQLUpload);
 
 schemaComposer.Query.addFields({
   ...CommentTC.queries,
@@ -32,6 +35,22 @@ PublicationTC.TC.addRelation("user", {
     _id: (source) => source["userId"],
   },
   projection: { userId: true },
+});
+
+FollowerTC.TC.addRelation("user", {
+  resolver: () => UserTC.TC.mongooseResolvers.findById(),
+  prepareArgs: {
+    _id: (source) => source["userId"],
+  },
+  projection: { userId: true },
+});
+
+FollowerTC.TC.addRelation("follower", {
+  resolver: () => UserTC.TC.mongooseResolvers.findById(),
+  prepareArgs: {
+    _id: (source) => source["followId"],
+  },
+  projection: { followId: true },
 });
 
 CommentTC.TC.addRelation("user", {

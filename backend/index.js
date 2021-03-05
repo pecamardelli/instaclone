@@ -31,20 +31,20 @@ function server() {
     schema,
     context: ({ req }) => {
       const token = req.headers.authorization;
+      return jwt.decode(token);
+      // if (token) {
+      //   try {
+      //     const user = jwt.verify(
+      //       token.replace("Bearer ", ""),
+      //       jwtCfg.privateKey
+      //     );
 
-      if (token) {
-        try {
-          const user = jwt.verify(
-            token.replace("Bearer ", ""),
-            jwtCfg.privateKey
-          );
-
-          return { user };
-        } catch (error) {
-          console.error(`AUTHENTICATION ERROR: ${error.message}`);
-          return null;
-        }
-      }
+      //     return { user };
+      //   } catch (error) {
+      //     console.error(`AUTHENTICATION ERROR: ${error.message}`);
+      //     return null;
+      //   }
+      // }
     },
   });
 
