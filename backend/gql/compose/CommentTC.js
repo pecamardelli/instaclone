@@ -1,6 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const CommentModel = require("../../models/comment");
-const { commentCreateOneWrapper } = require("./wrappers/comment");
+const { commentCreateOneWrapper } = require("./wrappers/commentWrappers");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const CommentTC = composeMongoose(CommentModel, customizationOptions);

@@ -1,9 +1,15 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const UserModel = require("../../models/user");
-const { userManyNotFollowed } = require("./wrappers/user");
+const addUserCustomResolvers = require("./resolvers/userResolvers");
+const { userManyNotFollowed } = require("./wrappers/userWrappers");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const UserTC = composeMongoose(UserModel, customizationOptions);
+
+// Why would someone query the password field?
+UserTC.removeField("password");
+// Adding custom resolvers to type composer.
+addUserCustomResolvers(UserTC);
 
 const queries = {
   userById: UserTC.mongooseResolvers.findById(),
@@ -20,16 +26,15 @@ const queries = {
 const mutations = {
   userCreateOne: UserTC.mongooseResolvers.createOne(),
   userCreateMany: UserTC.mongooseResolvers.createMany(),
+  userLogin: UserTC.getResolver("userLogin"),
   userUpdateById: UserTC.mongooseResolvers.updateById(),
   userUpdateOne: UserTC.mongooseResolvers.updateOne(),
   userUpdateMany: UserTC.mongooseResolvers.updateMany(),
+  userUpdateAvatar: UserTC.getResolver("userUpdateAvatar"),
   userRemoveById: UserTC.mongooseResolvers.removeById(),
   userRemoveOne: UserTC.mongooseResolvers.removeOne(),
   userRemoveMany: UserTC.mongooseResolvers.removeMany(),
 };
-
-// Why would someone query the password field?
-UserTC.removeField("password");
 
 module.exports = {
   TC: UserTC,

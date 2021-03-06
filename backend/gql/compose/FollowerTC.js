@@ -1,6 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const FollowerModel = require("../../models/follower");
-const { followerCreateOneWrapper } = require("./wrappers/follower");
+const { followerCreateOneWrapper } = require("./wrappers/followerWrappers");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const FollowerTC = composeMongoose(FollowerModel, customizationOptions);

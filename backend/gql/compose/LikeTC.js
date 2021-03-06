@@ -1,6 +1,6 @@
 const { composeMongoose } = require("graphql-compose-mongoose");
 const LikeModel = require("../../models/like");
-const { likeCreateOneWrapper } = require("./wrappers/like");
+const { likeCreateOneWrapper } = require("./wrappers/likeWrappers");
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const LikeTC = composeMongoose(LikeModel, customizationOptions);

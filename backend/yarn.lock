@@ -1630,6 +1630,11 @@ is-typedarray@^1.0.0:
   resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
   integrity sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
 
+is-valid-uuid-v4@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/is-valid-uuid-v4/-/is-valid-uuid-v4-1.2.1.tgz#eac67b841f9fb4d2c7d5bee2e8c728d76def5f28"
+  integrity sha512-WElBQkTCIIbRbea849/URDdljWIoctPYSDvQGbB6fM9Ca2OCH7G3uBQfkkytjmmJHvYK8GBjxku1SQFBMnWJ9Q==
+
 is-yarn-global@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/is-yarn-global/-/is-yarn-global-0.3.0.tgz#d502d3382590ea3004893746754c89139973e232"
