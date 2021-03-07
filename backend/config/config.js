@@ -59,6 +59,9 @@ const config = {
       bucketName: _config.get("awsBucketName"),
     },
   },
+  users: {
+    roles: _config.get("users.roles"),
+  },
   comments: {
     minLength: _config.get("comments.minLength") || 2,
     maxLength: _config.get("comments.maxLength") || 512,

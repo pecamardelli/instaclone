@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { users } = require("../config/config");
 const Schema = mongoose.Schema;
 
 const UserSchema = Schema({
@@ -14,7 +15,7 @@ const UserSchema = Schema({
   },
   role: {
     type: String,
-    enum: ["user", "moderator", "admin", "owner"],
+    enum: users.roles,
     default: "user",
   },
   email: {

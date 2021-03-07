@@ -6,6 +6,9 @@
   "userDir": "/user",
   "userAvatarDir": "/avatar",
   "publicationsDir": "/publications",
+  "users": {
+    "roles": ["user", "moderator", "admin", "siteOwner"]
+  },
   "comments": {
     "minLength": 2,
     "maxLength": 512

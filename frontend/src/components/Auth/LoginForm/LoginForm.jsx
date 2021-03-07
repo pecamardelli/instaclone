@@ -11,7 +11,7 @@ import "./LoginForm.scss";
 
 export default function LoginForm() {
   const [error, setError] = useState("");
-  const [login] = useMutation(getLoginMutation());
+  const [userLogin] = useMutation(getLoginMutation());
   const { setUserData } = useAuth();
 
   const formik = useFormik({
@@ -20,13 +20,13 @@ export default function LoginForm() {
     onSubmit: async (formData) => {
       setError("");
       try {
-        const { data } = await login({
+        const { data } = await userLogin({
           record: {
             email: formData.email,
             password: formData.password,
           },
         });
-        const { token } = data.loginUser;
+        const { token } = data.userLogin;
         setToken(token);
         setUserData(decodeToken(token));
       } catch (error) {

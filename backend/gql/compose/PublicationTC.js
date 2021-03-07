@@ -3,6 +3,7 @@ const PublicationModel = require("../../models/publication");
 const addPublicationCustomResolvers = require("./resolvers/publicationResolvers");
 const {
   publicationCreateOneWrapper,
+  publicationManyOfFolloweds,
 } = require("./wrappers/publicationWrappers");
 
 const customizationOptions = {}; // Left it empty for simplicity
@@ -15,6 +16,9 @@ const queries = {
   publicationByIds: PublicationTC.mongooseResolvers.findByIds(),
   publicationOne: PublicationTC.mongooseResolvers.findOne(),
   publicationMany: PublicationTC.mongooseResolvers.findMany(),
+  publicationManyOfFolloweds: PublicationTC.mongooseResolvers
+    .findMany()
+    .wrapResolve(publicationManyOfFolloweds),
   publicationCount: PublicationTC.mongooseResolvers.count(),
   publicationPagination: PublicationTC.mongooseResolvers.pagination(),
 };

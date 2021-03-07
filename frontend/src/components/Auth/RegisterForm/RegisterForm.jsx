@@ -3,29 +3,37 @@ import { Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import { useMutation } from "@apollo/client";
 import { getRegisterUserMutation } from "./../../../gql/userQueries";
+import { decodeToken, setToken } from "../../../utils/token";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 import "./RegisterForm.scss";
 
 export default function RegisterForm(props) {
-  const { setShowLogin } = props;
-  const [registerUser] = useMutation(getRegisterUserMutation());
+  const [userRegister] = useMutation(getRegisterUserMutation());
+  const { setUserData } = useAuth();
 
   const formik = useFormik({
     initialValues: getInitialValues(), // Defined below the component's code
     validationSchema: getValidationSchema(), // Defined below the component's code
     onSubmit: async (formData) => {
       try {
+        // Don't modify formData directly as it's part of a controlled component.
         const userData = { ...formData };
         delete userData.passwordAgain;
 
-        await registerUser({
-          variables: { input: userData },
+        const { data } = await userRegister({
+          variables: {
+            record: userData,
+          },
         });
 
+        // The register mutation returns a json web token. Let's login then.
+        const { token } = data.userRegister;
+        setToken(token);
+        setUserData(decodeToken(token));
         toast.success("User successfully created!");
-        setShowLogin(true);
       } catch (error) {
         toast.error(error.message);
         console.log(error);

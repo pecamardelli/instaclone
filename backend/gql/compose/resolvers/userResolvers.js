@@ -20,12 +20,13 @@ const addUserCustomResolvers = (UserTC) => {
     },
     resolve: async ({ source, args, context, info }) => {
       const { record } = args;
-      const createOne = UserTC.mongooseResolvers.createOne().resolve;
+      console.log(args);
       if (!record.password || !record.email || !record.username || !record.name)
         throw new Error("Required fields missing.");
+      const createOne = UserTC.mongooseResolvers.createOne().resolve;
 
       // Encrypt the password
-      const salt = await bcryptjs.genSalt(encrypt.saltRounds);
+      const salt = await bcryptjs.genSalt(parseInt(encrypt.saltRounds));
       record.password = await bcryptjs.hash(record.password, salt);
 
       const createOneArgs = {

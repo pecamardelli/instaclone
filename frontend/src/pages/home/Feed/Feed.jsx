@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
-import { getFollowedPublicationsQuery } from "../../../gql/publication";
+import { getFollowedPublicationsQuery } from "../../../gql/publicationQueries";
 import noAvatar from "../../../assets/images/noAvatar.png";
 import CommentActions from "../../../components/common/CommentActions/CommentActions";
 import CommentForm from "../../../components/forms/CommentForm/CommentForm";

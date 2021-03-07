@@ -1,16 +1,9 @@
 import { gql } from "@apollo/client";
 
-const registerUserDefaultFields = `
-  name
-  username
-  email
-`;
-
-export const getRegisterUserMutation = (customFields) => {
-  const fields = customFields || registerUserDefaultFields;
+export const getRegisterUserMutation = () => {
   return gql`
-    mutation userCreateOne(record: CreateOneUserInput!) {
-      registerUser(record: $record) {
+    mutation userRegister($record: UserRegisterInput) {
+      userRegister(record: $record) {
         token
       }
     }
@@ -88,7 +81,7 @@ const updateUserDefaultFields = `
 `;
 
 export const updateUserMutation = (customFields) => {
-  const fields = customFields || updateAvatarDefaultFields;
+  const fields = customFields || updateUserDefaultFields;
   return gql`
     mutation UpdateUser($input: UpdateUserInput) {
       updateUser(input: $input) {
