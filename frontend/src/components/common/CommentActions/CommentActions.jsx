@@ -1,27 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../../../context/AuthContext";
 import { useMutation, useQuery } from "@apollo/client";
 import { Icon } from "semantic-ui-react";
 import {
-  doLikeMutation,
-  hasLikedQuery,
-  likeCountQuery,
-  removeLikeMutation,
-} from "../../../gql/like";
+  getLikeCreateOneMutation,
+  getLikeOneQuery,
+  getLikeCountQuery,
+  getLikeRemoveOneMutation,
+} from "../../../gql/likeQueries";
 import { toast } from "react-toastify";
 import Error from "../Error/Error";
 
 import "./CommentActions.scss";
 
 export default function CommentActions(props) {
+  const authContext = useContext(AuthContext);
   const { publication } = props;
   const [executing, setExecuting] = useState(false);
-  const [doLike] = useMutation(doLikeMutation());
-  const [removeLike] = useMutation(removeLikeMutation());
+  const [likeCreateOne] = useMutation(getLikeCreateOneMutation());
+  const [likeRemoveOne] = useMutation(getLikeRemoveOneMutation());
 
-  const variables = { publicationId: publication.id };
-
-  const hasLikedResult = useQuery(hasLikedQuery(), { variables });
-  const likeCountResult = useQuery(likeCountQuery(), { variables });
+  const likeRecord = {
+    userId: authContext.auth.id,
+    publicationId: publication._id,
+  };
+  console.dir(likeRecord);
+  const hasLikedResult = useQuery(getLikeOneQuery(), {
+    variables: { filter: likeRecord },
+  });
+  const likeCountResult = useQuery(getLikeCountQuery(), {
+    variables: { filter: { publicationId: publication._id } },
+  });
 
   if (hasLikedResult.error) return <Error error={hasLikedResult.error} />;
   if (likeCountResult.error) return <Error error={likeCountResult.error} />;
@@ -29,7 +38,7 @@ export default function CommentActions(props) {
   const handleDoLike = async () => {
     setExecuting(true);
     try {
-      await doLike({ variables });
+      await likeCreateOne({ variables: { record: likeRecord } });
       hasLikedResult.refetch();
       likeCountResult.refetch();
     } catch (error) {
@@ -42,7 +51,7 @@ export default function CommentActions(props) {
   const handleRemoveLike = async () => {
     setExecuting(true);
     try {
-      await removeLike({ variables });
+      await likeRemoveOne({ variables: { filter: likeRecord } });
       hasLikedResult.refetch();
       likeCountResult.refetch();
     } catch (error) {
@@ -60,16 +69,16 @@ export default function CommentActions(props) {
   return (
     <div className="comment-actions">
       <Icon
-        className={hasLikedResult.data?.hasLiked ? "like active" : "like"}
-        name={hasLikedResult.data?.hasLiked ? "heart" : "heart outline"}
+        className={hasLikedResult.data?.likeOne ? "like active" : "like"}
+        name={hasLikedResult.data?.likeOne ? "heart" : "heart outline"}
         onClick={() =>
           handleClick(
-            hasLikedResult.data?.hasLiked ? handleRemoveLike : handleDoLike
+            hasLikedResult.data?.likeOne ? handleRemoveLike : handleDoLike
           )
         }
       />
       <p>
-        {likeCountResult.data?.likeCount ? likeCountResult.data?.likeCount : 0}{" "}
+        {likeCountResult.data?.likeCount ? likeCountResult.data.likeCount : 0}{" "}
         like
         {likeCountResult.data?.likeCount === 1 ? "" : "s"}
       </p>

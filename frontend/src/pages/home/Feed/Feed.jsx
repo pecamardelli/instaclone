@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
-import { getFollowedPublicationsQuery } from "../../../gql/publicationQueries";
+import { getPublicationManyOfFollowedsQuery } from "../../../gql/publicationQueries";
 import noAvatar from "../../../assets/images/noAvatar.png";
 import CommentActions from "../../../components/common/CommentActions/CommentActions";
 import CommentForm from "../../../components/forms/CommentForm/CommentForm";
@@ -14,16 +14,18 @@ import { map } from "lodash";
 import "./Feed.scss";
 
 export default function Feed() {
-  const { data, loading, error } = useQuery(getFollowedPublicationsQuery());
+  const { data, loading, error } = useQuery(
+    getPublicationManyOfFollowedsQuery()
+  );
   const [showPublicationModal, setShowPublicationModal] = useState(false);
   const [publicationToShow, setPublicationToShow] = useState(null);
 
   if (loading) return null;
   if (error) return <Error error={error} />;
-  if (!data.getFollowedPublications)
+  if (!data.publicationManyOfFolloweds)
     return <Error error={{ message: "No data received from backend." }} />;
 
-  const { getFollowedPublications } = data;
+  const { publicationManyOfFolloweds } = data;
 
   const openPublication = (p) => {
     setPublicationToShow(p);
@@ -33,25 +35,25 @@ export default function Feed() {
   return (
     <>
       <div className="feed">
-        {map(getFollowedPublications, (p, index) => (
+        {map(publicationManyOfFolloweds, (p, index) => (
           <div key={index} className="feed__box">
             <div className="feed__box-user">
-              <Link to={`/${p.userId.username}`}>
+              <Link to={`/${p.user.username}`}>
                 <Image
                   src={
                     p.userId.avatar
-                      ? `${urls.userAvatarPath}/${p.userId.avatar}`
+                      ? `${urls.userAvatarPath}/${p.user.avatar}`
                       : noAvatar
                   }
                   avatar
                 />
               </Link>
-              <span>{p.userId.name}</span>
+              <span>{p.user.name}</span>
             </div>
             <div
               className="feed__box-photo"
               style={{
-                backgroundImage: `url("${urls.publicationsPath}/${p.fileUrl}")`,
+                backgroundImage: `url("${urls.publicationsPath}/${p.fileName}.${p.fileExtension}")`,
               }}
               onClick={() => openPublication(p)}
             />

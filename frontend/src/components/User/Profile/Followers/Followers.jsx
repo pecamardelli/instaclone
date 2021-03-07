@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { getFollowedsQuery, getFollowersQuery } from "../../../../gql/follower";
+import {
+  getFollowedsQuery,
+  getFollowersQuery,
+} from "../../../../gql/followerQueries";
 import Error from "../../../common/Error/Error";
 import UserCard from "../../../common/UserCard/UserCard";
 import BasicModal from "../../../Modal/BasicModal/BasicModal";

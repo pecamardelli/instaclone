@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Button, Dimmer, Icon, Loader, Modal } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@apollo/client";
-import { publishMutation } from "../../../gql/publication";
+import { publishMutation } from "../../../gql/publicationQueries";
 import { toast } from "react-toastify";
 
 import "./PostModal.scss";

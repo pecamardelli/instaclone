@@ -68,11 +68,21 @@ const getNotFollowedsDefaultFields = `
   avatar
 `;
 
-export const getNotFollowedsQuery = (customFields) => {
+export const getUserManyNotFollowed = (customFields) => {
   const fields = customFields || getNotFollowedsDefaultFields;
   return gql`
-    query GetNotFolloweds {
-      getNotFolloweds {
+    query UserManyNotFollowed(
+      $filter: FilterFindManyUserInput
+      $skip: Int
+      $limit: Int
+      $sort: SortFindManyUserInput
+    ) {
+      userManyNotFollowed(
+        filter: $filter
+        skip: $skip
+        limit: $limit
+        sort: $sort
+      ) {
         ${fields}
       }
     }

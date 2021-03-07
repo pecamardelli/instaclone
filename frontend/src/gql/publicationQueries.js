@@ -17,14 +17,15 @@ export const publishMutation = (customFields) => {
 };
 
 const publicationDefaultFields = `
-  id
-  userId {
+  _id
+  userId
+  user {
     name
     username
     avatar
   }
-  fileUrl
-  fileType
+  fileName
+  fileExtension
   createdAt
 `;
 
@@ -39,11 +40,21 @@ export const getPublicationsQuery = (customFields) => {
   `;
 };
 
-export const getFollowedPublicationsQuery = (customFields) => {
+export const getPublicationManyOfFollowedsQuery = (customFields) => {
   const fields = customFields || publicationDefaultFields;
   return gql`
-    query GetFollowedPublications {
-      getFollowedPublications {
+    query PublicationManyOfFolloweds(
+      $filter: FilterFindManyPublicationInput
+      $skip: Int
+      $limit: Int = 100
+      $sort: SortFindManyPublicationInput
+    ) {
+      publicationManyOfFolloweds(
+        filter: $filter
+        skip: $skip
+        limit: $limit
+        sort: $sort
+      ) {
         ${fields}
       }
     }

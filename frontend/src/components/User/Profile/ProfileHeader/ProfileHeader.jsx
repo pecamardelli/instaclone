@@ -5,7 +5,7 @@ import {
   followUserMutation,
   isFollowingQuery,
   unfollowUserMutation,
-} from "../../../../gql/follower";
+} from "../../../../gql/followerQueries";
 import Error from "../../../common/Error/Error";
 import AuthContext from "./../../../../context/AuthContext";
 

@@ -21,9 +21,11 @@ export default function LoginForm() {
       setError("");
       try {
         const { data } = await userLogin({
-          record: {
-            email: formData.email,
-            password: formData.password,
+          variables: {
+            record: {
+              email: formData.email,
+              password: formData.password,
+            },
           },
         });
         const { token } = data.userLogin;

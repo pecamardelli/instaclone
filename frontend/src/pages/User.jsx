@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Error from "../components/common/Error/Error";
 import Publications from "../components/Publications/Publications";
 import Profile from "../components/User/Profile/Profile";
-import { getPublicationsQuery } from "../gql/publication";
+import { getPublicationsQuery } from "../gql/publicationQueries";
 
 export default function User() {
   const { username } = useParams();

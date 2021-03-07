@@ -31,7 +31,7 @@ function server() {
     schema,
     context: ({ req }) => {
       const token = req.headers.authorization;
-      return jwt.decode(token);
+      return jwt.decode(token.replace("Bearer ", ""));
       // if (token) {
       //   try {
       //     const user = jwt.verify(
