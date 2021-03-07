@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { Button, Form } from "semantic-ui-react";
-import { updateUserMutation } from "../../../gql/user";
+import { updateUserMutation } from "../../../gql/userQueries";
 import * as Yup from "yup";
 
 import "./DescriptionForm.scss";

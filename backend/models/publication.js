@@ -1,19 +1,23 @@
 const mongoose = require("mongoose");
+const { publications } = require("../config/config");
 
 const PublicationSchema = mongoose.Schema({
   userId: {
     type: mongoose.Types.ObjectId,
-    require: true,
-    ref: "User",
+    required: true,
   },
-  fileUrl: {
+  fileName: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
+    minLength: publications.minFileNameLength,
+    maxLength: publications.maxFileNameLength,
   },
-  fileType: {
+  fileExtension: {
     type: String,
     trim: true,
+    minLength: publications.minFileExtensionLength,
+    maxFileNameLength: publications.maxFileExtensionLength,
   },
   createdAt: {
     type: Date,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useFormik } from "formik";
 import { useMutation } from "@apollo/client";
-import { loginMutation } from "../../../gql/user";
+import { getLoginMutation } from "../../../gql/userQueries";
 import { decodeToken, setToken } from "../../../utils/token";
 import useAuth from "../../../hooks/useAuth";
 import * as Yup from "yup";
@@ -11,7 +11,7 @@ import "./LoginForm.scss";
 
 export default function LoginForm() {
   const [error, setError] = useState("");
-  const [login] = useMutation(loginMutation());
+  const [login] = useMutation(getLoginMutation());
   const { setUserData } = useAuth();
 
   const formik = useFormik({
@@ -21,8 +21,9 @@ export default function LoginForm() {
       setError("");
       try {
         const { data } = await login({
-          variables: {
-            input: formData,
+          record: {
+            email: formData.email,
+            password: formData.password,
           },
         });
         const { token } = data.loginUser;

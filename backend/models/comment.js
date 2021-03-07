@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
+const { comments } = require("../config/config");
 const Schema = mongoose.Schema;
 
 const CommentSchema = Schema({
   publicationId: {
     type: mongoose.Types.ObjectId,
-    require: true,
-    ref: "Publication",
+    required: true,
   },
   userId: {
     type: mongoose.Types.ObjectId,
-    require: true,
-    ref: "User",
+    required: true,
   },
   text: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
+    minLength: comments.minLength || 2,
+    maxLength: comments.maxLength || 256,
   },
   createdAt: {
     type: Date,

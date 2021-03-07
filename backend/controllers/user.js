@@ -21,8 +21,8 @@ async function registerUser(input) {
   if (await User.findOne({ email })) throw new Error("Email not available.");
 
   // Encrypt the password
-  const salt = bcryptjs.genSaltSync(10);
-  userData.password = bcryptjs.hashSync(password, salt);
+  const salt = await bcryptjs.genSalt(10);
+  userData.password = await bcryptjs.hash(password, salt);
 
   try {
     const newUser = new User(userData);

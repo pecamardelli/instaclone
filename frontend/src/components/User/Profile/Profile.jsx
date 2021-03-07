@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { getUserQuery } from "../../../gql/user";
+import { getUserQuery } from "../../../gql/userQueries";
 import useAuth from "../../../hooks/useAuth";
 import noAvatar from "../../../assets/images/noAvatar.png";
 import UserNotFound from "../../UserNotFound/UserNotFound";

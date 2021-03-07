@@ -5,7 +5,7 @@ import {
   getUserQuery,
   updateAvatarMutation,
   deleteAvatarMutation,
-} from "../../../gql/user";
+} from "../../../gql/userQueries";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";

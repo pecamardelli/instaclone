@@ -5,9 +5,9 @@ const {
   publicationCreateOneWrapper,
 } = require("./wrappers/publicationWrappers");
 
-const customizationOptions = {}; // left it empty for simplicity, described below
+const customizationOptions = {}; // Left it empty for simplicity
 const PublicationTC = composeMongoose(PublicationModel, customizationOptions);
-console.dir(PublicationTC.mongooseResolvers.createOne().getArgs());
+
 addPublicationCustomResolvers(PublicationTC);
 
 const queries = {

@@ -6,27 +6,22 @@ const registerUserDefaultFields = `
   email
 `;
 
-export const registerUserMutation = (customFields) => {
+export const getRegisterUserMutation = (customFields) => {
   const fields = customFields || registerUserDefaultFields;
   return gql`
-    mutation registerUser($input: UserInput) {
-      registerUser(input: $input) {
-        ${fields}
+    mutation userCreateOne(record: CreateOneUserInput!) {
+      registerUser(record: $record) {
+        token
       }
     }
   `;
 };
 
-const loginDefaultFields = `
-  token
-`;
-
-export const loginMutation = (customFields) => {
-  const fields = customFields || loginDefaultFields;
+export const getLoginMutation = () => {
   return gql`
-    mutation loginUser($input: LoginInput) {
-      loginUser(input: $input) {
-        ${fields}
+    mutation userLogin($record: UserLoginInput) {
+      userLogin(record: $record) {
+        token
       }
     }
   `;

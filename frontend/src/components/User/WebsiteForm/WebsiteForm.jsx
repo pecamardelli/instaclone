@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import React from "react";
 import { Button, Form } from "semantic-ui-react";
 import * as Yup from "yup";
-import { updateUserMutation } from "../../../gql/user";
+import { updateUserMutation } from "../../../gql/userQueries";
 import { toast } from "react-toastify";
 
 import "./WebsiteForm.scss";

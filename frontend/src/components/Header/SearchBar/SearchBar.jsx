@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
-import { searchUsersQuery } from "./../../../gql/user";
+import { searchUsersQuery } from "./../../../gql/userQueries";
 import UserCard from "../../common/UserCard/UserCard";
 
 import "./SearchBar.scss";

@@ -7,6 +7,16 @@ const UserLoginInput = schemaComposer.createInputTC(`
   }
 `);
 
+const UserRegisterInput = schemaComposer.createInputTC(`
+  input UserRegisterInput {
+    name: String!
+    username: String!
+    email: String!
+    password: String!
+  }
+`);
+
 module.exports = {
   UserLoginInput,
+  UserRegisterInput,
 };

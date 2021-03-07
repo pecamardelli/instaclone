@@ -24,16 +24,15 @@ const queries = {
 };
 
 const mutations = {
-  userCreateOne: UserTC.mongooseResolvers.createOne(),
-  userCreateMany: UserTC.mongooseResolvers.createMany(),
+  userRegister: UserTC.getResolver("userRegister"),
   userLogin: UserTC.getResolver("userLogin"),
   userUpdateById: UserTC.mongooseResolvers.updateById(),
   userUpdateOne: UserTC.mongooseResolvers.updateOne(),
   userUpdateMany: UserTC.mongooseResolvers.updateMany(),
   userUpdateAvatar: UserTC.getResolver("userUpdateAvatar"),
-  userRemoveById: UserTC.mongooseResolvers.removeById(),
-  userRemoveOne: UserTC.mongooseResolvers.removeOne(),
-  userRemoveMany: UserTC.mongooseResolvers.removeMany(),
+  // userRemoveById: UserTC.mongooseResolvers.removeById(),
+  // userRemoveOne: UserTC.mongooseResolvers.removeOne(),
+  // userRemoveMany: UserTC.mongooseResolvers.removeMany(),
 };
 
 module.exports = {

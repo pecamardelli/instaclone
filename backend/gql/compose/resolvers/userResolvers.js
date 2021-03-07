@@ -1,14 +1,52 @@
 const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { fileUploads, jwt: jwtCfg } = require("../../../config/config");
-const { UserLoginInput } = require("./inputs/userInputs");
-const { UserLoginPayload } = require("./types/userTypes");
 const isValidUUIDV4 = require("is-valid-uuid-v4").isValidUUIDV4;
 const { v4: uuidv4 } = require("uuid");
+const { fileUploads, encrypt } = require("../../../config/config");
+const { UserLoginInput, UserRegisterInput } = require("./inputs/userInputs");
+const { UserLoginPayload } = require("./types/userTypes");
+const generateJwt = require("./helpers/generateJwt");
 
 const { publicDir, baseDir, userDir, userAvatarDir } = fileUploads.directories;
 
 const addUserCustomResolvers = (UserTC) => {
+  /**
+   * ### REGISTER USER RESOLVER ###
+   */
+  UserTC.addResolver({
+    name: "userRegister",
+    type: UserLoginPayload, // Using the same type from login since this will return a token too.
+    args: {
+      record: UserRegisterInput,
+    },
+    resolve: async ({ source, args, context, info }) => {
+      const { record } = args;
+      const createOne = UserTC.mongooseResolvers.createOne().resolve;
+      if (!record.password || !record.email || !record.username || !record.name)
+        throw new Error("Required fields missing.");
+
+      // Encrypt the password
+      const salt = await bcryptjs.genSalt(encrypt.saltRounds);
+      record.password = await bcryptjs.hash(record.password, salt);
+
+      const createOneArgs = {
+        name: record.name,
+        username: record.username,
+        role: "user",
+        email: record.email.toLowerCase(),
+        password: record.password,
+      };
+
+      const createdUser = await createOne({
+        args: { record: { ...createOneArgs } },
+      });
+
+      const { id, name, username, email, avatar, role } = createdUser.record;
+      const payload = { id, name, username, email, avatar, role };
+
+      return generateJwt(payload);
+    },
+  });
+
   /**
    * ### LOGIN RESOLVER ###
    */
@@ -36,11 +74,7 @@ const addUserCustomResolvers = (UserTC) => {
       const { id, name, username, email, avatar } = user;
       const payload = { id, name, username, email, avatar };
 
-      return {
-        token: jwt.sign(payload, jwtCfg.privateKey, {
-          expiresIn: jwtCfg.lifeTime,
-        }),
-      };
+      return generateJwt(payload);
     },
   });
 

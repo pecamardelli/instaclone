@@ -4,13 +4,11 @@ const Schema = mongoose.Schema;
 const LikeSchema = Schema({
   publicationId: {
     type: mongoose.Types.ObjectId,
-    require: true,
-    ref: "Publication",
+    required: true,
   },
   userId: {
     type: mongoose.Types.ObjectId,
-    require: true,
-    ref: "User",
+    required: true,
   },
 });
 
