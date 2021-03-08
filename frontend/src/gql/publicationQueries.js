@@ -29,11 +29,27 @@ const publicationDefaultFields = `
   createdAt
 `;
 
-export const getPublicationsQuery = (customFields) => {
+export const getPublicationManyQuery = (customFields) => {
   const fields = customFields || publicationDefaultFields;
   return gql`
-    query GetPublications($username: String!) {
-      getPublications(username: $username) {
+    query PublicationMany(
+      $filter: FilterFindManyPublicationInput
+      $skip: Int
+      $limit: Int = 100
+      $sort: SortFindManyPublicationInput
+    ) {
+      publicationMany(filter: $filter, skip: $skip, limit: $limit, sort: $sort) {
+        ${fields}
+      }
+    }
+  `;
+};
+
+export const getPublicationManyByUsername = (customFields) => {
+  const fields = customFields || publicationDefaultFields;
+  return gql`
+    query publicationManyByUsername($filter: PublicationManyByUsernameInput) {
+      publicationManyByUsername(filter: $filter) {
         ${fields}
       }
     }

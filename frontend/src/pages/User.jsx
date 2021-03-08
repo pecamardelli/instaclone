@@ -4,23 +4,25 @@ import { useParams } from "react-router-dom";
 import Error from "../components/common/Error/Error";
 import Publications from "../components/Publications/Publications";
 import Profile from "../components/User/Profile/Profile";
-import { getPublicationsQuery } from "../gql/publicationQueries";
+import { getPublicationManyByUsername } from "../gql/publicationQueries";
 
 export default function User() {
   const { username } = useParams();
-  const { data, loading, error } = useQuery(getPublicationsQuery(), {
-    variables: { username },
+  const { data, loading, error } = useQuery(getPublicationManyByUsername(), {
+    variables: { filter: { username } },
   });
 
   if (loading) return null;
   if (error) return <Error error={error} />;
 
-  const { getPublications } = data;
+  const { publicationManyByUsername } = data;
 
   return (
     <>
-      <Profile totalPublications={loading ? "??" : getPublications.length} />
-      <Publications publicationArray={getPublications} />
+      <Profile
+        totalPublications={loading ? "??" : publicationManyByUsername.length}
+      />
+      <Publications publicationArray={publicationManyByUsername} />
     </>
   );
 }

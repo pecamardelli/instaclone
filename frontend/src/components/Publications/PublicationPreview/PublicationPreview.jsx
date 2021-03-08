@@ -15,7 +15,7 @@ export default function PublicationPreview(props) {
       <div className="publication-preview" onClick={handleClick}>
         <Image
           className="publication-preview__image"
-          src={`${urls.publicationsPath}/${publication.fileUrl}`}
+          src={`${urls.publicationsPath}/${publication.fileName}.${publication.fileExtension}`}
         />
       </div>
       <PublicationModal

@@ -3,14 +3,18 @@ import { Button, Form } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { publications } from "../../../config/config";
-import "./CommentForm.scss";
 import { useMutation } from "@apollo/client";
-import { addCommentMutation } from "../../../gql/comment";
+import { getCommentCreateOneMutation } from "../../../gql/commentQueries";
 import { toast } from "react-toastify";
+import AuthContext from "../../../context/AuthContext";
+import useAuth from "../../../hooks/useAuth";
+
+import "./CommentForm.scss";
 
 export default function CommentForm(props) {
   const { publication } = props;
-  const [addComment] = useMutation(addCommentMutation());
+  const { auth } = useAuth(AuthContext);
+  const [commentCreateOne] = useMutation(getCommentCreateOneMutation());
 
   const formik = useFormik({
     initialValues: {
@@ -23,10 +27,11 @@ export default function CommentForm(props) {
     }),
     onSubmit: async (formData) => {
       try {
-        await addComment({
+        await commentCreateOne({
           variables: {
-            input: {
-              publicationId: publication.id,
+            record: {
+              publicationId: publication._id,
+              userId: auth.id,
               text: formData.comment,
             },
           },

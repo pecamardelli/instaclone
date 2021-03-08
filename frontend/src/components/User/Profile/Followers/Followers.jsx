@@ -1,12 +1,10 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import {
-  getFollowedsQuery,
-  getFollowersQuery,
-} from "../../../../gql/followerQueries";
+import { getFollowerManyQuery } from "../../../../gql/followerQueries";
 import Error from "../../../common/Error/Error";
 import UserCard from "../../../common/UserCard/UserCard";
 import BasicModal from "../../../Modal/BasicModal/BasicModal";
+import useAuth from "../../../../hooks/useAuth";
 
 import "./Followers.scss";
 
@@ -14,23 +12,27 @@ export default function Followers(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalChildren, setModalChildren] = useState(null);
-
+  const { auth } = useAuth();
   const { username, totalPublications } = props;
+
   const {
     data: followersData,
     loading: followersLoading,
     error: followersError,
     //startPolling: startPollingFollowers,
     //stopPolling: stopPollingFollowers,
-  } = useQuery(getFollowersQuery(), {
-    variables: { username },
-  });
+  } = useQuery(
+    getFollowerManyQuery("followId follower { name username avatar }"),
+    { variables: { filter: { userId: auth.id } } }
+  );
 
   const {
     data: followedsData,
     loading: followedsLoading,
     error: followedsError,
-  } = useQuery(getFollowedsQuery(), { variables: { username } });
+  } = useQuery(getFollowerManyQuery("userId user { name username avatar }"), {
+    variables: { username },
+  });
 
   // In the course, the teacher does this to get realtime followers count.
   // I'll comment this because it's a terrible idea.
@@ -46,8 +48,8 @@ export default function Followers(props) {
   if (followersError) return <Error error={followersError} />;
   if (followedsError) return <Error error={followedsError} />;
 
-  const { getFollowers } = followersData;
-  const { getFolloweds } = followedsData;
+  const { followerMany: getFollowers } = followersData;
+  const { followerMany: getFolloweds } = followedsData;
 
   const handleShowModal = (list, title) => {
     setShowModal(true);
@@ -58,9 +60,10 @@ export default function Followers(props) {
           <UserCard
             key={index}
             data={{
-              title: f.name,
-              username: f.username,
-              avatar: f.avatar,
+              // There must be either a user or a follower object
+              title: f.user ? f.user.name : f.follower.name,
+              username: f.user ? f.user.username : f.follower.username,
+              avatar: f.user ? f.user.avatar : f.follower.avatar,
             }}
           />
         );
@@ -77,7 +80,7 @@ export default function Followers(props) {
         <p
           className="link"
           onClick={() =>
-            handleShowModal(getFollowers, `${username}'s followers`)
+            handleShowModal(getFollowers, `${username}'s followers list`)
           }
         >
           <span>{getFollowers.length}</span> follower

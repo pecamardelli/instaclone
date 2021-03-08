@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
-import { getCommentsQuery } from "../../../gql/comment";
+import { getCommentManyQuery } from "../../../gql/commentQueries";
 import { Image } from "semantic-ui-react";
 import { urls } from "../../../config/config";
 import Error from "../Error/Error";
@@ -11,14 +11,14 @@ import "./CommentList.scss";
 export default function CommentList(props) {
   const { publication } = props;
 
-  const { data, loading, error } = useQuery(getCommentsQuery(), {
-    variables: { publicationId: publication.id },
+  const { data, loading, error } = useQuery(getCommentManyQuery(), {
+    variables: { filter: { publicationId: publication._id } },
   });
 
   if (loading) return null;
   if (error) return <Error error={error} />;
 
-  const commentList = data.getComments || [];
+  const commentList = data.commentMany || [];
 
   return (
     <div className="comment-list">

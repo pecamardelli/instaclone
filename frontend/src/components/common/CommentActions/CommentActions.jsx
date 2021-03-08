@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import AuthContext from "../../../context/AuthContext";
+import React, { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 import { useMutation, useQuery } from "@apollo/client";
 import { Icon } from "semantic-ui-react";
 import {
@@ -14,17 +14,17 @@ import Error from "../Error/Error";
 import "./CommentActions.scss";
 
 export default function CommentActions(props) {
-  const authContext = useContext(AuthContext);
   const { publication } = props;
+  const { auth } = useAuth();
   const [executing, setExecuting] = useState(false);
   const [likeCreateOne] = useMutation(getLikeCreateOneMutation());
   const [likeRemoveOne] = useMutation(getLikeRemoveOneMutation());
 
   const likeRecord = {
-    userId: authContext.auth.id,
+    userId: auth.id,
     publicationId: publication._id,
   };
-  console.dir(likeRecord);
+
   const hasLikedResult = useQuery(getLikeOneQuery(), {
     variables: { filter: likeRecord },
   });

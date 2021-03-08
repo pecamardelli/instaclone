@@ -5,11 +5,14 @@ const followerCreateOneWrapper = (next) => async (rp) => {
   const { record } = rp.args;
   const { context } = rp;
 
+  // If user IDs don't match, it means that someone is trying something nasty.
+  if (record.userId !== context.id) throw new Error("Illegal operation.");
+
   if (record.followId === context.id)
     throw new Error("You can't follow yourself.");
 
   const userToFollow = await UserModel.findOne({ _id: record.followId });
-  if (!userToFollow) throw new Error("User to follow not found");
+  if (!userToFollow) throw new Error("Invalid user to follow ID.");
 
   const existentFollowDoc = await FollowerModel.findOne({
     userId: context.id,

@@ -2,8 +2,8 @@ import React, { useCallback, useContext, useState } from "react";
 import { Button } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import {
-  getUserQuery,
-  updateAvatarMutation,
+  getUserOneQuery,
+  getUserUpdateAvatarMutation,
   deleteAvatarMutation,
 } from "../../../gql/userQueries";
 import { useMutation } from "@apollo/client";
@@ -23,18 +23,18 @@ export default function AvatarForm(props) {
   // It doesn't work if the images have the same uploaded name (same url as well).
   // This is a bug that wasn't fixed in the course, so implementing a context
   // would be a solution to this.
-  const [updateAvatar] = useMutation(updateAvatarMutation(), {
+  const [updateAvatar] = useMutation(getUserUpdateAvatarMutation(), {
     update(cache, { data: { updateAvatar } }) {
-      const { getUser } = cache.readQuery({
-        query: getUserQuery(),
-        variables: { username: auth.username },
+      const { userOne } = cache.readQuery({
+        query: getUserOneQuery(),
+        variables: { filter: { username: auth.username } },
       });
 
       cache.writeQuery({
-        query: getUserQuery,
-        variables: { username: auth.username },
+        query: getUserOneQuery(),
+        variables: { filter: { username: auth.username } },
         data: {
-          getUser: { ...getUser, avatar: updateAvatar.avatar },
+          userOne: { ...userOne, avatar: updateAvatar.avatar },
         },
       });
     },

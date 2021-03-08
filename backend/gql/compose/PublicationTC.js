@@ -19,6 +19,9 @@ const queries = {
   publicationManyOfFolloweds: PublicationTC.mongooseResolvers
     .findMany()
     .wrapResolve(publicationManyOfFolloweds),
+  publicationManyByUsername: PublicationTC.getResolver(
+    "publicationManyByUsername"
+  ),
   publicationCount: PublicationTC.mongooseResolvers.count(),
   publicationPagination: PublicationTC.mongooseResolvers.pagination(),
 };

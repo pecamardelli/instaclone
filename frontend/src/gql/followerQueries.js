@@ -1,61 +1,67 @@
 import { gql } from "@apollo/client";
 
-export const isFollowingQuery = () => {
+export const getFollowerOneQuery = () => {
   return gql`
-    query IsFollowing($username: String!) {
-      isFollowing(username: $username)
-    }
-  `;
-};
-
-export const followUserMutation = () => {
-  return gql`
-    mutation FollowUser($username: String!) {
-      followUser(username: $username)
-    }
-  `;
-};
-
-export const unfollowUserMutation = () => {
-  return gql`
-    mutation UnfollowUser($username: String!) {
-      unfollowUser(username: $username)
-    }
-  `;
-};
-
-const getFollowersDefaultFields = `
-i d
-  name
-  username
-  email
-  avatar
-`;
-
-export const getFollowersQuery = (customFields) => {
-  const fields = customFields || getFollowersDefaultFields;
-  return gql`
-    query GetFollowers($username: String!) {
-      getFollowers(username: $username) {
-        ${fields}
+    query FollowerOne(
+      $filter: FilterFindOneFollowerInput
+      $skip: Int
+      $sort: SortFindOneFollowerInput
+    ) {
+      followerOne(filter: $filter, skip: $skip, sort: $sort) {
+        _id
       }
     }
   `;
 };
 
-const getFollowedsDefaultFields = `
-  id
-  name
-  username
-  email
-  avatar
+export const getFollowerCreateOneMutation = () => {
+  return gql`
+    mutation FollowerCreateOne($record: CreateOneFollowerInput!) {
+      followerCreateOne(record: $record) {
+        recordId
+      }
+    }
+  `;
+};
+
+export const getFollowerRemoveOneMutation = () => {
+  return gql`
+    mutation FollowerRemoveOne(
+      $filter: FilterRemoveOneFollowerInput
+      $sort: SortRemoveOneFollowerInput
+    ) {
+      followerRemoveOne(filter: $filter, sort: $sort) {
+        recordId
+      }
+    }
+  `;
+};
+
+const followerDefaultFields = `
+  userId
+  user {
+    name
+    username
+    avatar
+  }
+  followId
+  follower {
+    name
+    username
+    avatar
+}
 `;
 
-export const getFollowedsQuery = (customFields) => {
-  const fields = customFields || getFollowedsDefaultFields;
+export const getFollowerManyQuery = (customFields) => {
+  const fields = customFields || followerDefaultFields;
   return gql`
-    query GetFolloweds($username: String!) {
-      getFolloweds(username: $username) {
+    query FollowerMany(
+      $filter: FilterFindManyFollowerInput
+      $skip: Int
+      $limit: Int = 100
+      $sort: SortFindManyFollowerInput
+    ) {
+      followerMany(filter: $filter, skip: $skip, limit: $limit, sort: $sort) {
         ${fields}
       }
     }

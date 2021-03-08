@@ -17,7 +17,7 @@ export default function PublicationModal(props) {
           className="publication-modal__left"
           width={10}
           style={{
-            backgroundImage: `url("${urls.publicationsPath}/${publication.fileUrl}")`,
+            backgroundImage: `url("${urls.publicationsPath}/${publication.fileName}.${publication.fileExtension}")`,
           }}
         />
         <Grid.Column className="publication-modal__right" width={6}>

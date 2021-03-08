@@ -20,8 +20,8 @@ export const getLoginMutation = () => {
   `;
 };
 
-const getUserDefaultFields = `
-  id
+const userOneDefaultFields = `
+  _id
   name
   username
   email
@@ -31,27 +31,33 @@ const getUserDefaultFields = `
   createdAt
 `;
 
-export const getUserQuery = (customFields) => {
-  const fields = customFields || getUserDefaultFields;
+export const getUserOneQuery = (customFields) => {
+  const fields = customFields || userOneDefaultFields;
   return gql`
-    query GetUser($id: ID, $username: String) {
-      getUser(id: $id, username: $username) {
+    query UserOne(
+      $filter: FilterFindOneUserInput
+      $skip: Int
+      $sort: SortFindOneUserInput
+    ) {
+      userOne(filter: $filter, skip: $skip, sort: $sort) {
         ${fields}
       }
     }
   `;
 };
 
-const updateAvatarDefaultFields = `
-  status
-  avatarUrl
+const userUpdateAvatarDefaultFields = `
+  recordId
+  record {
+    avatar
+  }
 `;
 
-export const updateAvatarMutation = (customFields) => {
-  const fields = customFields || updateAvatarDefaultFields;
+export const getUserUpdateAvatarMutation = (customFields) => {
+  const fields = customFields || userUpdateAvatarDefaultFields;
   return gql`
-    mutation updateAvatar($file: Upload) {
-      updateAvatar(file: $file) {
+    mutation UserUpdateAvatar($file: Upload!) {
+      userUpdateAvatar(file: $file) {
         ${fields}
       }
     }

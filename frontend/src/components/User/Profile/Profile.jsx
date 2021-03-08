@@ -1,13 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { getUserQuery } from "../../../gql/userQueries";
+import { getUserOneQuery } from "../../../gql/userQueries";
 import useAuth from "../../../hooks/useAuth";
 import noAvatar from "../../../assets/images/noAvatar.png";
 import UserNotFound from "../../UserNotFound/UserNotFound";
 import BasicModal from "../../Modal/BasicModal/BasicModal";
 import AvatarForm from "../AvatarForm/AvatarForm";
-import AuthContext from "./../../../context/AuthContext";
 import ProfileHeader from "./ProfileHeader/ProfileHeader";
 import SettingsForm from "./SettingsForm/SettingsForm";
 import { Grid, Image } from "semantic-ui-react";
@@ -23,17 +22,16 @@ export default function Profile(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalChildren, setModalChildren] = useState(null);
-  const authContext = useContext(AuthContext);
   const { auth } = useAuth();
 
-  const { data, loading, error } = useQuery(getUserQuery(), {
-    variables: { username },
+  const { data, loading, error } = useQuery(getUserOneQuery(), {
+    variables: { filter: { username } },
   });
 
   if (loading) return null;
   if (error) return <Error error={error} />;
 
-  const { getUser: userData } = data;
+  const { userOne: userData } = data;
   if (!userData) return <UserNotFound />;
 
   const openModal = (type) => {
@@ -72,8 +70,8 @@ export default function Profile(props) {
           <Image
             src={
               auth.username === username
-                ? authContext.auth.avatar
-                  ? `${urls.userAvatarPath}/${authContext.auth.avatar}`
+                ? auth.avatar
+                  ? `${urls.userAvatarPath}/${auth.avatar}`
                   : noAvatar
                 : userData.avatar
                 ? `${urls.userAvatarPath}/${userData.avatar}`
