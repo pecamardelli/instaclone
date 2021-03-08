@@ -7,6 +7,8 @@ const UserTC = require("./compose/UserTC");
 const shieldSchema = require("./shield/shieldSchema");
 const { GraphQLUpload } = require("apollo-server");
 
+// Adding the Upload type to schemaComposer. This is necessary for
+// the file upload functionality.
 schemaComposer.add(GraphQLUpload);
 
 schemaComposer.Query.addFields({

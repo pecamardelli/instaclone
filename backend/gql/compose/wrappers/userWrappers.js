@@ -14,7 +14,7 @@ const userManyNotFollowed = (next) => async (rp) => {
     Types.ObjectId(f.followId)
   );
 
-  // Push the caller ID to the excluded user array.
+  // Push the caller ID to the array of users to exclude.
   followedUsersIdList.push(Types.ObjectId(context.id));
 
   // Modify filter in order to get all users that are not in the array.

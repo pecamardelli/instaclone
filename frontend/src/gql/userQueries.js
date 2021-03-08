@@ -1,26 +1,10 @@
 import { gql } from "@apollo/client";
 
-export const getRegisterUserMutation = () => {
-  return gql`
-    mutation userRegister($record: UserRegisterInput) {
-      userRegister(record: $record) {
-        token
-      }
-    }
-  `;
-};
+/**
+ * ### DEFAULT FIELDS ###
+ */
 
-export const getLoginMutation = () => {
-  return gql`
-    mutation userLogin($record: UserLoginInput) {
-      userLogin(record: $record) {
-        token
-      }
-    }
-  `;
-};
-
-const userOneDefaultFields = `
+const userDefaultFields = `
   _id
   name
   username
@@ -31,8 +15,19 @@ const userOneDefaultFields = `
   createdAt
 `;
 
+const userUpdateAvatarDefaultFields = `
+  recordId
+  record {
+    avatar
+  }
+`;
+
+/**
+ * ###  QUERY DEFINITIONS ###
+ */
+
 export const getUserOneQuery = (customFields) => {
-  const fields = customFields || userOneDefaultFields;
+  const fields = customFields || userDefaultFields;
   return gql`
     query UserOne(
       $filter: FilterFindOneUserInput
@@ -46,12 +41,44 @@ export const getUserOneQuery = (customFields) => {
   `;
 };
 
-const userUpdateAvatarDefaultFields = `
-  recordId
-  record {
-    avatar
-  }
-`;
+export const searchUsersQuery = (customFields) => {
+  const fields = customFields || userDefaultFields;
+  return gql`
+    query Search($keyword: String) {
+      search(keyword: $keyword) {
+        ${fields}
+      }
+    }
+  `;
+};
+
+// There's no need to pass a filter argument to this query since the backend
+// will take the userId from the context and use it as the filter.
+// All filter arguments will be overwritten.
+export const getUserManyNotFollowedQuery = (customFields) => {
+  const fields = customFields || userDefaultFields;
+  return gql`
+    query userManyNotFollowed(
+      $filter: FilterFindManyUserInput
+      $skip: Int
+      $limit: Int = 100
+      $sort: SortFindManyUserInput
+    ) {
+      userManyNotFollowed(
+        filter: $filter
+        skip: $skip
+        limit: $limit
+        sort: $sort
+      ) {
+        ${fields}
+      }
+    }
+  `;
+};
+
+/**
+ * ### MUTATION DEFINITIONS ###
+ */
 
 export const getUserUpdateAvatarMutation = (customFields) => {
   const fields = customFields || userUpdateAvatarDefaultFields;
@@ -77,41 +104,31 @@ export const deleteAvatarMutation = (customFields) => {
   `;
 };
 
-const updateUserDefaultFields = `
-  id
-  name
-  username
-  email
-  description
-  website
-`;
-
-export const updateUserMutation = (customFields) => {
-  const fields = customFields || updateUserDefaultFields;
+export const getRegisterUserMutation = () => {
   return gql`
-    mutation UpdateUser($input: UpdateUserInput) {
-      updateUser(input: $input) {
-        ${fields}
+    mutation userRegister($record: UserRegisterInput) {
+      userRegister(record: $record) {
+        token
       }
     }
   `;
 };
 
-const searchUsersDefaultFields = `
-  id
-  name
-  username
-  email
-  website
-  description
-  avatar
-`;
-
-export const searchUsersQuery = (customFields) => {
-  const fields = customFields || searchUsersDefaultFields;
+export const getLoginMutation = () => {
   return gql`
-    query Search($keyword: String) {
-      search(keyword: $keyword) {
+    mutation userLogin($record: UserLoginInput) {
+      userLogin(record: $record) {
+        token
+      }
+    }
+  `;
+};
+
+export const updateUserMutation = (customFields) => {
+  const fields = customFields || userDefaultFields;
+  return gql`
+    mutation UpdateUser($input: UpdateUserInput) {
+      updateUser(input: $input) {
         ${fields}
       }
     }

@@ -21,18 +21,20 @@ export default function Followers(props) {
     error: followersError,
     //startPolling: startPollingFollowers,
     //stopPolling: stopPollingFollowers,
-  } = useQuery(
-    getFollowerManyQuery("followId follower { name username avatar }"),
-    { variables: { filter: { userId: auth.id } } }
-  );
+  } = useQuery(getFollowerManyQuery("userId user { name username avatar }"), {
+    variables: { filter: { followId: auth.id } },
+  });
 
   const {
     data: followedsData,
     loading: followedsLoading,
     error: followedsError,
-  } = useQuery(getFollowerManyQuery("userId user { name username avatar }"), {
-    variables: { username },
-  });
+  } = useQuery(
+    getFollowerManyQuery("followId follower { name username avatar }"),
+    {
+      variables: { filter: { userId: auth.id } },
+    }
+  );
 
   // In the course, the teacher does this to get realtime followers count.
   // I'll comment this because it's a terrible idea.

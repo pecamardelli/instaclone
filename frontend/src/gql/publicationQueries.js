@@ -1,20 +1,13 @@
 import { gql } from "@apollo/client";
 
+/**
+ * ### DEFAULT FIELDS ###
+ */
+
 const publishDefaultFields = `
   status
   fileUrl
 `;
-
-export const publishMutation = (customFields) => {
-  const fields = customFields || publishDefaultFields;
-  return gql`
-    mutation Publish($file: Upload!) {
-      publish(file: $file) {
-        ${fields}
-      }
-    }
-  `;
-};
 
 const publicationDefaultFields = `
   _id
@@ -28,6 +21,10 @@ const publicationDefaultFields = `
   fileExtension
   createdAt
 `;
+
+/**
+ * ###  QUERY DEFINITIONS ###
+ */
 
 export const getPublicationManyQuery = (customFields) => {
   const fields = customFields || publicationDefaultFields;
@@ -45,7 +42,7 @@ export const getPublicationManyQuery = (customFields) => {
   `;
 };
 
-export const getPublicationManyByUsername = (customFields) => {
+export const getPublicationManyByUsernameQuery = (customFields) => {
   const fields = customFields || publicationDefaultFields;
   return gql`
     query publicationManyByUsername($filter: PublicationManyByUsernameInput) {
@@ -71,6 +68,21 @@ export const getPublicationManyOfFollowedsQuery = (customFields) => {
         limit: $limit
         sort: $sort
       ) {
+        ${fields}
+      }
+    }
+  `;
+};
+
+/**
+ * ### MUTATION DEFINITIONS ###
+ */
+
+export const publishMutation = (customFields) => {
+  const fields = customFields || publishDefaultFields;
+  return gql`
+    mutation Publish($file: Upload!) {
+      publish(file: $file) {
         ${fields}
       }
     }

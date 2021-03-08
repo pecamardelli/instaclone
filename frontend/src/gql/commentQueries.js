@@ -1,22 +1,15 @@
 import { gql } from "@apollo/client";
 
+/**
+ * ### DEFAULT FIELDS ###
+ */
+
 const commentCreateOneDefaultFields = `
   recordId
   record {
     text
   }
 `;
-
-export const getCommentCreateOneMutation = (customFields) => {
-  const fields = customFields || commentCreateOneDefaultFields;
-  return gql`
-    mutation CommentCreateOne($record: CreateOneCommentInput!) {
-      commentCreateOne(record: $record) {
-        ${fields}
-      }
-    }
-  `;
-};
 
 const getCommentsDefaultFields = `
   _id
@@ -30,6 +23,10 @@ const getCommentsDefaultFields = `
   createdAt
 `;
 
+/**
+ * ### QUERY DEFINITIONS ###
+ */
+
 export const getCommentManyQuery = (customFields) => {
   const fields = customFields || getCommentsDefaultFields;
   return gql`
@@ -40,6 +37,21 @@ export const getCommentManyQuery = (customFields) => {
       $sort: SortFindManyCommentInput
     ) {
       commentMany(filter: $filter, skip: $skip, limit: $limit, sort: $sort) {
+        ${fields}
+      }
+    }
+  `;
+};
+
+/**
+ * ### MUTATION DEFINITIONS ###
+ */
+
+export const getCommentCreateOneMutation = (customFields) => {
+  const fields = customFields || commentCreateOneDefaultFields;
+  return gql`
+    mutation CommentCreateOne($record: CreateOneCommentInput!) {
+      commentCreateOne(record: $record) {
         ${fields}
       }
     }

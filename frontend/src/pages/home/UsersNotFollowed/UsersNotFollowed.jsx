@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { getUserManyNotFollowed } from "../../../gql/followerQueries";
+import { getUserManyNotFollowedQuery } from "../../../gql/followerQueries";
 import Error from "../../../components/common/Error/Error";
 import UserCard from "../../../components/common/UserCard/UserCard";
 import { map } from "lodash";
@@ -8,9 +8,7 @@ import { map } from "lodash";
 import "./UsersNotFollowed.scss";
 
 export default function UsersNotFollowed() {
-  const { data, loading, error } = useQuery(getUserManyNotFollowed(), {
-    fetchPolicy: "network-only",
-  });
+  const { data, loading, error } = useQuery(getUserManyNotFollowedQuery());
 
   if (loading) return null;
   if (error) return <Error error={error} />;
