@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Icon, Image } from "semantic-ui-react";
-import "./UserMenu.scss";
-import noAvatar from "../../../assets/images/noAvatar.png";
 import { Link } from "react-router-dom";
+import noAvatar from "../../../assets/images/noAvatar.png";
 import useAuth from "../../../hooks/useAuth";
 import AuthContext from "./../../../context/AuthContext";
 import PostModal from "../../Modal/PostModal/PostModal";
 import { urls } from "../../../config/config";
+
+import "./UserMenu.scss";
 
 export default function UserMenu() {
   const [showPostModal, setShowPostModal] = useState(false);

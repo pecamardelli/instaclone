@@ -4,9 +4,12 @@ import { gql } from "@apollo/client";
  * ### DEFAULT FIELDS ###
  */
 
-const publishDefaultFields = `
-  status
-  fileUrl
+const publicationCreateOneDefaultFields = `
+  recordId
+  record {
+    fileName
+    fileExtension
+  }
 `;
 
 const publicationDefaultFields = `
@@ -78,11 +81,14 @@ export const getPublicationManyOfFollowedsQuery = (customFields) => {
  * ### MUTATION DEFINITIONS ###
  */
 
-export const publishMutation = (customFields) => {
-  const fields = customFields || publishDefaultFields;
+export const getPublicationCreateOneMutation = (customFields) => {
+  const fields = customFields || publicationCreateOneDefaultFields;
   return gql`
-    mutation Publish($file: Upload!) {
-      publish(file: $file) {
+    mutation publicationCreateOne(
+      $file: Upload!
+      $record: CreateOnePublicationInput!
+    ) {
+      publicationCreateOne(file: $file, record: $record) {
         ${fields}
       }
     }

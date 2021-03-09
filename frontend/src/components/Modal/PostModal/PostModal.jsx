@@ -2,8 +2,9 @@ import React, { useCallback, useState } from "react";
 import { Button, Dimmer, Icon, Loader, Modal } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@apollo/client";
-import { publishMutation } from "../../../gql/publicationQueries";
 import { toast } from "react-toastify";
+import { getPublicationCreateOneMutation } from "../../../gql/publicationQueries";
+import useAuth from "../../../hooks/useAuth";
 
 import "./PostModal.scss";
 
@@ -11,7 +12,8 @@ export default function PostModal(props) {
   const { show, setShow } = props;
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [publish] = useMutation(publishMutation());
+  const { auth } = useAuth();
+  const [publicationCreateOne] = useMutation(getPublicationCreateOneMutation());
 
   const onDrop = useCallback(
     (upload) => {
@@ -39,8 +41,15 @@ export default function PostModal(props) {
   const handlePublish = async () => {
     try {
       setIsLoading(true);
-      const { data } = await publish({
-        variables: { file: uploadedFile.file },
+      const { data } = await publicationCreateOne({
+        variables: {
+          file: uploadedFile.file,
+          record: {
+            userId: auth.id,
+            fileName: "",
+            fileExtension: "",
+          },
+        },
       });
       setIsLoading(false);
       setShow(false);

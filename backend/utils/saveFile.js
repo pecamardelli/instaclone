@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-async function saveImage(data, filename) {
+async function saveFile(data, filename) {
   if (!data || !filename) return console.error("Invalid file name.");
 
   try {
@@ -20,4 +20,4 @@ async function saveImage(data, filename) {
   */
 }
 
-module.exports = saveImage;
+module.exports = saveFile;

@@ -107,7 +107,7 @@ const addUserCustomResolvers = (UserTC) => {
       const filePath = `${fileDir}/${fileName}.${extension}`;
       const fileData = createReadStream();
 
-      saveImage(fileData, filePath);
+      saveFile(fileData, filePath);
 
       const userUpdateById = UserTC.mongooseResolvers.updateById().resolve;
       const result = await userUpdateById({

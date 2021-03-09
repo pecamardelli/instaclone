@@ -28,9 +28,7 @@ const queries = {
 
 const mutations = {
   //publicationCreateOne: PublicationTC.mongooseResolvers.createOne(),
-  publicationCreateOne: PublicationTC.getResolver(
-    "_publicationCreateOne"
-  ).wrapResolve(publicationCreateOneWrapper),
+  publicationCreateOne: PublicationTC.getResolver("_publicationCreateOne"),
   publicationCreateMany: PublicationTC.mongooseResolvers.createMany(),
   publicationUpdateById: PublicationTC.mongooseResolvers.updateById(),
   publicationUpdateOne: PublicationTC.mongooseResolvers.updateOne(),

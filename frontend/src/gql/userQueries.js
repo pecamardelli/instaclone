@@ -22,6 +22,10 @@ const userUpdateAvatarDefaultFields = `
   }
 `;
 
+const deleteAvatarDefaultFields = `
+  deleteAvatar
+`;
+
 /**
  * ###  QUERY DEFINITIONS ###
  */
@@ -41,11 +45,16 @@ export const getUserOneQuery = (customFields) => {
   `;
 };
 
-export const searchUsersQuery = (customFields) => {
+export const getUserManyQuery = (customFields) => {
   const fields = customFields || userDefaultFields;
   return gql`
-    query Search($keyword: String) {
-      search(keyword: $keyword) {
+    query UserMany(
+      $filter: FilterFindManyUserInput
+      $skip: Int
+      $limit: Int = 100
+      $sort: SortFindManyUserInput
+    ) {
+      userMany(filter: $filter, skip: $skip, limit: $limit, sort: $sort) {
         ${fields}
       }
     }
@@ -90,10 +99,6 @@ export const getUserUpdateAvatarMutation = (customFields) => {
     }
   `;
 };
-
-const deleteAvatarDefaultFields = `
-  deleteAvatar
-`;
 
 export const deleteAvatarMutation = (customFields) => {
   const fields = customFields || deleteAvatarDefaultFields;

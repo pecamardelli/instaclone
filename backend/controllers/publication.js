@@ -1,6 +1,6 @@
 const PublicationModel = require("../models/publication");
 const UserModel = require("../models/user");
-const saveImage = require("../utils/saveImage");
+const saveFile = require("../utils/saveFile");
 const { fileUploads } = require("../config/config");
 const { v4: uuidv4 } = require("uuid");
 const FollowerModel = require("../models/follower");
@@ -18,7 +18,7 @@ async function publish(file, ctx) {
       const imagePath = `${imageDir}/${imageName}`;
       const imageData = createReadStream();
 
-      saveImage(imageData, imagePath);
+      saveFile(imageData, imagePath);
 
       const newPub = new PublicationModel({
         userId: user.id,

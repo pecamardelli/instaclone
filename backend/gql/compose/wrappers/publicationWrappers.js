@@ -1,32 +1,30 @@
-const saveImage = require("../../../utils/saveImage");
-const { fileUploads, mongodb } = require("../../../config/config");
-const { v4: uuidv4 } = require("uuid");
+const { mongodb } = require("../../../config/config");
 const { TC: FollowerTC } = require("../FollowerTC");
 const UserModel = require("../../../models/user");
 
-const publicationCreateOneWrapper = (next) => async (rp) => {
-  const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
-  const { record, file } = rp.args;
-  const { context } = rp;
+// const publicationCreateOneWrapper = async (next) => (rp) => {
+//   const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
+//   const { record, file } = rp.args;
+//   const { context } = rp;
 
-  const { createReadStream, mimetype } = await file;
-  const splittedMime = typeof mimetype === "string" && mimetype.split("/"); // Should be jpeg or png and equal to the extension...
-  const imageType = `${
-    Array.isArray(splittedMime) && splittedMime.length > 1
-      ? splittedMime[1]
-      : ".none"
-  }`;
-  const imageDir = `${publicDir}${baseDir}${publicationsDir}/${context.id}`;
-  const imageName = `${uuidv4()}.${imageType}`;
-  const imagePath = `${imageDir}/${imageName}`;
-  const imageData = createReadStream();
+//   const { createReadStream, mimetype } = await file;
+//   const splittedMime = typeof mimetype === "string" && mimetype.split("/"); // Should be jpeg or png and equal to the extension...
+//   const imageType = `${
+//     Array.isArray(splittedMime) && splittedMime.length > 1
+//       ? splittedMime[1]
+//       : ".none"
+//   }`;
+//   const imageDir = `${publicDir}${baseDir}${publicationsDir}/${context.id}`;
+//   const imageName = `${uuidv4()}.${imageType}`;
+//   const imagePath = `${imageDir}/${imageName}`;
+//   const imageData = createReadStream();
 
-  await saveImage(imageData, imagePath);
+//   await saveFile(imageData, imagePath);
 
-  record.fileUrl = `${imageName}`;
-  record.fileType = s`${imageType}`;
-  return next(rp);
-};
+//   record.fileUrl = `${imageName}`;
+//   record.fileType = s`${imageType}`;
+//   return next(rp);
+// };
 
 const publicationManyOfFolloweds = (next) => async (rp) => {
   const { context } = rp;
@@ -67,6 +65,6 @@ const publicationManyOfFolloweds = (next) => async (rp) => {
 };
 
 module.exports = {
-  publicationCreateOneWrapper,
+  //publicationCreateOneWrapper,
   publicationManyOfFolloweds,
 };

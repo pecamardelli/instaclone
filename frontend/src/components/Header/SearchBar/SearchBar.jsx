@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
-import { searchUsersQuery } from "./../../../gql/userQueries";
+import { getUserManyQuery } from "./../../../gql/userQueries";
 import UserCard from "../../common/UserCard/UserCard";
 
 import "./SearchBar.scss";
@@ -9,17 +9,23 @@ import "./SearchBar.scss";
 export default function SearchBar() {
   const [keyword, setKeyword] = useState(null);
   const [results, setResults] = useState([]);
-  const [doSearch, { data, loading, error }] = useLazyQuery(searchUsersQuery());
+  const [doSearch, { data, loading, error }] = useLazyQuery(getUserManyQuery());
 
   if (error) console.error(error);
 
   useEffect(() => {
     if (keyword) {
-      doSearch({ variables: { keyword } });
+      doSearch({
+        variables: {
+          filter: {
+            _operators: { username: { regex: keyword } },
+          },
+        },
+      });
     }
 
     if (data) {
-      const users = data.search;
+      const users = data.userMany;
       const formattedUserArray = [];
 
       users.forEach((user, index) => {

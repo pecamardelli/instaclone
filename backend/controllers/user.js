@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const saveImage = require("../utils/saveImage");
+const saveFile = require("../utils/saveFile");
 const { fileUploads, jwt: jwtCfg } = require("../config/config");
 
 const { publicDir, baseDir, userDir, userAvatarDir } = fileUploads.directories;
@@ -80,7 +80,7 @@ async function updateAvatar(file, ctx) {
       const imageDir = `${publicDir}${baseDir}${userDir}${userAvatarDir}`;
       const imagePath = `${imageDir}/${user.id}.${imageType}`;
       const imageData = createReadStream();
-      saveImage(imageData, imagePath);
+      saveFile(imageData, imagePath);
 
       User.findByIdAndUpdate(
         user.id,

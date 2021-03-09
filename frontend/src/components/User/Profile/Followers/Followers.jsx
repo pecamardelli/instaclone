@@ -19,8 +19,6 @@ export default function Followers(props) {
     data: followersData,
     loading: followersLoading,
     error: followersError,
-    //startPolling: startPollingFollowers,
-    //stopPolling: stopPollingFollowers,
   } = useQuery(getFollowerManyQuery("userId user { name username avatar }"), {
     variables: { filter: { followId: auth.id } },
   });
@@ -31,12 +29,10 @@ export default function Followers(props) {
     error: followedsError,
   } = useQuery(
     getFollowerManyQuery("followId follower { name username avatar }"),
-    {
-      variables: { filter: { userId: auth.id } },
-    }
+    { variables: { filter: { userId: auth.id } } }
   );
 
-  // In the course, the teacher does this to get realtime followers count.
+  // In the course, the instructor does this to get realtime followers count.
   // I'll comment this because it's a terrible idea.
   // useEffect(() => {
   //   startPollingFollowers(1000);

@@ -1,7 +1,10 @@
+const { v4: uuidv4 } = require("uuid");
+const { fileUploads } = require("../../../config/config");
+const { TC: UserTC } = require("../UserTC");
+const saveFile = require("../../../utils/saveFile");
 const {
   PublicationManyByUsernameInput,
 } = require("./inputs/publicationInputs");
-const { TC: UserTC } = require("../UserTC");
 
 const addPublicationCustomResolvers = (PublicationTC) => {
   // This extends the input type for Publication in order to accept an Upload type on args.
@@ -12,9 +15,30 @@ const addPublicationCustomResolvers = (PublicationTC) => {
       file: "Upload!",
       record: PublicationTC.mongooseResolvers.createOne().getArgs().record,
     },
-    resolve: ({ source, args, context, info }) => {
-      const resolver = PublicationTC.mongooseResolvers.createOne().resolve;
-      return resolver({ source, args, context, info });
+    resolve: async ({ source, args, context, info }) => {
+      const PublicationCreateOne = PublicationTC.mongooseResolvers.createOne()
+        .resolve;
+      const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
+      const { record, file } = args;
+
+      const { createReadStream, mimetype } = await file;
+      const splittedMime = typeof mimetype === "string" && mimetype.split("/"); // Should be jpeg or png and equal to the extension...
+      const fileExtension = `${
+        Array.isArray(splittedMime) && splittedMime.length > 1
+          ? splittedMime[1]
+          : ".none"
+      }`;
+      const fileDir = `${publicDir}${baseDir}${publicationsDir}`;
+      const fileName = `${uuidv4()}`;
+      const filePath = `${fileDir}/${fileName}.${fileExtension}`;
+      const fileData = createReadStream();
+
+      await saveFile(fileData, filePath);
+
+      record.fileName = `${fileName}`;
+      record.fileExtension = `${fileExtension}`;
+
+      return PublicationCreateOne({ source, args, context, info });
     },
   });
 
