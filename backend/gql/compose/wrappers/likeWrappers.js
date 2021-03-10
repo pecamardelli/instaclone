@@ -6,7 +6,7 @@ const likeCreateOneWrapper = (next) => async (rp) => {
   const { context } = rp;
 
   if (!record.publicationId) throw new Error("Publication ID is not defined.");
-  if (!context.id) throw new Error("No user provided in context.");
+  if (!context.user.id) throw new Error("No user provided in context.");
 
   const publicationExists = await PublicationTC.mongooseResolvers
     .findById()
@@ -16,7 +16,7 @@ const likeCreateOneWrapper = (next) => async (rp) => {
 
   // Can't import LikeTC because it will be a circular dependency.
   const alreadyLiked = await LikeModel.findOne({
-    userId: context.id,
+    userId: context.user.id,
     publicationId: record.publicationId,
   });
 

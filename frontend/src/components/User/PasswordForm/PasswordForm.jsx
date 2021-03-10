@@ -2,37 +2,37 @@ import React from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useMutation } from "@apollo/client";
-import { updateUserMutation } from "../../../gql/userQueries";
 import { toast } from "react-toastify";
+import { useMutation } from "@apollo/client";
+import { getUserUpdateByIdMutation } from "../../../gql/userQueries";
+import useAuth from "../../../hooks/useAuth";
 
 import "./PasswordForm.scss";
 
 export default function PasswordForm(props) {
   const { setShowModal } = props;
-  const [updateUser] = useMutation(updateUserMutation());
+  const { auth } = useAuth();
+  const [userUpdateById] = useMutation(getUserUpdateByIdMutation());
 
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: getValidationSchema(),
     onSubmit: async (formData) => {
       try {
-        const { data } = await updateUser({
+        await userUpdateById({
           variables: {
-            input: {
-              currentPassword: formData.currentPassword,
-              newPassword: formData.newPassword,
+            _id: auth.id,
+            record: {
+              password: formData.password,
             },
           },
         });
-
-        if (!data.updateUser) return toast.error("Password not updated!");
 
         toast.success("Password successfully updated!");
         setShowModal(false);
       } catch (error) {
         console.error(error);
-        toast.error("Password not updated!");
+        toast.error(error.message);
       }
     },
   });

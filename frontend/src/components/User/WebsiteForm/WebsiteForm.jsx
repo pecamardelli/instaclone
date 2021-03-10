@@ -1,16 +1,18 @@
+import React from "react";
 import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
-import React from "react";
 import { Button, Form } from "semantic-ui-react";
-import * as Yup from "yup";
-import { updateUserMutation } from "../../../gql/userQueries";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { getUserUpdateByIdMutation } from "../../../gql/userQueries";
+import useAuth from "../../../hooks/useAuth";
 
 import "./WebsiteForm.scss";
 
 export default function WebsiteForm(props) {
   const { setShowModal, userData } = props;
-  const [updateUser] = useMutation(updateUserMutation());
+  const { auth, setUserData } = useAuth();
+  const [userUpdateById] = useMutation(getUserUpdateByIdMutation());
 
   const formik = useFormik({
     initialValues: {
@@ -21,17 +23,15 @@ export default function WebsiteForm(props) {
     }),
     onSubmit: async (formData) => {
       try {
-        const { data } = await updateUser({
+        await userUpdateById({
           variables: {
-            input: {
-              website: formData.website,
-            },
+            _id: auth.id,
+            record: formData,
           },
         });
 
-        if (!data.updateUser) return toast.error(`An error ocurred: ${data}`);
-
         toast.success("Website successfully updated!");
+        setUserData((userData) => ({ ...userData, ...formData }));
         setShowModal(false);
       } catch (error) {
         toast.error(`Couldn't set website: ${error.message || ""}`);

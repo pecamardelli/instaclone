@@ -14,7 +14,7 @@ const UserModel = require("../../../models/user");
 //       ? splittedMime[1]
 //       : ".none"
 //   }`;
-//   const imageDir = `${publicDir}${baseDir}${publicationsDir}/${context.id}`;
+//   const imageDir = `${publicDir}${baseDir}${publicationsDir}/${context.user.id}`;
 //   const imageName = `${uuidv4()}.${imageType}`;
 //   const imagePath = `${imageDir}/${imageName}`;
 //   const imageData = createReadStream();
@@ -32,7 +32,7 @@ const publicationManyOfFolloweds = (next) => async (rp) => {
   // First of all, we need to retrieve all the IDs of the users followed by caller.
   const followerFindMany = FollowerTC.mongooseResolvers.findMany().resolve;
   const listOfUsersFollowedByCaller = await followerFindMany({
-    args: { filter: { userId: context.id } },
+    args: { filter: { userId: context.user.id } },
   });
 
   let mappedList;
@@ -43,7 +43,7 @@ const publicationManyOfFolloweds = (next) => async (rp) => {
     const randomUsers = [
       ...new Set(
         await UserModel.aggregate([
-          { $match: { _id: { $ne: context.id } } }, // Exclude the caller id.
+          { $match: { _id: { $ne: context.user.id } } }, // Exclude the caller id.
           { $sample: { size: parseInt(mongodb.sampleSize) } },
         ])
       ),

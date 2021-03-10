@@ -129,12 +129,15 @@ export const getLoginMutation = () => {
   `;
 };
 
-export const updateUserMutation = (customFields) => {
+export const getUserUpdateByIdMutation = (customFields) => {
   const fields = customFields || userDefaultFields;
   return gql`
-    mutation UpdateUser($input: UpdateUserInput) {
-      updateUser(input: $input) {
-        ${fields}
+    mutation UserUpdateById($_id: MongoID!, $record: UpdateByIdUserInput!) {
+      userUpdateById(_id: $_id, record: $record) {
+        recordId
+        record {
+          ${fields}
+        }
       }
     }
   `;

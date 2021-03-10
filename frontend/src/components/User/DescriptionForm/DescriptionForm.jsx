@@ -3,14 +3,16 @@ import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { Button, Form } from "semantic-ui-react";
-import { updateUserMutation } from "../../../gql/userQueries";
+import { getUserUpdateByIdMutation } from "../../../gql/userQueries";
+import useAuth from "../../../hooks/useAuth";
 import * as Yup from "yup";
 
 import "./DescriptionForm.scss";
 
 export default function DescriptionForm(props) {
   const { setShowModal, userData } = props;
-  const [updateUser] = useMutation(updateUserMutation());
+  const { auth, setUserData } = useAuth();
+  const [userUpdateById] = useMutation(getUserUpdateByIdMutation());
 
   const formik = useFormik({
     initialValues: {
@@ -21,15 +23,15 @@ export default function DescriptionForm(props) {
     }),
     onSubmit: async (formData) => {
       try {
-        const { data } = await updateUser({
+        await userUpdateById({
           variables: {
-            input: formData,
+            _id: auth.id,
+            record: formData,
           },
         });
 
-        if (!data) return toast.error(`Couldn't update bio!`);
-
         toast.success("Bio successfully updated!");
+        setUserData((userData) => ({ ...userData, ...formData }));
         setShowModal(false);
       } catch (error) {
         toast.error(`Couldn't update bio: ${error.message || ""}`);

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import {
@@ -9,22 +9,20 @@ import {
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
-import AuthContext from "./../../../context/AuthContext";
 
 import "./AvatarForm.scss";
 
 export default function AvatarForm(props) {
   const { setShowModal } = props;
   const [loading, setLoading] = useState(false);
-  const { auth } = useAuth();
-  const authContext = useContext(AuthContext);
+  const { auth, setUserData } = useAuth();
 
   // The second argument updates the Apollo cache with the new avatar url
   // It doesn't work if the images have the same uploaded name (same url as well).
   // This is a bug that wasn't fixed in the course, so implementing a context
   // would be a solution to this.
-  const [updateAvatar] = useMutation(getUserUpdateAvatarMutation(), {
-    update(cache, { data: { updateAvatar } }) {
+  const [userUpdateAvatar] = useMutation(getUserUpdateAvatarMutation(), {
+    update(cache, { data: { userUpdateAvatar } }) {
       const { userOne } = cache.readQuery({
         query: getUserOneQuery(),
         variables: { filter: { username: auth.username } },
@@ -34,7 +32,7 @@ export default function AvatarForm(props) {
         query: getUserOneQuery(),
         variables: { filter: { username: auth.username } },
         data: {
-          userOne: { ...userOne, avatar: updateAvatar.avatar },
+          userOne: { ...userOne, avatar: userUpdateAvatar.avatar },
         },
       });
     },
@@ -47,24 +45,25 @@ export default function AvatarForm(props) {
       const avatarImage = uploadedFile[0];
       try {
         setLoading(true);
-        const result = await updateAvatar({ variables: { file: avatarImage } });
-        const { data } = result;
+        const { data } = await userUpdateAvatar({
+          variables: { file: avatarImage },
+        });
 
-        if (!data.updateAvatar.status) {
+        if (!data.userUpdateAvatar.recordId) {
           toast.error("Failed to upload avatar!");
         } else {
-          authContext.setUserData({
-            ...authContext.auth,
-            avatar: data.updateAvatar.avatarUrl,
+          setUserData({
+            ...auth,
+            avatar: data.userUpdateAvatar.record.avatar,
           });
           setShowModal(false);
         }
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
-    [updateAvatar, setShowModal, authContext]
+    [userUpdateAvatar, setShowModal, auth, setUserData]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -82,7 +81,7 @@ export default function AvatarForm(props) {
         toast.error("Failed to delete avatar!");
       } else {
         toast.success("Avatar deleted!");
-        authContext.setUserData({ ...authContext.auth, avatar: "" });
+        setUserData({ ...auth, avatar: "" });
         setShowModal(false);
       }
     } catch (error) {

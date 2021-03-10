@@ -1,14 +1,17 @@
 const { applyMiddleware } = require("graphql-middleware");
-const { shield, and } = require("graphql-shield");
-const rules = require("./rules");
+const { shield, and, allow } = require("graphql-shield");
+const { isLoggedIn, isAdmin, isDocumentOwner } = require("./ruleBundle");
 
 const permissions = shield(
   {
     Query: {
-      "*": and(rules.isLoggedIn),
+      "*": and(isLoggedIn),
     },
     Mutation: {
-      "*": and(rules.isLoggedIn),
+      "*": and(isLoggedIn),
+      userLogin: allow,
+      userRegister: allow,
+      userUpdateById: and(isDocumentOwner),
     },
   },
   {

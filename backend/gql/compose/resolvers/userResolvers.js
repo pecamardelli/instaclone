@@ -5,6 +5,7 @@ const { fileUploads, encrypt } = require("../../../config/config");
 const { UserLoginInput, UserRegisterInput } = require("./inputs/userInputs");
 const { UserLoginPayload } = require("./types/userTypes");
 const generateJwt = require("./helpers/generateJwt");
+const saveFile = require("../../../utils/saveFile");
 
 const { publicDir, baseDir, userDir, userAvatarDir } = fileUploads.directories;
 
@@ -72,8 +73,8 @@ const addUserCustomResolvers = (UserTC) => {
       const passwd = await bcryptjs.compare(record.password, user.password);
       if (!passwd) throw new Error("Invalid login");
 
-      const { id, name, username, email, avatar } = user;
-      const payload = { id, name, username, email, avatar };
+      const { id, name, username, role, email, avatar } = user;
+      const payload = { id, name, username, role, email, avatar };
 
       return generateJwt(payload);
     },
@@ -96,7 +97,9 @@ const addUserCustomResolvers = (UserTC) => {
         splittedMimeType.length > 1 ? splittedMimeType[1] : ".none";
       const fileDir = `${publicDir}${baseDir}${userDir}${userAvatarDir}`;
 
-      const splittedAvatarName = context.avatar.split(".");
+      const splittedAvatarName = context.user.avatar
+        ? context.user.avatar.split(".")
+        : [];
       const currentAvatarName =
         splittedAvatarName.length > 0 ? splittedAvatarName[0] : null;
       const fileName = currentAvatarName
@@ -111,8 +114,10 @@ const addUserCustomResolvers = (UserTC) => {
 
       const userUpdateById = UserTC.mongooseResolvers.updateById().resolve;
       const result = await userUpdateById({
-        _id: context.id,
-        record: { avatar: fileName },
+        args: {
+          _id: context.user.id,
+          record: { avatar: `${fileName}.${extension}` },
+        },
       });
 
       return result;

@@ -3,13 +3,15 @@ import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import { Button, Form } from "semantic-ui-react";
 import * as Yup from "yup";
-import { updateUserMutation } from "../../../gql/userQueries";
+import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
+import { getUserUpdateByIdMutation } from "../../../gql/userQueries";
 
 import "./EmailForm.scss";
-import { toast } from "react-toastify";
 
 export default function EmailForm({ setShowModal, userData }) {
-  const [updateUser] = useMutation(updateUserMutation());
+  const { auth, setUserData } = useAuth();
+  const [userUpdateById] = useMutation(getUserUpdateByIdMutation());
 
   const formik = useFormik({
     initialValues: {
@@ -20,20 +22,25 @@ export default function EmailForm({ setShowModal, userData }) {
     }),
     onSubmit: async (formData) => {
       try {
-        const { data } = await updateUser({
+        const { data } = await userUpdateById({
           variables: {
-            input: {
-              email: formData.email,
-            },
+            _id: auth.id,
+            record: formData,
           },
         });
 
-        console.dir({ data });
-
-        if (data?.updateUser) {
+        if (data.userUpdateById?.recordId) {
           toast.success("Email successfully changed!");
+          setUserData((userData) => ({ ...userData, ...formData }));
           setShowModal(false);
-        } else toast.error("Email is in use!");
+        }
+        // else if (errors && Array.isArray(errors) && errors.length > 0) {
+        //   // Grab the first error.
+        //   const error = errors[0];
+        //   toast.error(
+        //     `${error.extensions.name}: code ${error.extensions.code}`
+        //   );
+        // }
       } catch (error) {
         toast.error(`Error: ${error.message || "Couldn't change email."}`);
       }

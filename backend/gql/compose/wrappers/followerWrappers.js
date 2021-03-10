@@ -6,16 +6,16 @@ const followerCreateOneWrapper = (next) => async (rp) => {
   const { context } = rp;
 
   // If user IDs don't match, it means that someone is trying something nasty.
-  if (record.userId !== context.id) throw new Error("Illegal operation.");
+  if (record.userId !== context.user.id) throw new Error("Illegal operation.");
 
-  if (record.followId === context.id)
+  if (record.followId === context.user.id)
     throw new Error("You can't follow yourself.");
 
   const userToFollow = await UserModel.findOne({ _id: record.followId });
   if (!userToFollow) throw new Error("Invalid user to follow ID.");
 
   const existentFollowDoc = await FollowerModel.findOne({
-    userId: context.id,
+    userId: context.user.id,
   })
     .where("followId")
     .equals(userToFollow._id);
@@ -24,7 +24,7 @@ const followerCreateOneWrapper = (next) => async (rp) => {
     throw new Error("You are already following this user.");
 
   // Replace the publication's userId for the one in the context.
-  record.userId = context.id;
+  record.userId = context.user.id;
 
   return next(rp);
 };

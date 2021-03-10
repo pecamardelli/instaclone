@@ -7,7 +7,7 @@ const userManyNotFollowed = (next) => async (rp) => {
   // Get the list of followed users.
   const followerMany = FollowerTC.mongooseResolvers.findMany().resolve;
   const followedUsersList = await followerMany({
-    args: { filter: { userId: context.id } },
+    args: { filter: { userId: context.user.id } },
   });
 
   const followedUsersIdList = followedUsersList.map((f) =>
@@ -15,7 +15,7 @@ const userManyNotFollowed = (next) => async (rp) => {
   );
 
   // Push the caller ID to the array of users to exclude.
-  followedUsersIdList.push(Types.ObjectId(context.id));
+  followedUsersIdList.push(Types.ObjectId(context.user.id));
 
   // Modify filter in order to get all users that are not in the array.
   rp.args.filter = { _operators: { _id: { nin: followedUsersIdList } } };
