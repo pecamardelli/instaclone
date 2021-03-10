@@ -5,6 +5,14 @@ const { commentCreateOneWrapper } = require("./wrappers/commentWrappers");
 const customizationOptions = {}; // left it empty for simplicity, described below
 const CommentTC = composeMongoose(CommentModel, customizationOptions);
 
+/**
+ * ### ATTENTION ###
+ * Having all queries and mutations enabled could be a security risk.
+ * In a real world application you must only keep the ones that you need
+ * and make sure you shield them!
+ * #################
+ */
+
 const queries = {
   commentById: CommentTC.mongooseResolvers.findById(),
   commentByIds: CommentTC.mongooseResolvers.findByIds(),

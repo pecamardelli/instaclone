@@ -30,9 +30,9 @@ const mutations = {
   userUpdateOne: UserTC.mongooseResolvers.updateOne(),
   userUpdateMany: UserTC.mongooseResolvers.updateMany(),
   userUpdateAvatar: UserTC.getResolver("userUpdateAvatar"),
-  // userRemoveById: UserTC.mongooseResolvers.removeById(),
-  // userRemoveOne: UserTC.mongooseResolvers.removeOne(),
-  // userRemoveMany: UserTC.mongooseResolvers.removeMany(),
+  userRemoveById: UserTC.mongooseResolvers.removeById(),
+  userRemoveOne: UserTC.mongooseResolvers.removeOne(),
+  userRemoveMany: UserTC.mongooseResolvers.removeMany(),
 };
 
 module.exports = {

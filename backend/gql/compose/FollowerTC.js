@@ -5,6 +5,14 @@ const { followerCreateOneWrapper } = require("./wrappers/followerWrappers");
 const customizationOptions = {}; // left it empty for simplicity, described below
 const FollowerTC = composeMongoose(FollowerModel, customizationOptions);
 
+/**
+ * ### ATTENTION ###
+ * Having all queries and mutations enabled could be a security risk.
+ * In a real world application you must only keep the ones that you need
+ * and make sure you shield them!
+ * #################
+ */
+
 const queries = {
   followerById: FollowerTC.mongooseResolvers.findById(),
   followerByIds: FollowerTC.mongooseResolvers.findByIds(),

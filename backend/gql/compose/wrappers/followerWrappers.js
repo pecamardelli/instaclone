@@ -5,9 +5,6 @@ const followerCreateOneWrapper = (next) => async (rp) => {
   const { record } = rp.args;
   const { context } = rp;
 
-  // If user IDs don't match, it means that someone is trying something nasty.
-  if (record.userId !== context.user.id) throw new Error("Illegal operation.");
-
   if (record.followId === context.user.id)
     throw new Error("You can't follow yourself.");
 
