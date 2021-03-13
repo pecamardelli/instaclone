@@ -46,7 +46,7 @@ export default function AvatarForm(props) {
       try {
         setLoading(true);
         const { data } = await userUpdateAvatar({
-          variables: { file: avatarImage },
+          variables: { _id: auth.id, file: avatarImage },
         });
 
         if (!data.userUpdateAvatar.recordId) {

@@ -24,11 +24,11 @@ export default function CommentList(props) {
     <div className="comment-list">
       {commentList.map((c, index) => (
         <div key={index} className="comment">
-          <Link to={`/${c.userId.username}`}>
-            <Image src={`${urls.userAvatarPath}/${c.userId.avatar}`} avatar />
+          <Link to={`/${c.user.username}`}>
+            <Image src={`${urls.userAvatarPath}/${c.user.avatar}`} avatar />
           </Link>
           <div>
-            <p>{c.userId.username}</p>
+            <p>{c.user.username}</p>
             <p>{c.text}</p>
           </div>
         </div>

@@ -7,6 +7,7 @@ const {
   assetsProtocol,
   assetsDomain,
   assetsPort,
+  publicDir,
   baseDir,
   userDir,
   userAvatarDir,
@@ -16,8 +17,8 @@ const {
 const assetsUrl = `${assetsProtocol}://${assetsDomain}${
   assetsPort ? ":" + assetsPort : ""
 }`;
-const userAvatarPath = `${assetsUrl}${baseDir}${userDir}${userAvatarDir}`;
-const publicationsPath = `${assetsUrl}${baseDir}${publicationsDir}`;
+const userAvatarPath = `${assetsUrl}${publicDir}${baseDir}${userDir}${userAvatarDir}`;
+const publicationsPath = `${assetsUrl}${publicDir}${baseDir}${publicationsDir}`;
 
 export const urls = {
   userAvatarPath,

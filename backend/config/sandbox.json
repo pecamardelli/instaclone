@@ -1,5 +1,4 @@
 {
-  "jwtPrivateKey": "1234",
   "name": "Instaclone - Sandbox",
   "jwtLifeTime": "84600"
 }

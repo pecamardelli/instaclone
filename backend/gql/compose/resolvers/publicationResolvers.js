@@ -5,6 +5,7 @@ const saveFile = require("../../../utils/saveFile");
 const {
   PublicationManyByUsernameInput,
 } = require("./inputs/publicationInputs");
+const fileUploadHandler = require("../../../services/fileUploads/fileService");
 
 const addPublicationCustomResolvers = (PublicationTC) => {
   // This extends the input type for Publication in order to accept an Upload type on args.
@@ -21,22 +22,29 @@ const addPublicationCustomResolvers = (PublicationTC) => {
       const { publicDir, baseDir, publicationsDir } = fileUploads.directories;
       const { record, file } = args;
 
-      const { createReadStream, mimetype } = await file;
-      const splittedMime = typeof mimetype === "string" && mimetype.split("/"); // Should be jpeg or png and equal to the extension...
-      const fileExtension = `${
-        Array.isArray(splittedMime) && splittedMime.length > 1
-          ? splittedMime[1]
-          : ".none"
-      }`;
-      const fileDir = `${publicDir}${baseDir}${publicationsDir}`;
-      const fileName = `${uuidv4()}`;
-      const filePath = `${fileDir}/${fileName}.${fileExtension}`;
-      const fileData = createReadStream();
+      // const { createReadStream, mimetype } = await file;
+      // const splittedMime = typeof mimetype === "string" && mimetype.split("/"); // Should be jpeg or png and equal to the extension...
+      // const fileExtension = `${
+      //   Array.isArray(splittedMime) && splittedMime.length > 1
+      //     ? splittedMime[1]
+      //     : ".none"
+      // }`;
+      // const fileDir = `${publicDir}${baseDir}${publicationsDir}`;
+      // const fileName = `${uuidv4()}`;
+      // const filePath = `${fileDir}/${fileName}.${fileExtension}`;
+      // const fileData = createReadStream();
 
-      await saveFile(fileData, filePath);
+      // await saveFile(fileData, filePath);
 
-      record.fileName = `${fileName}`;
-      record.fileExtension = `${fileExtension}`;
+      const fileHandlerResult = await fileUploadHandler({
+        file,
+        callerId: context.user.id,
+        uploadType: "publication",
+        isPublic: true,
+      });
+
+      record.fileName = `${fileHandlerResult.fileName}`;
+      record.fileExtension = `${fileHandlerResult.fileExtension}`;
 
       return PublicationCreateOne({ source, args, context, info });
     },

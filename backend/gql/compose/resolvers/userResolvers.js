@@ -1,13 +1,9 @@
 const bcryptjs = require("bcryptjs");
-const isValidUUIDV4 = require("is-valid-uuid-v4").isValidUUIDV4;
-const { v4: uuidv4 } = require("uuid");
-const { fileUploads, encrypt } = require("../../../config/config");
+const { encrypt } = require("../../../config/config");
 const { UserLoginInput, UserRegisterInput } = require("./inputs/userInputs");
 const { UserLoginPayload } = require("./types/userTypes");
 const generateJwt = require("./helpers/generateJwt");
-const saveFile = require("../../../utils/saveFile");
-
-const { publicDir, baseDir, userDir, userAvatarDir } = fileUploads.directories;
+const fileUploadHandler = require("../../../services/fileUploads/fileService");
 
 const addUserCustomResolvers = (UserTC) => {
   /**
@@ -87,36 +83,26 @@ const addUserCustomResolvers = (UserTC) => {
     name: "userUpdateAvatar",
     type: UserTC.mongooseResolvers.updateById().getType(),
     args: {
+      _id: "MongoID!",
       file: "Upload!",
     },
     resolve: async ({ source, args, context, info }) => {
       const { file } = args;
-      const { createReadStream, mimetype } = await file;
-      const splittedMimeType = mimetype.split("/"); // Should be jpeg or png and equal to the extension...
-      const extension =
-        splittedMimeType.length > 1 ? splittedMimeType[1] : ".none";
-      const fileDir = `${publicDir}${baseDir}${userDir}${userAvatarDir}`;
 
-      const splittedAvatarName = context.user.avatar
-        ? context.user.avatar.split(".")
-        : [];
-      const currentAvatarName =
-        splittedAvatarName.length > 0 ? splittedAvatarName[0] : null;
-      const fileName = currentAvatarName
-        ? isValidUUIDV4(currentAvatarName)
-          ? currentAvatarName
-          : uuidv4()
-        : uuidv4();
-      const filePath = `${fileDir}/${fileName}.${extension}`;
-      const fileData = createReadStream();
-
-      saveFile(fileData, filePath);
+      const fileHandlerResult = await fileUploadHandler({
+        file,
+        callerId: context.user.id,
+        uploadType: "avatar",
+        isPublic: true,
+      });
 
       const userUpdateById = UserTC.mongooseResolvers.updateById().resolve;
       const result = await userUpdateById({
         args: {
           _id: context.user.id,
-          record: { avatar: `${fileName}.${extension}` },
+          record: {
+            avatar: `${fileHandlerResult.fileName}.${fileHandlerResult.fileExtension}`,
+          },
         },
       });
 

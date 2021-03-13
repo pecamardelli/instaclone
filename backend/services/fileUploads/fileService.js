@@ -1,7 +1,15 @@
-const uploadFileFtp = require("./uploadFileFtp");
-const upoladFileSftp = require("./uploadFileSftp");
+const { v4: uuidv4 } = require("uuid");
+const uploadFileFtp = require("./helpers/uploadFileFtp");
+const upoladFileSftp = require("./helpers/uploadFileSftp");
 const { fileUploads } = require("../../config/config");
-const crypto = require("crypto");
+
+const {
+  publicDir,
+  baseDir,
+  userDir,
+  userAvatarDir,
+  publicationsDir,
+} = fileUploads.directories;
 
 const getSizeInMbytes = (size) => {
   // Return the size in mbytes with one decimal digit.
@@ -10,71 +18,76 @@ const getSizeInMbytes = (size) => {
 
 //const fileUploadHandler = async (file, baseDir, dirname, protocol, isPublic) => {
 const fileUploadHandler = async (params) => {
-  //console.dir({baseDir, dirname, protocol})
-  if (!params.baseDir) return "Base path missing.";
-  if (!params.hashedDirName) return "Dir name missing.";
-  if (!params.subDir) return "Sub directory name missing.";
+  const { callerId, file, uploadType, isPublic = true } = params;
+  let filePath;
+  let fileName;
+  let fileExtension;
+
+  if (!callerId) throw new Error("Caller ID not provided.");
+  if (!file) throw new Error("File data not provided.");
+  if (!uploadType) throw new Error("Upload type not provided.");
 
   // Check if file is a promise. If so, it means that it's a stream.
-  if (Promise.resolve(params.file) === params.file) {
-    ///console.log("It's a promise");
-    const { createReadStream, mimetype } = await params.file;
+  if (Promise.resolve(file) === file) {
+    const { createReadStream, mimetype } = await file;
     const splittedMimeType = mimetype.split("/");
     readStream = createReadStream();
-    const fileExtension =
-      splittedMimeType.length > 1 ? splittedMimeType[1] : "none"; // Should be jpeg or png and equal to the extension...
-    const hash = crypto.createHash("sha256");
+    fileExtension = splittedMimeType.length > 1 ? splittedMimeType[1] : "none"; // Should be jpeg or png and equal to the extension...
     const chunkArray = [];
 
-    readStream
-      .on("readable", () => {
-        // Read stream data and store it in an array.
-        let chunk;
-        let streamSize = 0;
-        while (null !== (chunk = readStream.read())) {
-          //console.log(`Received ${chunk.length} bytes of data.`);
-          chunkArray.push(chunk);
-          streamSize += chunk.length;
-          if (streamSize > fileUploads.maxUploadSize) {
-            throw new Error(
-              `El tamaño del archivo no debe superar los ${getSizeInMbytes(
-                fileUploads.maxUploadSize
-              )}Mbytes.`
-            );
-          }
+    switch (uploadType) {
+      case "avatar":
+        filePath = `${publicDir}${baseDir}${userDir}${userAvatarDir}`;
+        fileName = `${callerId}`;
+        break;
+      case "publication":
+        filePath = `${publicDir}${baseDir}${publicationsDir}`;
+        fileName = `${uuidv4()}`;
+        break;
+      default:
+        break;
+    }
+
+    readStream.on("readable", () => {
+      // Read stream data and store it in an array.
+      let chunk;
+      let streamSize = 0;
+      while (null !== (chunk = readStream.read())) {
+        chunkArray.push(chunk);
+        streamSize += chunk.length;
+        if (streamSize > fileUploads.maxUploadSize) {
+          throw new Error(
+            `File size exceeded: must be less or equal than ${getSizeInMbytes(
+              fileUploads.maxUploadSize
+            )}Mbytes.`
+          );
         }
-      })
-      .catch((error) => error);
+      }
+    });
 
-    readStream
-      .on("end", () => {
-        const data = Buffer.concat(chunkArray);
-        hash.update(data);
-        const digested = hash.digest("hex");
-        const fileDir = `${params.baseDir}/${params.hashedDirName}/${params.subDir}`;
-        const fileName = `${digested}.${fileExtension}`;
-        const { protocol, isPublic } = params;
+    readStream.on("end", () => {
+      const data = Buffer.concat(chunkArray);
 
-        const uploadOptions = {
-          data,
-          fileDir,
-          fileName,
-          protocol,
-          isPublic,
-        };
+      const uploadOptions = {
+        data,
+        filePath,
+        fileName: `${fileName}.${fileExtension}`,
+        isPublic,
+      };
 
-        switch (protocol.name) {
-          case "sftp":
-            upoladFileSftp(uploadOptions);
-            break;
-          case "ftp":
-            uploadFileFtp(uploadOptions);
-            break;
-          default:
-            break;
-        }
-      })
-      .catch((error) => error);
+      switch (fileUploads.protocol) {
+        case "sftp":
+          upoladFileSftp(uploadOptions);
+          break;
+        case "ftp":
+          uploadFileFtp(uploadOptions);
+          break;
+        default:
+          break;
+      }
+    });
+
+    return { fileName, fileExtension };
   } else throw new Error("Not implemented...");
 };
 

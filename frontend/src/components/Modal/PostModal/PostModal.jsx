@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { Button, Dimmer, Icon, Loader, Modal } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@apollo/client";
-import { toast } from "react-toastify";
 import { getPublicationCreateOneMutation } from "../../../gql/publicationQueries";
 import useAuth from "../../../hooks/useAuth";
 
@@ -41,7 +40,7 @@ export default function PostModal(props) {
   const handlePublish = async () => {
     try {
       setIsLoading(true);
-      const { data } = await publicationCreateOne({
+      await publicationCreateOne({
         variables: {
           file: uploadedFile.file,
           record: {
@@ -54,9 +53,6 @@ export default function PostModal(props) {
       setIsLoading(false);
       setShow(false);
       setUploadedFile(null);
-
-      if (!data.publish.status)
-        toast.error("Error: Could not publish your photo!");
     } catch (error) {
       console.error(error);
     }

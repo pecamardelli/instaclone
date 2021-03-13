@@ -92,8 +92,8 @@ export const getUserManyNotFollowedQuery = (customFields) => {
 export const getUserUpdateAvatarMutation = (customFields) => {
   const fields = customFields || userUpdateAvatarDefaultFields;
   return gql`
-    mutation UserUpdateAvatar($file: Upload!) {
-      userUpdateAvatar(file: $file) {
+    mutation UserUpdateAvatar($_id: MongoID!, $file: Upload!) {
+      userUpdateAvatar(_id: $_id, file: $file) {
         ${fields}
       }
     }

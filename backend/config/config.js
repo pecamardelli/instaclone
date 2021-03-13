@@ -16,6 +16,9 @@ const config = {
     privateKey: _config.get("jwtPrivateKey"),
     lifeTime: _config.get("jwtLifeTime") || "4h",
   },
+  assets: {
+    url: _config.get("assetsUrl"),
+  },
   restApi: {
     serveStaticFiles: _config.get("serveStaticFiles"),
     serverPort: _config.get("restApiServerPort"),
@@ -35,7 +38,7 @@ const config = {
     maxUploadSize: _config.get("maxUploadSize") || 2097152, // Set to two megabytes if not defined
     protocol: _config.get("uploadProtocol") || "ftp", // This value must be one of the keys that define a protocol
     // This key must be one of 'protocol' values
-    sftp: {
+    ftp: {
       host: _config.get("ftpHost"),
       port: _config.get("ftpPort"),
       publicUser: _config.get("ftpPublicUser"),
@@ -44,7 +47,7 @@ const config = {
       privatePassword: _config.get("ftpPrivatePassword"),
     },
     // This key must be one of 'protocol' values
-    ftp: {
+    sftp: {
       host: _config.get("sftpHost"),
       port: _config.get("sftpPort"),
       publicUser: _config.get("sftpPublicUser"),

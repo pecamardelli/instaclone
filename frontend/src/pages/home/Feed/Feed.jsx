@@ -41,7 +41,7 @@ export default function Feed() {
               <Link to={`/${p.user.username}`}>
                 <Image
                   src={
-                    p.userId.avatar
+                    p.user.avatar
                       ? `${urls.userAvatarPath}/${p.user.avatar}`
                       : noAvatar
                   }

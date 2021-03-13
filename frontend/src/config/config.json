@@ -2,8 +2,9 @@
   "name": "Instaclone",
   "assets": {
     "assetsProtocol": "http",
-    "assetsDomain": "localhost",
-    "assetsPort": "3010",
+    "assetsDomain": "www.lacasonadelbosque.com.ar/instaclone",
+    "assetsPort": "",
+    "publicDir": "/public",
     "baseDir": "/images",
     "userDir": "/user",
     "userAvatarDir": "/avatar",

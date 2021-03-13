@@ -18,8 +18,6 @@ import "./App.css";
 
 function App() {
   const [auth, setAuth] = useState();
-  //localStorage.removeItem("token");
-
   document.title = appConfig.name;
 
   const logout = () => {

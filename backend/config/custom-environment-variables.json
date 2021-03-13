@@ -13,6 +13,7 @@
   "mongodbSampleSize": "INSTACLONE_MONGO_DB_SAMPLE_SIZE",
   "maxUploadSize": "INSTACLONE_MAX_UPLOAD_SIZE",
   "uploadProtocol": "INSTACLONE_UPLOAD_PROTOCOL",
+  "assetsUrl": "INSTACLONE_ASSETS_URL",
   "ftpHost": "INSTACLONE_FTP_HOST",
   "ftpPort": "INSTACLONE_FTP_PORT",
   "ftpPublicUser": "INSTACLONE_FTP_PUBLIC_USER",

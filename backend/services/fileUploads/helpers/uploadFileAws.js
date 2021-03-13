@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const { fileUploads } = require("../../config/config");
+const { fileUploads } = require("../../../config/config");
 const { aws } = fileUploads;
 
 if (!aws.id) throw new Error("AWS ID is not defined.");
