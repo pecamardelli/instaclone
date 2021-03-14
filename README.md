@@ -26,7 +26,7 @@ The author of this project is [Agustín Navarro Galdón](https://www.udemy.com/u
 
 #### Deployment
 
-- AWS
+- Heroku
 
 <hr>
 
